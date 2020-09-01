@@ -1,0 +1,374 @@
+<template>
+	<view class="container" :style="{height:screenHeight+'px'}">
+		<uni-nav-bar left-icon="back"title="客户分布" @clickLeft="back" style="z-index:999"></uni-nav-bar>
+		<map :latitude="latitude" :longitude="longitude" id="fenbumap" ref="fenbumap"
+			 :markers="markers"	:scale="scale"
+			 @markertap="markertap"
+			 @regionchange="regionchange"
+			  :controls="controls"
+			  @controltap="controltap"
+			 style="width: 750rpx;"
+			 :style="{height:windowHeight+'px'}" 
+		></map>	
+		<view class="content"  v-if="mapview">
+			<view class="scrollitem">
+				<view class="scrolltime">
+					<text class="text" style="font-size: 40rpx;">{{markerspoplist[makersindex].store}}</text>
+				</view>
+				<view class="scrolltime">
+					<view class="" style="display: flex; flex-direction: row;">
+						<text class="text">{{markerspoplist[makersindex].person}}</text>
+						<text class="text">{{markerspoplist[makersindex].phone}}</text>
+					</view>
+					<uni-icons type="phone" size="30" @click="makePhoneCall" color="#3cff06"></uni-icons>
+				</view>
+				<view class="scrolltime">
+						<text class="text">{{markerspoplist[makersindex].address}}</text>
+				</view>
+				<view class="scrollnavigation" @click="mapnavigation">
+						<text class="text2">前往导航</text>
+				</view>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		 // :style="{height:windowHeight+'px'}" 
+		data() {
+			return {
+				//屏幕高度
+				screenHeight:0,
+				//可使用屏幕高度
+				windowHeight:0,
+				mapview:false,
+				//地图组件相应数据
+				fenbumap:null,
+				title:"map",
+				latitude: 39.909,
+				longitude: 116.39742,
+				scale:10,//缩放数据
+				//控件数据
+				controls:[
+					{
+						id:1,
+						iconPath:'/static/image/controls1.png',
+						position:{
+							left:310,
+							top:300,
+							width:40,
+							height:40,
+						},
+						clickable:true,
+					},
+					{
+						id:2,
+						iconPath:'/static/image/controls2.png',
+						position:{
+							left:310,
+							top:340,
+							width:40,
+							height:40,
+						},
+						clickable:true,
+					}
+				],
+				markers:[
+					{
+						id:1,
+						latitude: 39.909,
+						longitude: 116.39742,
+						// #ifdef APP-NVUE
+						iconPath:'../../../static/image/map.png',
+						width:20,
+						height:20,
+						// #endif
+					},
+					{
+						id:2,
+						latitude: 39.922,
+						longitude: 116.40015,
+						// #ifdef APP-NVUE
+						iconPath:'../../../static/image/map.png',
+						width:20,
+						height:20,
+						// #endif
+					},
+					{
+						id:3,
+						latitude: 39.920,
+						longitude: 116.39300,
+						// #ifdef APP-NVUE
+						iconPath:'../../../static/image/map.png',
+						width:20,
+						height:20,
+						// #endif
+					},
+				],
+				makersindex:0,//标记点下标
+				//标记点点击弹出层数据
+				markerspoplist:[
+					{"store":"东莞市寮步前方药店","person":"张三","phone":"138503721923","address":"广东省东莞市寮步镇向西村",},
+					{"store":"贵安新区安康药店","person":"王萍","phone":"13338410321","address":"贵安新区人民路23号",},
+					{"store":"郑东新区人民药店","person":"李磊","phone":"13451232123","address":"郑东新区医学院路56号",},
+					{"store":"东莞市寮步前方药店","person":"张三","phone":"138503721923","address":"广东省东莞市寮步镇向西村",},
+					{"store":"贵安新区安康药店","person":"王萍","phone":"13338410321","address":"贵安新区人民路23号",},
+					{"store":"郑东新区人民药店","person":"李磊","phone":"13451232123","address":"郑东新区医学院路56号",},
+					{"store":"东莞市寮步前方药店","person":"张三","phone":"138503721923","address":"广东省东莞市寮步镇向西村",},
+					{"store":"贵安新区安康药店","person":"王萍","phone":"13338410321","address":"贵安新区人民路23号",},
+					{"store":"郑东新区人民药店","person":"李磊","phone":"13451232123","address":"郑东新区医学院路56号",},
+					{"store":"东莞市寮步前方药店","person":"张三","phone":"138503721923","address":"广东省东莞市寮步镇向西村",},
+					{"store":"贵安新区安康药店","person":"王萍","phone":"13338410321","address":"贵安新区人民路23号",},
+					{"store":"郑东新区人民药店","person":"李磊","phone":"13451232123","address":"郑东新区医学院路56号",},
+					{"store":"东莞市寮步前方药店","person":"张三","phone":"138503721923","address":"广东省东莞市寮步镇向西村",},
+					{"store":"贵安新区安康药店","person":"王萍","phone":"13338410321","address":"贵安新区人民路23号",},
+					{"store":"郑东新区人民药店","person":"李磊","phone":"13451232123","address":"郑东新区医学院路56号",},
+					{"store":"东莞市寮步前方药店","person":"张三","phone":"138503721923","address":"广东省东莞市寮步镇向西村",},
+					{"store":"贵安新区安康药店","person":"王萍","phone":"13338410321","address":"贵安新区人民路23号",},
+					{"store":"郑东新区人民药店","person":"李磊","phone":"13451232123","address":"郑东新区医学院路56号",},
+					{"store":"贵安新区安康药店","person":"王萍","phone":"13338410321","address":"贵安新区人民路23号",},
+					{"store":"郑东新区人民药店","person":"李磊","phone":"13451232123","address":"郑东新区医学院路56号",},
+				],
+			}
+		},	
+		onLoad:function(){
+			let _this = this
+			_this.markerspush()
+			// let height = plus.navigator.getStatusbarHeight()
+			//定义设备高度
+			uni.getSystemInfo({
+			    success: function (res) {
+					_this.windowHeight = res.windowHeight		
+					 _this.screenHeight = res.screenHeight - plus.navigator.getStatusbarHeight()
+					// _this.screenHeight = res.screenHeight - res.statusBarHeight 无效改为原生方法
+					 // _this.markers[1].label.content = '452'视图数据可更新
+			    }
+			});
+		},
+		onReady:function(){
+			
+			this.fenbumap = uni.createMapContext('fenbumap',this)
+			// this.fenbumap = this.$refs.fenbumap
+			// console.log(_this.fenbumap);
+		},
+		methods: {
+			back(){
+				uni.navigateBack({
+					
+				})
+			},
+			markerspush() {			
+				var _this = this
+				// var markerspush = {}
+				// console.log(_this.markers);
+				// console.log("开始push");
+				for (let i = 4; i < 100; i++) {
+					var markerspush = {}
+					markerspush.id = i;
+					markerspush.latitude = 39.920 + i/200;
+					markerspush.longitude = 116.393 + i/200;
+					if( i%5 == 0){
+						markerspush.iconPath='../../../static/image/map2.png';
+					}else{
+						markerspush.iconPath='../../../static/image/map.png';
+					}
+					markerspush.width=20,
+					markerspush.height=20,
+					_this.markers.push(markerspush),
+					_this.markerspoplist.push(_this.markerspoplist[i])
+				}
+				// console.log(_this.markers);
+				_this.$forceUpdate();
+				
+
+			},
+			//点击添加标记点测试
+			markerspush2() {
+				var _this = this
+				// var markerspush = {}
+				// console.log(_this.markers);
+				// console.log("开始push");
+				for (let i = 6000; i < 6500; i++) {
+					var markerspush = {}
+					markerspush.id = i;
+					markerspush.latitude = 39.920 - i/2000;
+					markerspush.longitude = 116.393 - i/2000;
+					if( i%5 == 0){
+						markerspush.iconPath='../../../static/image/map2.png';
+					}else{
+						markerspush.iconPath='../../../static/image/map.png';
+					}
+					markerspush.width=20,
+					markerspush.height=20,
+					_this.markers.splice(_this.markers.length,0,markerspush)
+					_this.markers = [..._this.markers]
+					_this.markerspoplist.splice(_this.markerspoplist.length,0,_this.markerspoplist[i])
+					_this.markerspoplist = [..._this.markerspoplist]
+					// _this.markers.push(markerspush),
+					// _this.markerspoplist.push(_this.markerspoplist[i])
+				}
+				console.log(_this.markers.length);
+				_this.$forceUpdate();
+				
+			
+			},
+			//电话图标方法
+			makePhoneCall() {
+				uni.makePhoneCall({
+					phoneNumber: this.markerspoplist[this.makersindex].phone
+				})
+			},
+			//放回上一页方法
+			back(){
+				uni.navigateBack({
+				   
+				})
+			},
+			//视野变化时触发
+			regionchange(e){
+				let _this = this
+				// this.scale = this.fenbumap.getScale()
+				_this.fenbumap.getScale({
+					success:(e)=>{
+						// console.log(e.scale);
+						_this.scale = Math.round(e.scale) 
+						}
+					},
+					{
+						fail:(e)=>{
+							console.log(e);
+						}
+					}
+				);
+			},
+			//控件点击方法
+			controltap(e) {
+				//点击添加标记点测试(先有安卓机最大6500个标记点，超出无法显示程序未响应)
+				// this.markerspush2()
+				// console.log(e.detail.controlId);
+				const controlId = e.detail.controlId
+				if(controlId == 1){
+					this.scale = (this.scale == 18)?this.scale:this.scale + 1;//三目运算累加
+					// console.log(this.scale);
+				}else{
+					this.scale = (this.scale == 5)?this.scale:this.scale - 1;//三目运算累减
+					// console.log(this.scale);
+				}
+			},
+			//点击标记点显示底部内容框
+			markertap(e) {
+				//如果点击的是同一个标记点则顶部弹出层隐藏
+				if(this.mapview && this.makersindex == e.detail.markerId - 1) {
+					this.mapview = false
+					return
+				}
+				// console.log(e);
+				this.makersindex =  e.detail.markerId - 1
+			
+				this.mapview = true 
+					// const markerId = e.detail.markerId
+				
+			},	
+			//地图导航方法
+			mapnavigation() {
+				let _this = this
+				uni.getLocation({
+				    type: 'gcj02', //返回可以用于uni.openLocation的经纬度
+					geocode: true,
+				    success: function (res) {
+				        const latitude = res.latitude;
+				        const longitude = res.longitude;
+					// 	const address = res.address;
+					// console.log('详细地址123：' + address.name);
+				        uni.openLocation({
+				            latitude: latitude+0.0094,
+				            longitude: longitude+0.0084,
+							name:"青春大药房",
+							address:"清镇市新店镇街上",
+				            success: function (res) {
+				                console.log('success');
+								 console.log('详细地址：' + res.address);
+				            }
+				        });
+				    }
+				});
+			},
+		}
+	}
+</script>
+
+<style>
+	.container {
+		width: 750rpx;
+		overflow:hidden;
+		text-overflow:ellipsis;
+		/* white-space:nowrap; */
+	}
+	.content {
+		width: 750rpx;
+		height: 130px;
+		position: absolute !important;
+		bottom: 0px ;
+		z-index: 9999 !important;
+		background-color: #FFFFFF;
+	}
+	.scrollitem {
+		width: 750rpx; 
+		flex: 1;
+		justify-content: center;
+		background-color: #FFFFFF;
+		border-bottom-width:1px;
+		border-bottom-style:solid;
+		border-bottom-color:#EEEEEE;	
+	}
+	.scrolltime {
+		width: 700rpx;
+		height: 30px;
+		line-height: 30px;
+		padding-left: 10px;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+	}
+	.scrolltitle {
+		width: 600rpx;
+		height: 20px;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		color: #00AA00;
+	}
+	.scrollstore {
+		width: 700rpx;
+		height: 10px;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+	}
+	.scrollperson {
+		width: 700rpx;
+		height: 10px;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+	}
+	.scrollnavigation {
+		width: 400rpx;
+		height: 20px;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		background-color: #00DC00;
+		margin-left: 175rpx;
+		text-align: center;
+		border-radius: 30px;
+	}
+	.text {
+		color: #333333;
+		font-size: 15px;
+	}
+	.text2 {
+		color: #FFFFFF;
+	}
+</style>

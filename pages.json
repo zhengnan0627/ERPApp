@@ -1,0 +1,372 @@
+{
+	"easycom": { //配置uview
+			"^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue"
+	},
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path" : "pages/login/loginpages",
+			"style" : {
+				"app-plus":{
+					"bounce":"vertical"
+				}
+			}
+		}
+		,{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "主页",
+				"app-plus":{
+					"scrollIndicator":"none" //当前页面不显示滚动条
+				}
+			}
+		},
+		{
+			"path": "pages/order/order",
+			"style": {
+				"navigationBarTitleText": "代客下单",
+				"app-plus":{
+					"scrollIndicator":"none" //当前页面不显示滚动条
+				}
+			}
+		},{
+			"path": "pages/cart/cart",
+			"style": {
+				"navigationBarTitleText": "购物车",
+				"app-plus":{
+					"scrollIndicator":"none" //当前页面不显示滚动条
+				}
+			}
+		},
+		{
+			"path": "pages/mine/mine",
+			"style": {
+				"navigationBarTitleText": "个人中心",
+				"app-plus":{
+					"scrollIndicator":"none" //当前页面不显示滚动条
+				}
+			}
+		},
+		{
+			"path": "pages/index/item/perf",
+			"style": {
+				"navigationBarTitleText": "个人业绩",
+				"app-plus":{
+					"scrollIndicator":"none" //当前页面不显示滚动条
+				}
+			}
+		}
+	    ,{
+            "path" : "pages/index/item/sell",
+            "style" : {
+				"navigationBarTitleText": "销售速报",
+				"app-plus":{
+					"scrollIndicator":"none" //当前页面不显示滚动条
+				}
+			}
+        }
+        ,{
+            "path" : "pages/index/item/scheme",
+            "style" : {"app-plus":{
+					"scrollIndicator":"none" //当前页面不显示滚动条
+				}}
+        }
+        ,{
+            "path" : "pages/index/item/notice",
+            "style" : {"app-plus":{
+					"scrollIndicator":"none" //当前页面不显示滚动条
+				}}
+        }
+        ,{
+            "path" : "pages/index/item/directory",
+            "style" : {"app-plus":{
+					"scrollIndicator":"none" //当前页面不显示滚动条
+				}}
+        }
+        ,{
+            "path" : "pages/index/item/task",
+            "style" : {"app-plus":{
+					"scrollIndicator":"none" //当前页面不显示滚动条
+				}}
+        }
+        ,{
+            "path" : "pages/index/item/visitor",
+            "style" : {"app-plus":{
+					"scrollIndicator":"none" //当前页面不显示滚动条
+				}}
+        }
+        ,{
+            "path" : "pages/index/item/client",
+            "style" : {"app-plus":{
+					"scrollIndicator":"none" //当前页面不显示滚动条
+				}}
+        }
+        ,{
+            "path" : "pages/index/item/clerk",
+            "style" : {
+				"navigationBarTitleText": "代客下单",
+				"app-plus":{
+					"scrollIndicator":"none" //当前页面不显示滚动条
+				}}
+        }
+        ,{
+            "path" : "pages/index/item/check",
+            "style" : {"app-plus":{
+					"scrollIndicator":"none" //当前页面不显示滚动条
+				}}
+        }
+        ,{
+            "path" : "pages/index/item/goods",
+            "style" : {"app-plus":{
+					"scrollIndicator":"none" //当前页面不显示滚动条
+				}}
+        }
+        ,{
+            "path" : "pages/index/item/news",
+            "style" : {"app-plus":{
+					"scrollIndicator":"none" //当前页面不显示滚动条
+				}}
+        }
+        ,{
+            "path" : "pages/mine/item/integral",
+            "style" : {"app-plus":{
+					"scrollIndicator":"none" //当前页面不显示滚动条
+				}}
+        }
+        ,{
+            "path" : "pages/mine/item/earnings",
+            "style" : {"app-plus":{
+					"scrollIndicator":"none" //当前页面不显示滚动条
+				}}
+        }
+        ,{
+            "path" : "pages/mine/item/news",
+            "style" : {"app-plus":{
+					"scrollIndicator":"none" //当前页面不显示滚动条
+				}}
+        }
+        ,{
+            "path" : "pages/mine/item/order",
+            "style" : {"app-plus":{
+					"scrollIndicator":"none" //当前页面不显示滚动条
+				}}
+        }
+        ,{
+            "path" : "pages/mine/item/feedback",
+            "style" : {"app-plus":{
+					"scrollIndicator":"none" //当前页面不显示滚动条
+				}}
+        }
+        ,{
+            "path" : "pages/mine/item/password",
+            "style" : {"app-plus":{
+					"scrollIndicator":"none" //当前页面不显示滚动条
+				}}
+        }
+        ,{
+            "path" : "pages/index/item/seeclient",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/index/item/map",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/index/item/stockout",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/index/item/maps",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/index/item/taskdetail",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/index/item/deliverylistdetails",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/index/item/goodsitems",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/index/item/sellsubpage",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/index/item/checksubpage",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/index/item/visitorsubpage",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/index/item/mapcorrect",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/index/item/chooseLocation",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/login/login",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/login/password",
+            "style" : {
+            	"app-plus":{
+            		"bounce":"vertical"
+            	}
+            }
+        }
+        ,{
+            "path" : "pages/index/item/noticsubpages",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/index/item/visitorslog",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/index/item/kehufenbu",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/order/item/orderlist",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/order/item/sckehu",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/order/item/scshangpin",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/order/item/fphuiqian",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/order/item/fphuifang",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/order/item/chukudanhf",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/order/item/selectkehu",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/order/item/goodslist",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/order/item/goodsdetail",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/order/item/search",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/order/item/cart",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/order/item/cartselectkehu",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/order/item/submitOrder",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/order/item/address",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/order/item/news",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/order/item/orderdetail",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/index/item/kehufenbu",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/index/item/openaccount",
+            "style" : {
+				"app-plus":{
+					"bounce":"vertical"
+				}
+			}
+        }
+        ,{
+            "path" : "pages/index/item/openaccountjindu",
+            "style" : {}
+        }
+    ],
+	// "tabBar":{
+		
+	// 	"color":"#1a1a1a",
+	// 	"selectedColor":"#65fc00",
+	// 	"borderStyle": "black",
+	// 	"backgroundColor": "#ffffff",
+	// 	"fontSize": "14px",
+	// 	"iconWidth": "24px",
+	// 	"borderStyle":"white",
+	// 	"list":[
+	// 	{
+	// 		"pagePath":"pages/index/index",
+	// 		"iconPath": "static/image/home.png",
+	// 		"selectedIconPath":"static/image/homefill.png",
+	// 		"text":"主页"
+	// 	},
+	// 	{
+	// 		"pagePath":"pages/order/order",
+	// 		"iconPath": "static/image/order.png",
+	// 		"selectedIconPath":"static/image/orderfill.png",
+	// 		"text":"代客下单"
+	// 	},
+	// 	{
+	// 		"pagePath":"pages/cart/cart",
+	// 		"iconPath": "static/image/phone.png",
+	// 		"selectedIconPath":"static/image/phonefill.png",
+	// 		"text":"购物车"
+	// 	},
+	// 	{
+	// 		"pagePath":"pages/mine/mine",
+	// 		"iconPath": "static/image/mine.png",
+	// 		"selectedIconPath":"static/image/minefill.png",
+	// 		"text":"个人中心"
+	// 	}]
+	// },
+	"globalStyle": {
+		// "navigationStyle":"custom",
+		"scrollIndicator":"none", // 不显示滚动条  
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8",
+		"app-plus": {
+			
+			//app页面不显示滚动条
+			"scrollIndicator": "none",
+			"titleNView": false,
+			"softinput" : {
+		            "mode" : "adjustPan"
+				},
+			"bounce":"none"	
+		  }
+
+	}
+}

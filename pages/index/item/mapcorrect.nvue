@@ -1,0 +1,100 @@
+<template>
+	<view class="container">
+		<uni-nav-bar left-icon="back"  title="地图纠正" @clickLeft="back" style="z-index:999" ></uni-nav-bar>
+		<map :latitude="latitude" :longitude="longitude"
+			 :markers="markers"	scale="14"
+			 @markertap="markertap"
+			 style="width: 750rpx; height:1100rpx;" 
+		></map>
+		<view class="basis-df" style="width: 100vw; height: 30px; line-height: 30px;
+		 position: fixed; bottom: 0; height: 30px; background-color: #007AFF;">
+			{{mapcorrect}}
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				mapcorrect:0
+			}
+		},
+		onShow () {
+			console.log("eee");
+			uni.getLocation({
+			    type: 'gcj02', //返回可以用于uni.openLocation的经纬度
+			    success: function (res) {
+			        const latitude = res.latitude;
+			        const longitude = res.longitude;
+					this.mapcorrect = latitude;
+					uni.chooseLocation({
+					    success: function (res) {
+					        console.log('位置名称：' + res.name);
+					        console.log('详细地址：' + res.address);
+					        console.log('纬度：' + res.latitude);
+					        console.log('经度：' + res.longitude);
+					    }
+					});
+			        // uni.openLocation({
+			        //     latitude: latitude,
+			        //     longitude: longitude,
+			        //     success: function () {
+			        //         console.log('success');
+			        //     }
+			        // });
+			    }
+			});
+			// uni.getLocation({
+			//     success: function (res) {
+			// 		console.log("aqwewq");
+			//         console.log('当前位置的经度：' + res.longitude);
+			//         console.log('当前位置的纬度：' + res.latitude);
+			//     },
+			// 	fail:function(e){
+			// 		console.log("eee");
+			// 	}
+			// });
+			// uni.getLocation({
+			// 				success:(res)=> {
+			// 					uni.request({
+			// 						url:"https://restapi.amap.com/v3/geocode/regeo?parameters",
+			// 						method:'GET',
+			// 						data:{
+			// 							key:'key',
+			// 							location:`${res.longitude}, ${res.latitude}`
+			// 						},
+			// 						success:(data)=> {
+			// 							console.log(data.data)		// 注意就是data.data！！！
+			// 						},
+			// 						fail(err) {
+			// 							console.log(err)
+			// 						}
+			// 					})
+			// 				},
+			// 				fail(err) {
+			// 					console.log('错误');
+			// 					console.log(err);
+			// 				},
+			// 				complete() {
+			// 					console.log('完毕')
+			// 				}
+			// 			})
+		},
+		methods: {
+			back(){
+				uni.navigateBack({		   
+				})
+			},
+		}
+	}
+</script>
+
+<style>
+	.container {
+		width: 750rpx;
+		height: 1190rpx;
+		overflow:hidden;
+		text-overflow:ellipsis;
+	}
+</style>

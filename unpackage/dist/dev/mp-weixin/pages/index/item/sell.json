@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "销售速报",
+  "usingComponents": {
+    "uni-nav-bar": "/components/uni-nav-bar/uni-nav-bar",
+    "sun-tab": "/components/sun-tab/sun-tab"
+  }
+}

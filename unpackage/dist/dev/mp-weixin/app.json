@@ -1,0 +1,62 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/order/order",
+    "pages/cart/cart",
+    "pages/mine/mine",
+    "pages/index/item/perf",
+    "pages/index/item/sell",
+    "pages/index/item/map",
+    "pages/index/item/scheme",
+    "pages/index/item/notice",
+    "pages/index/item/directory",
+    "pages/index/item/task",
+    "pages/index/item/visitor",
+    "pages/index/item/client",
+    "pages/index/item/clerk",
+    "pages/index/item/check",
+    "pages/index/item/goods"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#1a1a1a",
+    "selectedColor": "#65fc00",
+    "borderStyle": "white",
+    "backgroundColor": "#ffffff",
+    "fontSize": "14px",
+    "iconWidth": "24px",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "static/image/home.png",
+        "selectedIconPath": "static/image/homefill.png",
+        "text": "主页"
+      },
+      {
+        "pagePath": "pages/order/order",
+        "iconPath": "static/image/order.png",
+        "selectedIconPath": "static/image/orderfill.png",
+        "text": "代客下单"
+      },
+      {
+        "pagePath": "pages/cart/cart",
+        "iconPath": "static/image/cart.png",
+        "selectedIconPath": "static/image/cartfill.png",
+        "text": "购物车"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "iconPath": "static/image/mine.png",
+        "selectedIconPath": "static/image/minefill.png",
+        "text": "个人中心"
+      }
+    ]
+  },
+  "usingComponents": {}
+}

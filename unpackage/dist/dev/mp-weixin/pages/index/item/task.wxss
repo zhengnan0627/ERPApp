@@ -1,0 +1,37 @@
+
+.container{
+	width: 100vw;
+	height: 100vh;
+	background-color: #EEEEEE;
+}
+.scroll-item {
+	width: 100vw;
+	padding-left: 20rpx;
+	padding-bottom: 20rpx;
+	margin-top: 10px;
+	background-color: #FFFFFF;
+	border-bottom: 2rpx solid #EEEEEE;
+}
+.scroll-time {
+	width: 100vw;
+	height: 30px;
+	line-height: 30px;
+	font-size: 18px;
+	color: #ff0000;
+	border-bottom: 1px solid #EEEEEE;
+}
+.scroll-item .scroll-title {
+	font-size: 34rpx;
+	margin: 3px 0;
+	color: #4CD964;
+}
+.scroll-item .scroll-store {
+	font-size: 40rpx;
+	font-weight: 500;
+	margin: 3px ;
+	color: #000000;
+}
+.scroll-item .scroll-person {
+	font-size: 30rpx;
+}
+

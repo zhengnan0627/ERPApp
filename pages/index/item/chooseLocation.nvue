@@ -1,0 +1,306 @@
+<template>
+	<view>
+		<!-- 标题栏 -->
+		<view class="tool-bar-fixed" ref="mapTop">
+			<view class="search_view">
+				<image class="search_icon" src="../../../static/image/back.png" @click="back"></image>
+				<view class="search_input">
+					地址纠正
+				</view>
+				<!-- <input class="" placeholder-class="search_inputp" placeholder="搜索您要修车的位置(可拖动地图进行调整)" :focus="showListView" @input="searchAddress" /> -->
+			</view>
+		</view>
+		<!-- 标题栏 -->
+		<map id="map" ref="map" @regionchange="regionchange" :markers="markers" :controls="controls" :longitude="location.longitude" :latitude="location.latitude"  :style="mapStyle">		
+		<!-- 地图中心点标记 -->
+		<image class="cover_marker" src="../../../static/image/chooselocation.png" :style="{'left':mapWAH.width/2-10+'px','top':mapWAH.height/2-30+'px'}"></image>
+		<!-- 定位控件 -->
+		<image class="do_get_location" src="../../../static/image/correct.png" @click="doCheckPermission"></image>
+		</map>
+		
+		<!-- 底部下单 -->
+		<view class="main_bottom" ref="mapBottom">
+			<view class="old_address">
+				<text class="add_text">原地址:清镇市新店镇街上</text>
+			</view>
+			<view class="choose_address">
+				<text class="add_text">当前地址:{{addressText}}</text>
+			</view>
+			<text class="uni-btn-v" @click="emitcorrect">选择这里</text>
+		</view>
+		<!-- 底部下单 -->
+		
+		<!-- 搜索出来的地址 -->
+		<view v-if="showListView" class="search_list_view">
+			<view v-for="(item,index) in addressList" :key="item.id" class="addres_item" @click="chooseIs(index,item)">
+				<text class="text_name">{{item.name}}</text><br/>
+				<text class="text_address">{{item.district+item.address}}</text>
+				<image class="choose_icon" v-if="addressIndex===index" src="../../../static/image/correct.png"></image>
+			</view>
+		</view>
+		<!-- 搜索出来的地址 -->
+	</view>
+</template>
+
+<script>
+const dom = weex.requireModule('dom') 
+import permision from "@/common/permission.js"
+var mapContext=null;
+import { inputtips } from '@/api/api.js'//输入提示功能
+export default {
+	data() {
+		return {
+			iStatusBarHeight:0,
+			mapStyle:{'width':'393px','height':'530px'},
+			mapWAH:{width:0,height:0},
+			markers:[],
+			controls:[],
+			location:{},
+			addressText:"暂未定位成功，请稍候···",
+			addressList:[],
+			addressIndex:'',
+			addressItem:{},
+			showListView:false,
+			//存储选择的地址
+			chooselatitude:0,
+			chooselongitude:0
+		};
+	},
+	methods: {
+		//返回上一页方法
+		back(){
+			uni.navigateBack({		   
+			})
+		},
+		//点击确定跳出页面并发送坐标方法
+		emitcorrect: function(){
+					
+			let pages = getCurrentPages();             //获取所有页面栈实例列表
+			let nowPage = pages[ pages.length - 1];    //当前页页面实例
+			let prevPage = pages[ pages.length - 2 ];  //上一页页面实例
+			prevPage.$vm.chooselocation.latitude = this.chooselatitude;         //修改上一页面的 couponNumber 参数值为 value
+			prevPage.$vm.chooselocation.longitude = this.chooselongitude;                  //修改上一页面的 couid 参数值为 vid
+			uni.navigateBack({                         //uni.navigateTo跳转的返回，默认1为返回上一级
+			
+			});
+			
+		},
+
+		// emitcorrect() {
+		// 	// const chooselocation = JSON.stringify(this.chooselocation)
+		// 	const chooselatitude = this.chooselatitude
+		// 	const chooselongitude = this.chooselongitude
+		// 	// console.log(chooselocation);
+		// 	// uni.redirectTo({
+		// 	// 	url:'taskdetail?chooselatitude='+chooselatitude+'&chooselongitude='+chooselongitude
+		// 	// })
+		// },
+		searchAddress(e){
+			inputtips({location:this.location.longitude+','+this.location.latitude,keywords:e.detail.value}).then(res=>{
+				this.addressList=res.data.tips
+				this.showListView=true
+			})
+		},
+		chooseIs(index,item){
+			this.addressIndex=index
+			this.addressItem=item
+			var that=this
+			uni.showLoading({
+				title:'请稍候···'
+			})
+			that.addressIndex=''
+			that.showListView=false
+			// 选择完成之后移动地图到指定位置
+			this.location={longitude:item.location.split(',')[0],latitude:item.location.split(',')[1]}
+			that.addressIndex=''
+			that.showListView=false
+		},
+		//移动地图获取中心点坐标
+		regionchange(e){
+			console.log(e.type)
+			var that=this
+			if(e.type=="end"){
+				mapContext.getCenterLocation({ 
+					success: res =>{ 
+						console.log(res)
+						that.chooselatitude = res.latitude
+						that.chooselongitude = res.longitude
+						console.log(that.chooselocation);
+						that.getAddressText(res)
+					}, 
+					fail: err => { 
+						console.log(err); 
+					},
+					complete:res=>{
+						console.log(res); 
+					}
+				})
+			}
+		},
+		getAddressText(point){
+			var that=this
+			uni.hideLoading()
+			plus.maps.Map.reverseGeocode(point,{},function(event){
+				that.addressText=event.address
+			})
+		},
+		async doCheckPermission() {
+			uni.showLoading({title:"定位中···"})
+		    let status = await this.checkPermission();
+		    if (status !== 1) {
+				uni.showToast({
+					title: "访问位置被拒绝"
+				})
+		        return;
+		    }
+		    this.doGetLocation();
+		}, 
+		doGetLocation() {
+			uni.getLocation(
+				{
+					type:'gcj02',
+					altitude:true,
+					geocode:true,
+					success: (res) => {
+						this.hasLocation = true;
+						this.location = res;
+						console.log(res)
+						this.getAddressText({latitude:res.latitude,longitude:res.longitude})
+						var marker={
+							latitude: res.latitude,
+							longitude: res.longitude,
+							iconPath: '../../../static/image/appmaps.png'
+						}
+						var markers=[]
+						markers.push(marker)
+						this.markers=markers
+					},
+					fail: (err) => {
+						console.log(err)
+					},
+					
+			})
+		},
+		async checkPermission() {
+			let status = permision.isIOS ? await permision.requestIOS('location') :
+				await permision.requestAndroid('android.permission.ACCESS_FINE_LOCATION');
+			if (status === null || status === 1) {
+				status = 1;
+			} else if (status === 2) {
+				uni.showModal({
+					content: "系统定位已关闭",
+					confirmText: "确定",
+					showCancel: false,
+					success: function(res) {
+					}
+				})
+			} else if (status.code) {
+				uni.showModal({
+					content: status.message
+				})
+			} else {
+				uni.showModal({
+					title:"尊敬的用户",
+					content: "使用本APP需要定位权限，才能正常使用！",
+					confirmText: "去设置",
+					success: function(res) {
+						if (res.confirm) {
+							permision.gotoAppSetting();
+						}else{
+							plus.runtime.quit();
+						}
+					}
+				})
+			}
+			return status;
+		},
+	},
+	onLoad(e) {
+		//监听页面初次渲染完成。注意如果渲染速度快，会在页面进入动画完成前触发
+		this.iStatusBarHeight = uni.getSystemInfoSync().statusBarHeight//标题栏顶部距离
+		this.doCheckPermission()//检查定位权限
+		mapContext=uni.createMapContext('map', this)
+	},
+	onShow() {
+		//监听页面显示。页面每次出现在屏幕上都触发，包括从下级页面点返回露出当前页面 
+	}, 
+	onReady() {
+		var that=this
+		var mapStyle=this.mapStyle
+		uni.getSystemInfo({
+		　　success: function(res) { // res - 各种参数
+				var winWidth=res.screenWidth
+				var winHeight=res.windowHeight
+				dom.getComponentRect(that.$refs.mapTop, option => {
+					var topHeight=option.size.height// 地图距顶部
+					dom.getComponentRect(that.$refs.mapBottom, option => {
+						var bottomHeight=option.size.height
+						var mapheight=(winHeight-topHeight-bottomHeight)
+						mapStyle.height=mapheight+'px'
+						mapStyle.width=winWidth+'px'
+						mapStyle['margin-top']=topHeight+'px'
+						that.mapStyle=mapStyle
+						that.mapWAH.height=mapheight
+						that.mapWAH.width=winWidth
+					})  
+				})  
+			}
+		});
+	},
+	onHide() {
+		//监听页面隐藏
+	},
+	onUnload() {
+		//监听页面卸载
+	},
+	onPullDownRefresh() {
+		//监听用户下拉动作，一般用于下拉刷新
+	},
+	onReachBottom() {
+		//页面上拉触底事件的处理函数，一般用于上滑加载
+	}
+	/*
+			onResize	监听窗口尺寸变化	
+			onTabItemTap	点击 tab 时触发，参数为Object
+			onShareAppMessage	用户点击右上角分享	
+			onPageScroll	监听页面滚动，参数为Object		
+			onNavigationBarButtonTap	监听原生标题栏按钮点击事件，参数为Object
+			onBackPress	监听页面返回，返回 event = {from:backbutton、 navigateBack} ，backbutton 表示来源是左上角返回按钮或 android 返回键；navigateBack表示来源是 uni.navigateBack 
+			onNavigationBarSearchInputChanged	监听原生标题栏搜索输入框输入内容变化事件
+			onNavigationBarSearchInputConfirmed	监听原生标题栏搜索输入框搜索事件，用户点击软键盘上的“搜索”按钮时触发。
+			onNavigationBarSearchInputClicked	监听原生标题栏搜索输入框点击事件
+			*/
+};
+</script>
+
+<style>
+/* 标题 */
+.tool-bar-fixed{background-color: #FFFFFF;position: fixed;top: 0;left: 0;right: 0;padding: 3px 0;}
+.search_view {flex-direction:row;background-color: #FFFFFF;border-radius: 10upx;}
+.search_input{height: 80upx;line-height: 80upx;flex: 1; font-size: 32upx;margin-left: -90px; justify-content: center; align-items: center;}
+/* .search_inputp{height: 80upx;line-height: 80upx;flex: 1;font-size: 14wx;} */
+.search_icon{width: 50upx;height: 50upx;margin: 15upx;}
+/* 搜索列表 */
+.search_list_view{position: fixed;top: 115upx;bottom: 0upx;left: 0upx;right: 0upx; background-color: #FFFFFF;padding-top: 35upx;}
+.addres_item{border-color: #00aa00;border-bottom-width: 1upx;padding: 10upx 40upx;}
+.text_name{font-size: 36upx;line-height: 50upx;}
+.text_address{font-size: 30upx;line-height: 40upx;}
+.choose_icon{position: absolute;top: 30upx;right: 30upx; width: 50upx;height: 50upx;}
+/* 中心点 */
+.cover_marker{position: absolute;width: 40px;height: 40px;}
+/* 定位 */
+.do_get_location{position: absolute;width: 40px;height:40px;right: 20px;bottom: 30px;}
+/* 底部下单 */
+.main_bottom{position: fixed;bottom: 0upx;left: 0upx;right: 0upx;background-color: #FFFFFF;height: 350upx;}
+.old_address{ margin: 20upx 40upx 10upx 40upx; border-style:solid;border-width:1upx;border-color:#00aa00;border-radius:5px;padding: 10upx;}
+.choose_address{ margin: 20upx 40upx 20upx 40upx; border-style:solid;border-width:1upx;border-color:#00aa00;border-radius:5px;padding: 10upx;}
+.add_text{font-size: 32upx;line-height: 55upx;}
+.uni-btn-v{position: absolute;left: 40upx;right: 40upx;bottom: 20upx;background-color: #00aa00;border-radius: 10upx;height: 80upx;line-height: 80upx;font-size: 34upx;color: #FFFFFF;text-align: center;}
+/* .repair_type{height: 80upx;display: flex;justify-content:center;}
+.repair_type_item{height: 80upx;line-height: 80upx;width: 200upx;font-size: 30upx;text-align: center;}
+.activity{color: #F98F34;}
+.choose_address{margin: 20upx 40upx 20upx 40upx;height: 80upx; width: calc(100% - 80upx); border-style:solid;border-width:1upx;border-color:#ff0000;border-radius:5px;}
+.add_icon{width: 40upx;height: 40upx;margin: 20upx;float: left;}
+.add_text{font-size: 32upx;line-height: 80upx;float: left;width: calc(100% - 80upx);}
+.uni-btn-v{margin:20upx 40upx 20upx 40upx;background-color: #F98F34;border-radius: 10upx;height: 80upx;line-height: 80upx;font-size: 34upx;color: #FFFFFF;text-align: center;}*/
+</style>

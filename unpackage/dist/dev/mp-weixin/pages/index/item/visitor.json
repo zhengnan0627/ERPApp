@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "uni-nav-bar": "/components/uni-nav-bar/uni-nav-bar",
+    "uni-calendar": "/components/uni-calendar/uni-calendar",
+    "uni-icons": "/components/uni-icons/uni-icons"
+  }
+}

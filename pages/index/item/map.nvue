@@ -1,0 +1,554 @@
+<template>
+	<view class="container" :style="{height:screenHeight+'px'}">
+		<uni-nav-bar left-icon="back"  title="客户分布" @clickLeft="back" style="z-index:999" ></uni-nav-bar>
+		<view class="tabcontrol">
+			<view v-for="(item,index) in titles"
+			         class="tabcontrolitem"
+			         @click="itemclick(index)">
+			    <view class="tabcontrolitem2" :class="{active:index === currentIndex}">{{item}}</view>
+			</view>
+		</view>
+		<map :latitude="latitude" :longitude="longitude" 
+			 :markers="markers"	scale="14"
+			 @markertap="markertap"
+			 style="width: 750rpx;"
+			 :style="{height:windowHeight+'px'}" 
+		></map>	
+	 
+		
+		<view class="content"  v-if="mapview">
+			<view class="scrollitem">
+				<!-- <view class="scrolltime">
+						<text class="text" >初次拜访</text>
+						<text class="text" style="color: #ff0000;">
+							18:15
+						</text>
+				</view> -->
+				<view class="scrolltime">
+						<text class="text" style="font-size: 40rpx;">{{markerspoplist[makersindex].store}}</text>
+				</view>
+				<view class="scrolltime">
+					<view class="" style="display: flex; flex-direction: row;">
+						<text class="text">{{markerspoplist[makersindex].person}}</text>
+						<text class="text">{{markerspoplist[makersindex].phone}}</text>
+					</view>
+					<uni-icons type="phone" size="30" @click="makePhoneCall" color="#3cff06"></uni-icons>
+				</view>
+				<view class="scrolltime">
+						<text class="text">{{markerspoplist[makersindex].address}}</text>
+				</view>
+				<view class="scrollnavigation" @click="mapnavigation">
+						<text class="text2">前往导航</text>
+				</view>
+			</view>
+		</view>
+
+		
+	</view>
+</template>
+
+<script>	export default {		data() {			return {
+				//屏幕高度
+				screenHeight:0,
+				//可使用屏幕高度
+				windowHeight:0,
+				mapview:false,
+				//自定义tabbar列表
+				titles:['未完成','已完成','已取消'],
+				currentIndex:0,
+				//地图组件相应数据				title:"map",				latitude: 39.909,				longitude: 116.39742,
+				label2:"1",
+				//标记点点击弹出层数据
+				markerspoplist:[
+					{"store":"东莞市寮步前方药店","person":"张三","phone":"138503721923","address":"广东省东莞市寮步镇向西村",},
+					{"store":"贵安新区安康药店","person":"王萍","phone":"13338410321","address":"贵安新区人民路23号",},
+					{"store":"郑东新区人民药店","person":"李磊","phone":"13451232123","address":"郑东新区医学院路56号",},
+				],
+				makersindex:0,//标记点下标				markers:[					    {						id:1,						latitude: 39.909,						longitude: 116.39742,
+						
+						// #ifndef APP-PLUS
+						 iconPath:'../../../static/image/map.png',
+						 width:30,
+						 height:30,
+						// #endif
+						// #ifdef APP-PLUS
+						 iconPath:'../../../static/image/appmap.png',
+						// #endif								label:{
+							content:'1',
+							},						callout:{							content:"公司\n公司名称1",							bgColor:"#ffffff"							},						}, {						id:2,						latitude: 39.922,						longitude: 116.40015,
+						// #ifndef APP-PLUS
+						 iconPath:'../../../static/image/map.png',
+						 width:30,
+						 height:30,
+						// #endif						// #ifdef APP-PLUS
+						 iconPath:'../../../static/image/appmap.png',
+						// #endif						label:{
+							content:'2',
+							// x:30,
+							// y:-30
+							},						callout:{							content:"公司\n公司名称2",							bgColor:"#ffffff"							}							}, {						id:3,						latitude: 39.920,						longitude: 116.39300,
+						// #ifndef APP-PLUS
+						 iconPath:'../../../static/image/map.png',
+						 width:30,
+						 height:30,
+						// #endif						// #ifdef APP-PLUS
+						 iconPath:'../../../static/image/appmap.png',
+						// #endif 						label:{
+							content:'3',
+							// x:30,
+							// y:-30
+							},						callout:{							content:"公司\n公司名称3",							bgColor:"#ffffff"							}										}],			}		},		onLoad:function(){
+			let _this = this
+			
+			// let height = plus.navigator.getStatusbarHeight()
+			// _this.markers[1].label.content = '12324' 视图数据可更新
+			//定义设备高度
+			uni.getSystemInfo({
+			    success: function (res) {
+					console.log(res.windowHeight);
+					console.log(res.screenHeight);
+					console.log(res.statusBarHeight);
+					_this.windowHeight = res.windowHeight		
+					// _this.screenHeight = res.screenHeight - res.statusBarHeight
+					_this.screenHeight = res.screenHeight - plus.navigator.getStatusbarHeight()
+					 // _this.markers[1].label.content = '452'视图数据可更新
+			    }
+			});
+			//#ifdef APP-PLUS-NVUE
+			//#endif
+			
+			//地图坐标点距离计算
+			uni.getLocation({
+				 type: 'gcj02',
+				 success:res => {
+				     const latitude = res.latitude;
+				     const longitude = res.longitude;		 
+					 var  point1 = new plus.maps.Point(latitude,longitude);
+					 // _this.markers[2].label.content = '452'视图数据不更新
+					 // _this.$forceUpdate() 强制刷新
+					 // console.log(_this.markers[1].label.content);
+					 for (let item in _this.markers) {
+						 // console.log(item);
+					 	var point2 = new plus.maps.Point(_this.markers[item].latitude,_this.markers[item].longitude)
+						plus.maps.Map.calculateDistance(point1,point2,event =>{
+								var distance = event.distance;  // 转换后的距离值
+								// console.log("转换后的距离值Distance:"+distance);
+								// console.log(_this.markers[item].label.content);
+								// _this.markers[2].label.content = '452'视图数据不更新
+								// console.log(_this.markers[item].label.content);
+							},function(e){
+								console.log("Failed:"+JSON.stringify(e));
+								// alert("Failed:"+JSON.stringify(e));
+							});
+						}
+						// this.$forceUpdate();
+					 }
+					 // console.log('自身位置坐标为：' + latitude+'longitude:'+longitude);
+					 // var point2 = new plus.maps.Point(120.340788,49.973319)
+					 // plus.maps.Map.calculateDistance(point1,point2,function(event){
+					 // 		var distance = event.distance;  // 转换后的距离值
+						// 	console.log("Distance:"+distance);
+					 // 		// alert("Distance:"+distance);
+					 // 	},function(e){
+						// 	console.log("Failed:"+JSON.stringify(e));
+					 // 		// alert("Failed:"+JSON.stringify(e));
+					 // 	});
+					 
+					 // }
+					
+			})
+				 
+		
+		},
+		methods: {
+			//自定义tabbar方法
+			 // itemclick(index){
+			 //        this.currentIndex = index
+			 // },
+			//电话图标方法
+			makePhoneCall() {
+				uni.makePhoneCall({
+					phoneNumber: '1345576897'
+				})
+			},
+			//放回上一页方法			back(){				uni.navigateBack({				   				})			},
+			//点击标记点显示底部内容框
+			markertap(e) {
+				//如果点击的是同一个标记点则顶部弹出层隐藏
+				if(this.mapview && this.makersindex == e.detail.markerId - 1) {
+					this.mapview = false
+					return
+				}
+				// console.log(e);
+				this.makersindex =  e.detail.markerId - 1
+			
+				this.mapview = true 
+					// const markerId = e.detail.markerId
+				
+			},
+			//点击标记点显示底部内容框
+			// markertap(e) {
+			// 	const markerId = null
+			// 	console.log(e);
+			// 	this.makersindex =  e.detail.markerId - 1
+			// 	if (markerId != e.detail.markerId) {
+			// 		this.mapview = true 
+			// 		// const markerId = e.detail.markerId
+			// 	}
+				
+				
+			// 	// console.log(this.markers[0]);
+			// 	// console.log(this.markers[1]);
+			// 	// console.log(this.markers[2]);
+			// 	//地图坐标点距离计算
+			// 	// #ifdef APP-PLUS
+			// 	let _this = this
+			// 	let item = e.detail.markerId - 1
+			// 	uni.getLocation({
+			// 		 type: 'gcj02',
+			// 		 success: function (res) {
+			// 		     const latitude = res.latitude;
+			// 		     const longitude = res.longitude;	
+			// 			 var point1 = new plus.maps.Point(latitude,longitude);
+			// 			 var point2 = new plus.maps.Point(_this.markers[item].latitude,_this.markers[item].longitude)
+			// 			console.log(point1,point2);
+			// 			 // console.log('自身位置坐标为：' + latitude+'longitude:'+longitude);
+			// 			 // var point2 = new plus.maps.Point(120.340788,49.973319)
+			// 			 plus.maps.Map.calculateDistance(point1,point2,function(event){
+			// 			 		var distance = event.distance;  // 转换后的距离值
+			// 					console.log("Distance:"+distance);
+			// 			 		// alert("Distance:"+distance);
+			// 			 	},function(e){
+			// 					console.log("Failed:"+JSON.stringify(e));
+			// 			 		// alert("Failed:"+JSON.stringify(e));
+			// 			 	});
+			// 			 }
+			// 	})
+				
+			// 	// #endif
+				
+			// },
+			//地图导航方法
+			mapnavigation() {
+				let _this = this
+				uni.getLocation({
+				    type: 'gcj02', //返回可以用于uni.openLocation的经纬度
+					geocode: true,
+				    success: function (res) {
+				        const latitude = res.latitude;
+				        const longitude = res.longitude;		
+					// 	const address = res.address;
+					// console.log('详细地址123：' + address.name);
+				        uni.openLocation({
+				            latitude: latitude+0.0094,
+				            longitude: longitude+0.0084,
+							name:"青春大药房",
+							// address:_this.address,
+							address:"清镇市新店镇街上",
+							
+				            success: function (res) {
+				                console.log('success');
+								 console.log('详细地址：' + res.address);
+				            }
+				        });
+				    }
+				});
+			},
+			//tabbar切换地图标记点方法
+			itemclick(index) {
+				let _this = this
+				_this.currentIndex = index
+				const value = index+1
+				// console.log(value)
+				// console.log(this.markers)
+				switch (value) {
+					case 2:
+					_this.markers = [{						id:1,						latitude: 39.919,						longitude: 116.39742,
+						
+						// #ifndef APP-PLUS
+						 iconPath:'../../../static/image/map2.png',
+						 width:30,
+						 height:30,
+						// #endif
+						// #ifdef APP-PLUS
+						 iconPath:'../../../static/image/appmap2.png',
+						// #endif								// label:{
+						// 	// content:this.label2,
+						// 	// y:-160,
+						// 	// x:60
+						// },						callout:{							content:"公司\n公司名称1",							bgColor:"#ffffff"						},						}, {						id:2,						latitude: 39.902,						longitude: 116.40020,
+						// #ifndef APP-PLUS
+						 iconPath:'../../../static/image/map2.png',
+						 width:30,
+						 height:30,
+						// #endif						// #ifdef APP-PLUS
+						 iconPath:'../../../static/image/appmap2.png',
+						// #endif
+												// label:{
+						// 	// content:this.label2,
+						// 	// y:-160,
+						// 	// x:60
+						// },						callout:{							content:"公司\n公司名称2",							bgColor:"#ffffff"						}							}, {						id:3,						latitude: 39.914,						longitude: 116.39300,
+						// #ifndef APP-PLUS
+						 iconPath:'../../../static/image/map2.png',
+						 width:30,
+						 height:30,
+						// #endif						// #ifdef APP-PLUS
+						 iconPath:'../../../static/image/appmap2.png',
+						// #endif 
+												// label:{
+						// 	// content:this.label2,
+						// 	// y:-160,
+						// 	// x:60
+						// 	// bgColor:red
+						// },						callout:{							content:"公司\n公司名称3",							bgColor:"#ffffff"						}														}];
+					break;
+					case 1:
+					this.markers = [{
+						id:1,
+						latitude: 39.909,
+						longitude: 116.39742,
+						
+						// #ifndef APP-PLUS
+						 iconPath:'../../../static/image/map.png',
+						 width:30,
+						 height:30,
+						// #endif
+						// #ifdef APP-PLUS
+						 iconPath:'../../../static/image/appmap.png',
+						// #endif		
+						label:{
+							content:"1"
+						},
+						callout:{
+							content:"公司\n公司名称1",
+							bgColor:"#ffffff"
+						},
+						}, {
+						id:2,
+						latitude: 39.922,
+						longitude: 116.40015,
+						// #ifndef APP-PLUS
+						 iconPath:'../../../static/image/map.png',
+						 width:30,
+						 height:30,
+						// #endif
+						// #ifdef APP-PLUS
+						 iconPath:'../../../static/image/appmap.png',
+						// #endif
+						
+						label:{
+							content:"2"
+						},
+						callout:{
+							content:"公司\n公司名称2",
+							bgColor:"#ffffff"
+						}	
+						}, {
+						id:3,
+						latitude: 39.920,
+						longitude: 116.39300,
+						// #ifndef APP-PLUS
+						 iconPath:'../../../static/image/map.png',
+						 width:30,
+						 height:30,
+						// #endif
+						// #ifdef APP-PLUS
+						 iconPath:'../../../static/image/appmap.png',
+						// #endif 
+						
+						label:{
+							content:"3"
+						},
+						callout:{
+							content:"公司\n公司名称3",
+							bgColor:"#ffffff"
+						}
+								
+						
+					}];
+					break;
+					case 3:
+					this.markers = [{
+						id:1,
+						latitude: 39.900,
+						longitude: 116.39742,
+						
+						// #ifndef APP-PLUS
+						 iconPath:'../../../static/image/map3.png',
+						 width:30,
+						 height:30,
+						// #endif
+						// #ifdef APP-PLUS
+						 iconPath:'../../../static/image/appmap3.png',
+						// #endif		
+						label:{
+							content:"1"
+						},
+						callout:{
+							content:"公司\n公司名称1",
+							bgColor:"#ffffff"
+						},
+						}, {
+						id:2,
+						latitude: 39.912,
+						longitude: 116.40035,
+						// #ifndef APP-PLUS
+						 iconPath:'../../../static/image/map3.png',
+						 width:30,
+						 height:30,
+						// #endif
+						// #ifdef APP-PLUS
+						 iconPath:'../../../static/image/appmap3.png',
+						// #endif
+						
+						label:{
+							content:"2"
+						},
+						callout:{
+							content:"公司\n公司名称2",
+							bgColor:"#ffffff"
+						}	
+						}, {
+						id:3,
+						latitude: 39.910,
+						longitude: 116.39350,
+						// #ifndef APP-PLUS
+						 iconPath:'../../../static/image/map3.png',
+						 width:30,
+						 height:30,
+						// #endif
+						// #ifdef APP-PLUS
+						 iconPath:'../../../static/image/appmap3.png',
+						// #endif 
+						
+						label:{
+							content:"3"
+						},
+						callout:{
+							content:"公司\n公司名称3",
+							bgColor:"#ffffff"
+						}
+								
+						
+					}];
+					break;
+				}
+			} 		}	}</script><style>
+	 .container {
+		width: 750rpx;
+		overflow:hidden;
+		text-overflow:ellipsis;
+		/* white-space:nowrap; */
+	}
+	 .tabcontrol{
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		height: 40px;	
+		line-height: 40px;
+		width: 750rpx;
+	    text-align: center;
+	    font-size: 13px;
+	    background-color: #fff;
+	    z-index: 9;
+	  }
+	  .tabcontrolitem{
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		width: 250rpx;
+		height: 40px;
+		line-height: 40px;
+	  }
+	  .tabcontrolitem2 {
+		  height: 40px;
+		  line-height: 40px;
+		  flex-direction: row;
+		  justify-content: center;
+		  align-items: center;
+	  }
+	  .active{
+	    color: #00aa00;
+		height: 34px !important;
+		margin-top: 3px;
+		line-height: 34px;
+		border-bottom-width: 3px ;
+		border-bottom-style: solid;
+		border-bottom-color: #00aa00;
+	  }
+	 /* .indexitem{
+	    border-bottom-width: 3px ;
+		border-bottom-style: solid;
+		border-bottom-color: #00aa00;
+	  } */
+	.content {
+		width: 750rpx;
+		height: 130px;
+		position: absolute !important;
+		bottom: 0px ;
+		z-index: 9999 !important;
+		background-color: #FFFFFF;
+	}
+	.scrollitem {
+		width: 750rpx;
+		flex: 1;
+		justify-content: center;
+		background-color: #FFFFFF;
+		border-bottom-width:1px;
+		border-bottom-style:solid;
+		border-bottom-color:#EEEEEE;	
+	}
+	.scrolltime {
+		width: 700rpx;
+		height: 30px;
+		line-height: 30px;
+		padding-left: 10px;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+/* 		border-bottom-width:1px;
+		border-bottom-style:solid;
+		border-bottom-color:#EEEEEE; */
+	}
+	.scrolltitle {
+		width: 600rpx;
+		height: 20px;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		color: #00AA00;
+	}
+	.scrollstore {
+		width: 700rpx;
+		height: 10px;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+	}
+	.scrollperson {
+		width: 700rpx;
+		height: 10px;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+	}
+	.scrollnavigation {
+		width: 400rpx;
+		height: 20px;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		background-color: #00DC00;
+		margin-left: 175rpx;
+		text-align: center;
+		border-radius: 30px;
+	}
+	.text {
+		color: #333333;
+		font-size: 15px;
+	}
+	.text2 {
+		color: #FFFFFF;
+	}
+</style>

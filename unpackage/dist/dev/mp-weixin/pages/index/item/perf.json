@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "个人业绩",
+  "usingComponents": {
+    "uni-nav-bar": "/components/uni-nav-bar/uni-nav-bar"
+  }
+}
