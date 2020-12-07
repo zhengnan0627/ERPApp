@@ -1,0 +1,1 @@
+<view class="container"><uni-nav-bar vue-id="26ac69ba-1" left-icon="back" title="消息中心" data-event-opts="{{[['^clickLeft',[['back']]]]}}" bind:clickLeft="__e" bind:__l="__l"></uni-nav-bar></view>

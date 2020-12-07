@@ -2,7 +2,7 @@
 	<view class="container">
 		<uni-nav-bar title="通讯录" fixed="true"></uni-nav-bar>
 		<!-- <uni-search-bar  radius="90" cancelButton="none" placeholder="请输入名字" /> -->
-		<view class="uni-searchbar">
+		<!-- <view class="uni-searchbar">
 			<view class="uni-searchbar__box" >
 				<view class="uni-searchbar__box2" @click="searchClick">
 					<uni-icons color="#999999" class="uni-searchbar__box-icon-search" size="18" type="search" />
@@ -19,17 +19,17 @@
 				</view>	
 			</view>
 			<text @click="cancel" class="uni-searchbar__cancel" v-if="show">搜索</text>
-		</view>
+		</view> -->
 		<uni-collapse  style="font-size: 30px; border-top: 1px solid #c3c3c3;">
 			<block v-for="(item,i) in addresslist">
-				<uni-collapse-item :title="item.title+'('+item.list.length+')'" :key="item.id"  class="collapse">
+				<uni-collapse-item :title="item.title+'('+item.list.length+')'" :key="i"  class="collapse">
 					 <view style="padding: 30rpx;" class="collapse-item" v-for="(list,index) in item.list"> 
 						 <view class="item-name">
 							{{list.name}}
 						 </view>
 						 <view class="item-phone" >
 							<text style="border-right: 1px solid #000000; padding-right: 5px;">{{list.phone}}&nbsp&nbsp&nbsp</text>
-							<uni-icons style="margin-left: 4px;" type="phone" size="23" color="#4CD964"  @click="makePhoneCall"></uni-icons>
+							<uni-icons style="margin-left: 4px;" type="phone" size="23" color="#4CD964"  @click="makePhoneCall(list)"></uni-icons>
 						 </view>
 					 </view>
 				</uni-collapse-item>
@@ -56,38 +56,63 @@
 				Resizecurrent:0,
 				placeholder: "请输入名字",
 				addresslist:[
-					{"id":"1", "title":"G5","open":"true","list":[
-						{"name":"廖胜","phone":"15948273975"},
-						{"name":"万红见","phone":"15948273975"},
-						{"name":"童晓波","phone":"15948273975"}
-						]
-					},
-					{"id":"2","title":"G2Y5T","open":"true","list":[
-						{"name":"廖胜","phone":"15948273975"},
-						
-						]
-					},{"id":"3", "title":"G1YS5T","open":"true","list":[
-						{"name":"廖胜","phone":"15948273975"},
-						{"name":"万红见","phone":"15948273975"},
-						{"name":"童晓波","phone":"15948273975"}
-						]
-					},
-					{"id":"4", "title":"G7Y2","open":"true","list":[
-						{"name":"廖胜","phone":"15948273975"},
-						{"name":"万红见","phone":"15948273975"},
-						{"name":"童晓波","phone":"15948273975"}
-						]
-					},
-					{"id":"5", "title":"G1Y4TZ","open":"true","list":[
-						{"name":"廖胜","phone":"15948273975"},
-						{"name":"万红见","phone":"15948273975"},
-						{"name":"童晓波","phone":"15948273975"}
-						]
-					},
-					
+					// {"id":"1", "title":"G5","open":"true","list":[
+					// 	{"name":"廖胜","phone":"15948273975"},
+					// 	{"name":"万红见","phone":"15948273975"},
+					// 	{"name":"童晓波","phone":"15948273975"}
+					// 	]
+					// }
 				]
 			} 
 		},
+		created() {
+			this.$request({
+				data:{
+					proc:'APP_YWY_PORT',
+					type:'通讯录',
+					userid:this.$userinfo.userid,
+				}
+			}).then(res => {
+				const resdata = res.Msg_info
+				console.log(resdata);
+				this.addresslist = []
+				let title = []
+				let namelist = []
+				let phonelist = []
+				title = resdata[0].g_names.split('+')
+				namelist = resdata[0].g_member_names.split('+')
+				phonelist = resdata[0].g_member_phones.split('+')
+				title.map((item,index) => {
+					let title = item
+					let pushnamelist = []
+					let pushphonelist = []
+					pushnamelist = namelist[index].split('_')
+					pushphonelist = phonelist[index].split('_')
+					let list = []
+					pushnamelist.map((aa,currdent) => {
+						let name = aa
+						let phone = pushphonelist[currdent]
+						list.push({
+							name,
+							phone
+						})
+					})
+					this.addresslist.push({
+						id:index,
+						title,
+						open:'true',
+						list
+					})
+				})
+				console.log(this.addresslist)
+			})
+		},
+		// {"id":"5", "title":"G1Y4TZ","open":"true","list":[
+		// 	{"name":"廖胜","phone":"15948273975"},
+		// 	{"name":"万红见","phone":"15948273975"},
+		// 	{"name":"童晓波","phone":"15948273975"}
+		// 	]
+		// },
 		//监听尺寸显隐底部tabbar
 		// onResize:function(){
 			
@@ -162,11 +187,10 @@
 			//#ifdef APP-PLUS
 			//#endif
 			//拨号方法
-			makePhoneCall() {
+			makePhoneCall(list) {
 				// console.log("makePhoneCall")
 				uni.makePhoneCall({
-					phoneNumber: '1345576897',
-				
+					phoneNumber: list.phone,
 				})
 			}
 		}
@@ -179,7 +203,8 @@
 	}
 	.container {
 		width: 100vw;
-	
+		/* height: calc(100vh - 100rpx); */
+		margin-bottom: 100rpx;
 		background-color: #FFFFFF;
 	}
 	

@@ -20,9 +20,23 @@
 		data() {
 			return {
 				newsList:[
-					{"state":"待支付","time":"2020-07-13 11:15","num":"159128371","store":"飞蛾村卫生室2","person":"张磊","phone":"13857261991","":"",}
+					{"state":"待支付","time":"2020-07-13 11:15","num":"159128371","store":"飞蛾村卫生室2","person":"张磊","phone":"13857261991",}
 				]
 			}
+		},
+		onLoad() {
+			this.$request({
+				data:{
+					proc:'APP_YWY_PORT',
+					type:'消息中心',
+					userid:this.$userinfo.userid,
+				}
+			}).then(res => {
+				const resdata = res.Msg_info
+				// this.noticeList = resdata
+				console.log(resdata);
+				this.newsList = resdata
+			})
 		},
 		methods: {
 			//返回方法

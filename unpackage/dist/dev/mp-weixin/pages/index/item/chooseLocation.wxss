@@ -1,0 +1,376 @@
+
+view,
+swiper-item,
+scroll-view {
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:flex;
+  -webkit-box-orient:vertical;
+  -webkit-box-direction:normal;
+  -webkit-flex-direction:column;
+          flex-direction:column;
+  -webkit-flex-shrink: 0;
+          flex-shrink: 0;
+  -webkit-box-flex: 0;
+  -webkit-flex-grow: 0;
+          flex-grow: 0;
+  -webkit-flex-basis: auto;
+          flex-basis: auto;
+  -webkit-box-align: stretch;
+  -webkit-align-items: stretch;
+          align-items: stretch;
+  -webkit-align-content: flex-start;
+          align-content: flex-start;
+}
+view,
+image,
+input,
+scroll-view,
+swiper,
+swiper-item,
+text,
+textarea,
+video {
+  position: relative;
+  border: 0px solid #000000;
+  box-sizing: border-box;
+}
+swiper-item {
+  position: absolute;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 标题 */
+.tool-bar-fixed{background-color: #FFFFFF;position: fixed;top: 0;left: 0;right: 0;padding: 3px 0;}
+.search_view {-webkit-box-orient:horizontal;-webkit-box-direction:normal;-webkit-flex-direction:row;flex-direction:row;background-color: #FFFFFF;border-radius: 10rpx;}
+.search_input{height: 80rpx;line-height: 80rpx;-webkit-box-flex: 1;-webkit-flex: 1;flex: 1; font-size: 32rpx;margin-left: -90px; -webkit-box-pack: center; -webkit-justify-content: center; justify-content: center; -webkit-box-align: center; -webkit-align-items: center; align-items: center;}
+/* .search_inputp{height: 80upx;line-height: 80upx;flex: 1;font-size: 14wx;} */
+.search_icon{width: 50rpx;height: 50rpx;margin: 15rpx;}
+/* 搜索列表 */
+.search_list_view{position: fixed;top: 115rpx;bottom: 0rpx;left: 0rpx;right: 0rpx; background-color: #FFFFFF;padding-top: 35rpx;}
+.addres_item{border-color: #00aa00;border-bottom-width: 1rpx;padding: 10rpx 40rpx;}
+.text_name{font-size: 36rpx;line-height: 50rpx;}
+.text_address{font-size: 30rpx;line-height: 40rpx;}
+.choose_icon{position: absolute;top: 30rpx;right: 30rpx; width: 50rpx;height: 50rpx;}
+/* 中心点 */
+.cover_marker{position: absolute;width: 40px;height: 40px;}
+/* 定位 */
+.do_get_location{position: absolute;width: 40px;height:40px;right: 20px;bottom: 30px;}
+/* 底部下单 */
+.main_bottom{position: fixed;bottom: 0rpx;left: 0rpx;right: 0rpx;background-color: #FFFFFF;height: 350rpx;}
+.old_address{ margin: 20rpx 40rpx 10rpx 40rpx; border-style:solid;border-width:1rpx;border-color:#00aa00;border-radius:5px;padding: 10rpx;}
+.choose_address{ margin: 20rpx 40rpx 20rpx 40rpx; border-style:solid;border-width:1rpx;border-color:#00aa00;border-radius:5px;padding: 10rpx;}
+.add_text{font-size: 32rpx;line-height: 55rpx;}
+.uni-btn-v{position: absolute;left: 40rpx;right: 40rpx;bottom: 20rpx;background-color: #00aa00;border-radius: 10rpx;height: 80rpx;line-height: 80rpx;font-size: 34rpx;color: #FFFFFF;text-align: center;}
+/* .repair_type{height: 80upx;display: flex;justify-content:center;}
+.repair_type_item{height: 80upx;line-height: 80upx;width: 200upx;font-size: 30upx;text-align: center;}
+.activity{color: #F98F34;}
+.choose_address{margin: 20upx 40upx 20upx 40upx;height: 80upx; width: calc(100% - 80upx); border-style:solid;border-width:1upx;border-color:#ff0000;border-radius:5px;}
+.add_icon{width: 40upx;height: 40upx;margin: 20upx;float: left;}
+.add_text{font-size: 32upx;line-height: 80upx;float: left;width: calc(100% - 80upx);}
+.uni-btn-v{margin:20upx 40upx 20upx 40upx;background-color: #F98F34;border-radius: 10upx;height: 80upx;line-height: 80upx;font-size: 34upx;color: #FFFFFF;text-align: center;}*/
+

@@ -1,4 +1,5 @@
 {
+  "navigationBarTitleText": "代客下单",
   "usingComponents": {
     "uni-nav-bar": "/components/uni-nav-bar/uni-nav-bar"
   }

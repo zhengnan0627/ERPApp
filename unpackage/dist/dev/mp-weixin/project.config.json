@@ -7,9 +7,9 @@
 		"urlCheck": false
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.9.2",
+	"libVersion": "",
 	"appid": "touristappid",
-	"projectname": "APPdemo",
+	"projectname": "东进e智联",
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
 	"condition": {

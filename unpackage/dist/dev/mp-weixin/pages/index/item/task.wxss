@@ -1,8 +1,15 @@
 
 .container{
 	width: 100vw;
-	height: 100vh;
 	background-color: #EEEEEE;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	white-space:nowrap;
+}
+.tabbar {
+	width: 100vw;
+	position: fixed;
+	z-index: 999;
 }
 .scroll-item {
 	width: 100vw;
@@ -13,25 +20,73 @@
 	border-bottom: 2rpx solid #EEEEEE;
 }
 .scroll-time {
-	width: 100vw;
-	height: 30px;
-	line-height: 30px;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-pack: justify;
+	-webkit-justify-content: space-between;
+	        justify-content: space-between;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	width: 95vw;
+	height: 40px;
+	line-height: 40px;
 	font-size: 18px;
 	color: #ff0000;
 	border-bottom: 1px solid #EEEEEE;
 }
-.scroll-item .scroll-title {
+.scroll-item .gotask {
+	width: 30vw;
+	height: 28px;
+	line-height: 28px;
+	text-align: center;
+	color:#FFFFFF;
+	background-color: #4CD964;
+	border-radius: 30px;
+}
+.scroll-item .scroll-name {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-pack: justify;
+	-webkit-justify-content: space-between;
+	        justify-content: space-between;
+	width: 95vw;
+	height: 30px;
+	line-height: 30px;
 	font-size: 34rpx;
 	margin: 3px 0;
 	color: #4CD964;
 }
 .scroll-item .scroll-store {
+	width: 95vw;
+	height: 30px;
+	line-height: 30px;
 	font-size: 40rpx;
 	font-weight: 500;
-	margin: 3px ;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-pack: justify;
+	-webkit-justify-content: space-between;
+	        justify-content: space-between;
+	margin: 3px 0;
 	color: #000000;
 }
 .scroll-item .scroll-person {
-	font-size: 30rpx;
+	width: 95vw;
+	height: 30px;
+	line-height: 30px;
+	font-size: 34rpx;
+	font-weight: 500;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-pack: justify;
+	-webkit-justify-content: space-between;
+	        justify-content: space-between;
+	margin: 3px 0;
+	color: #000000;
 }
 

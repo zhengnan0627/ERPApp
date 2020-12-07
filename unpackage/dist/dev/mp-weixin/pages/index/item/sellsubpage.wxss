@@ -1,0 +1,28 @@
+
+page {
+	background-color: #EEEEEE;
+}
+.container{
+	width: 100vw;
+	height: 100vh;
+	background-color: #FFFFFF;
+}
+.tabbar {
+		/* border-bottom: 1px solid #EEEEEE; */
+}
+.select-item {
+	height: 40px;
+	line-height: 40px;
+	margin: 0 10px;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	border-bottom: 1px solid #EEEEEE;
+	-webkit-box-pack: justify;
+	-webkit-justify-content: space-between;
+	        justify-content: space-between;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+}
+

@@ -1,50 +1,20 @@
 <template>
 	<view class="container">
 		<uni-nav-bar fixed="true" left-icon="back"  title="商品查询"  @clickLeft="back"></uni-nav-bar>
-		<view class="ser">
+	<!-- 	<view class="ser">
 			<uni-search-bar  placeholder="快速查询商品数据" @confirm="search"/>
-		</view>
+		</view> -->
 		<view class="icon-container">
-			<view class="icon-item" @click="navigator0">
-				<view class="icon-img">
-					<image src="../../../static/image/hot.png" mode=""></image>
+			<template v-for="(item,index) in zqList">
+				<view class="icon-item" @click="navigator(item,index)">
+					<view class="icon-img">
+						<image :src="item.hd_image" mode="aspectFit"></image>
+					</view>
+					<view class="icon-title">
+						{{item.hd_title}}
+					</view>
 				</view>
-				<view class="icon-title">
-					畅销排行
-				</view>
-			</view>
-			<view class="icon-item" @click="navigator1">
-				<view class="icon-img">
-					<image src="../../../static/image/time.png" mode=""></image>
-				</view>
-				<view class="icon-title">
-					效期品种
-				</view>
-			</view>
-			<view class="icon-item" @click="navigator2">
-				<view class="icon-img">
-					<image src="../../../static/image/new.png" mode=""></image>
-				</view>
-				<view class="icon-title">
-					新品速递
-				</view>
-			</view>
-			<view class="icon-item" @click="navigator3">
-				<view class="icon-img">
-					<image src="../../../static/image/dull.png" mode=""></image>
-				</view>
-				<view class="icon-title">
-					滞销查询
-				</view>
-			</view>
-			<view class="icon-item" @click="navigator4">
-				<view class="icon-img">
-					<image src="../../../static/image/more.png" mode=""></image>
-				</view>
-				<view class="icon-title">
-					商品列表
-				</view>
-			</view>
+			</template>
 		</view>
 	</view>
 </template>
@@ -53,8 +23,26 @@
 	export default {
 		data() {
 			return {
-				
+				zqList:[],
 			}
+		},
+		onLoad() {
+			this.$request({
+				data:{
+					proc:'APP_YWY_PORT',
+					type:'推荐活动',
+					userid:this.$userinfo.userid,
+				}
+			}).then(res => {
+				const resdata = res.Msg_info
+				console.log(resdata);
+				if(resdata[0].error){
+					this.zqList = []
+				}else{
+					this.zqList =resdata			
+				}
+				
+			})
 		},
 		methods: {
 			back(){
@@ -65,31 +53,12 @@
 			search() {
 				
 			},
-			navigator0() {
+			navigator(item,index) {
 				uni.navigateTo({
-					url:'goodsitems?id=0'
+					url:'goodsitems?id='+index
 				})
 			},
-			navigator1() {
-				uni.navigateTo({
-					url:'goodsitems?id=1'
-				})
-			},
-			navigator2() {
-				uni.navigateTo({
-					url:'goodsitems?id=2'
-				})
-			},
-			navigator3() {
-				uni.navigateTo({
-					url:'goodsitems?id=3'
-				})
-			},
-			navigator4() {
-				uni.navigateTo({
-					url:'goodsitems?id=4'
-				})
-			}
+
 		}
 	}
 </script>
@@ -122,7 +91,7 @@
 	.icon-item {
 		width: 25vw;
 		/* height: 88px; */
-		padding:4px 0;
+		padding:10px 0;
 		text-align: center;
 		/* background-color: #FFFFFF; */
 	}

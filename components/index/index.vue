@@ -15,7 +15,6 @@
 				
 			</view>
 			<!-- <uni-nav-bar  :title="'登录人'+navbarlist.name" fixed="true"> -->
-				
 				<!-- <view class="" slot="default" style="font-size: 18px; height: 44px;" >
 					<text></text>
 				</view> -->
@@ -44,7 +43,7 @@
 					<block v-for="(item,i) in swiperlist" :key="i">
 						<swiper-item >
 							<view class="swiper-item">
-								<image :src="item.swiperurl" mode=""></image>
+								<image :src="item.urls" mode=""></image>
 							</view>
 						</swiper-item>
 					</block>		
@@ -59,15 +58,12 @@
 						<view class="module-item">
 							<view hover-class="none" @click=jumphome(item,i)>
 								<image :src="item.imgurl" mode=""></image>
-								<!-- <uni-badge  :text="item.badge" type="error" size="small" class="badge"></uni-badge> -->
 								<u-badge v-if="item.badge != 0" :is-dot="true" size="mini" :offset="[20,30]"></u-badge>
 								<view class="item-title">
 									{{item.text}}
 								</view>
-							</view>
-							
-						</view>	
-						
+							</view>						
+						</view>
 					</block>
 				</view>
 			</view>
@@ -92,7 +88,6 @@
 				</view> 
 			</view>
 		 </view>
-	
 </template>
 
 <script>
@@ -109,33 +104,33 @@
 		},
 		data() {
 			return {
-				
+				userid:null,//用户id(从缓存中取)
 				//导航栏展示信息
 				navbarlist:{
 					"job":'业务员',
-					"name":"李伟(业务员)",
+					"name":"业务员",
 					address: '唐山市'
 				},
-				
 				//功能栏相关数据
 				gridlist:[
-					{"id":"1","imgurl":"../../static/image/gerenyeji.png","text":"个人业绩","url":"perf","badge":0},
-					{"id":"2","imgurl":"../../static/image/kehuminglu.png","text":"我的客户","url":"directory","badge":0},
-					{"id":"3","imgurl":"../../static/image/fangkejihua.png","text":"访客任务","url":"task","badge":0},
-					{"id":"4","imgurl":"../../static/image/kehufenbu.png","text":"客户分布","url":"kehufenbu","badge":0},
-					{"id":"9","imgurl":"../../static/image/xiaoshousubao.png","text":"公司业绩","url":"sell","badge":0},
-					{"id":"5","imgurl":"../../static/image/qiyegonggao.png","text":"企业公告","url":"notice","badge":3},
-					{"id":"6","imgurl":"../../static/image/yewuyuan.png","text":"业务员排行","url":"clerk","badge":0},
-					{"id":"7","imgurl":"../../static/image/zhangqichaxun.png","text":"账期查询","url":"check","badge":0},
-					{"id":"8","imgurl":"../../static/image/shangpinchaxun.png","text":"商品查询","url":"goods","badge":0},
-					{"id":"10","imgurl":"../../static/image/chuku.png","text":"出库单任务","url":"stockout","badge":5},
-					{"id":"11","imgurl":"../../static/image/openaccount.png","text":"客户开户","url":"openaccount","badge":0}
+					// {"id":"1","imgurl":"../../static/image/gerenyeji.png","text":"个人业绩","url":"perf","badge":0},
+					// {"id":"2","imgurl":"../../static/image/kehuminglu.png","text":"我的客户","url":"directory","badge":0},
+					// {"id":"3","imgurl":"../../static/image/fangkejihua.png","text":"访客任务","url":"task","badge":0},
+					// {"id":"4","imgurl":"../../static/image/kehufenbu.png","text":"客户分布","url":"kehufenbu","badge":0},
+					// {"id":"9","imgurl":"../../static/image/xiaoshousubao.png","text":"公司业绩","url":"sell","badge":0},
+					// {"id":"5","imgurl":"../../static/image/qiyegonggao.png","text":"企业公告","url":"notice","badge":0},
+					// {"id":"6","imgurl":"../../static/image/yewuyuan.png","text":"业务员排行","url":"clerk","badge":0},
+					// {"id":"7","imgurl":"../../static/image/zhangqichaxun.png","text":"账期查询","url":"check","badge":0},
+					// {"id":"8","imgurl":"../../static/image/shangpinchaxun.png","text":"商品查询","url":"goods","badge":0},
+					// {"id":"10","imgurl":"../../static/image/chuku.png","text":"送货任务","url":"stockout","badge":0},
+					// {"id":"11","imgurl":"../../static/image/openaccount.png","text":"客户开户","url":"openaccount","badge":0},
+					// {"id":"12","imgurl":"../../static/image/jiesuan.png","text":"结算任务","url":"jiesuan","badge":0}
 				],
 				//轮播图相关数据
 				swiperlist:[
-					{"id":"1", "swiperurl":"../../static/image/swiper4.jpg"},
-					{"id":"2","swiperurl":"../../static/image/swiper5.jpg"},
-					{"id":"3","swiperurl":"../../static/image/swiper6.jpg"},
+					// {"id":"1", "urls":"../../static/image/swiper4.jpg"},
+					// {"id":"2","urls":"../../static/image/swiper5.jpg"},
+					// {"id":"3","urls":"../../static/image/swiper6.jpg"},
 				],
 				//uchart相关数据
 				cWidth:'',
@@ -143,101 +138,188 @@
 				serverData:'',
 				pixelRatio:1,
 				chartData: {
-				  "categories": ["12-28", "12-29", "12-30"],
-				  "series": [{
-					"name": "销售额(万元)",
-					"data": [15, {"value": 20,"color":"" }, 44,],
-					// "color": "red"
-				  }, {
-					"name": "毛利额(万元)",
-					"data": [20, {"value": 4.7,"color":""}, 35, ],
-					// "color": "green"
-				  }, {
-					"name": "订单数量(万元)",
-					"data": [30, {"value": 40,"color": ""}, 25, ],
-					// "color": "yellow"
-				  }]
+				  "categories": [
+					  // "12-28", "12-29", "12-30",
+					  ],
+				  "series": [
+					//   {
+					// "name": "销售额(万元)",
+					// "data": [15, {"value": 20,"color":"" }, 44,],
+					// // "color": "red"
+				 //  }, {
+					// "name": "毛利额(万元)",
+					// "data": [20, {"value": 4.7,"color":""}, 35, ],
+					// // "color": "green"
+				 //  }, {
+					// "name": "订单数量(万元)",
+					// "data": [30, {"value": 40,"color": ""}, 25, ],
+					// // "color": "yellow"
+				 //  },
+				  ]
 				},
 				"chartData2": {
-				  "series": [{
-					"name": "抗感染药",
-					"data": 50
-				  }, {
-					"name": "散装普通中药饮片",
-					"data": 30
-				  }, {
-					"name": "肠胃道疾病药",
-					"data": 20
-				  }, {
-					"name": "滋补营养方",
-					"data": 18
-				  }, {
-					"name": "抗生素药",
-					"data": 8
-				  }]
+				  "series": [
+				 //  {
+					// "name": "抗感染药",
+					// "data": 50
+				 //  }, {
+					// "name": "散装普通中药饮片",
+					// "data": 30
+				 //  }, {
+					// "name": "肠胃道疾病药",
+					// "data": 20
+				 //  }, {
+					// "name": "滋补营养方",
+					// "data": 18
+				 //  }, {
+					// "name": "抗生素药",
+					// "data": 8
+				 //  },
+				]
 				}
 			}	
 		},
 		created:function(){
+			this.userid = uni.getStorageSync('userid')
+			
 			console.log('index:'+this.name);
+			this.$request({
+				data:{
+					proc:'APP_YWY_PORT',
+					type:'轮播',
+					userid:this.userid,
+				}
+			}).then(res => {
+				const resdata = res.Msg_info
+				this.swiperlist = resdata
+				console.log(resdata);
+			})
 			if(this.name == 0){
 				this.gridlist = [
 					{"id":"1","imgurl":"../../static/image/gerenyeji.png","text":"个人业绩","url":"perf","badge":0},
 					{"id":"2","imgurl":"../../static/image/kehuminglu.png","text":"我的客户","url":"directory","badge":0},
-					{"id":"3","imgurl":"../../static/image/fangkejihua.png","text":"访客任务","url":"task","badge":0},
 					{"id":"4","imgurl":"../../static/image/kehufenbu.png","text":"客户分布","url":"kehufenbu","badge":0},
-					{"id":"5","imgurl":"../../static/image/qiyegonggao.png","text":"企业公告","url":"notice","badge":3},
+					{"id":"5","imgurl":"../../static/image/qiyegonggao.png","text":"企业公告","url":"notice","badge":0},
 					{"id":"7","imgurl":"../../static/image/zhangqichaxun.png","text":"账期查询","url":"check","badge":0},
 					{"id":"8","imgurl":"../../static/image/shangpinchaxun.png","text":"商品查询","url":"goods","badge":0},
-					{"id":"11","imgurl":"../../static/image/openaccount.png","text":"客户开户","url":"openaccount","badge":0}
+					{"id":"11","imgurl":"../../static/image/openaccount.png","text":"客户开户","url":"openaccount","badge":0},
+					{"id":"12","imgurl":"../../static/image/spdengji.png","text":"商品登记","url":"spdengji","badge":0},
+					{"id":"13","imgurl":"../../static/image/jiagefankui.png","text":"价格反馈","url":"jiagefankui","badge":0}
 				]
 			}else if(this.name == 1){
-				this.navbarlist.name = '王磊(配送员)';
+				this.navbarlist.name = '配送员';
 				this.gridlist = [
 					{"id":"2","imgurl":"../../static/image/kehuminglu.png","text":"我的客户","url":"directory","badge":0},
 					{"id":"4","imgurl":"../../static/image/kehufenbu.png","text":"客户分布","url":"kehufenbu","badge":0},
-					{"id":"5","imgurl":"../../static/image/qiyegonggao.png","text":"企业公告","url":"notice","badge":3},
+					{"id":"5","imgurl":"../../static/image/qiyegonggao.png","text":"企业公告","url":"notice","badge":0},
 					{"id":"7","imgurl":"../../static/image/zhangqichaxun.png","text":"账期查询","url":"check","badge":0},
 					{"id":"8","imgurl":"../../static/image/shangpinchaxun.png","text":"商品查询","url":"goods","badge":0},
-					{"id":"10","imgurl":"../../static/image/chuku.png","text":"出库单任务","url":"stockout","badge":5}
+					{"id":"10","imgurl":"../../static/image/chuku.png","text":"送货任务","url":"stockout","badge":0},
+					{"id":"12","imgurl":"../../static/image/jiesuan.png","text":"结算任务","url":"jiesuan","badge":0}
 				]
 			}else {
-				this.navbarlist.name = '张鑫(管理员)';
+				this.navbarlist.name = '管理员';
 				this.gridlist = [
-					{"id":"1","imgurl":"../../static/image/gerenyeji.png","text":"个人业绩","url":"perf","badge":0},
-					{"id":"2","imgurl":"../../static/image/kehuminglu.png","text":"我的客户","url":"directory","badge":0},
-					{"id":"3","imgurl":"../../static/image/fangkejihua.png","text":"访客任务","url":"task","badge":0},
-					{"id":"4","imgurl":"../../static/image/kehufenbu.png","text":"客户分布","url":"kehufenbu","badge":0},
+					// {"id":"1","imgurl":"../../static/image/gerenyeji.png","text":"个人业绩","url":"perf","badge":0},
+					// {"id":"2","imgurl":"../../static/image/kehuminglu.png","text":"我的客户","url":"directory","badge":0},
+					// {"id":"3","imgurl":"../../static/image/fangkejihua.png","text":"访客任务","url":"task","badge":0},
 					{"id":"9","imgurl":"../../static/image/xiaoshousubao.png","text":"公司业绩","url":"sell","badge":0},
-					{"id":"5","imgurl":"../../static/image/qiyegonggao.png","text":"企业公告","url":"notice","badge":3},
-					{"id":"6","imgurl":"../../static/image/yewuyuan.png","text":"业务员排行","url":"clerk","badge":0},
-					{"id":"7","imgurl":"../../static/image/zhangqichaxun.png","text":"账期查询","url":"check","badge":0},
+					{"id":"4","imgurl":"../../static/image/kehufenbu.png","text":"客户分布","url":"kehufenbu","badge":0},
+					{"id":"5","imgurl":"../../static/image/qiyegonggao.png","text":"企业公告","url":"notice","badge":0},
+					// {"id":"6","imgurl":"../../static/image/yewuyuan.png","text":"业务员排行","url":"clerk","badge":0},
+					{"id":"7","imgurl":"../../static/image/zhangqichaxun.png","text":"应收管理","url":"check","badge":0},
 					{"id":"8","imgurl":"../../static/image/shangpinchaxun.png","text":"商品查询","url":"goods","badge":0},
-					{"id":"10","imgurl":"../../static/image/chuku.png","text":"出库单任务","url":"stockout","badge":5},
-					{"id":"11","imgurl":"../../static/image/openaccount.png","text":"客户开户","url":"openaccount","badge":0}
+					{"id":"3","imgurl":"../../static/image/fangkejihua.png","text":"拜访记录","url":"baifangjilu","badge":0},
+					{"id":"14","imgurl":"../../static/image/yuangongdingwei.png","text":"员工定位","url":"ygdingwei","badge":0}
 				]
 			}
 		},
 		mounted() {
 			//uchart相关加载方法
 			// console.log("eee");
+			this.$nextTick(function(){
+				this.navbarlist.name = this.$userinfo.userName
+			})
 			_self = this;
 			this.cWidth=uni.upx2px(750);
 			this.cHeight=uni.upx2px(500);
-			this.showColumn("canvasColumn",this.$data.chartData);
-			this.showPie("canvasPie",this.$data.chartData2);
+			if(this.name != 1){
+				this.$request({
+					data:{
+						proc:'APP_YWY_PORT',
+						type:'首页业绩报表',
+						userid:this.$userinfo.userid,
+						role:this.$userinfo.role,
+					}
+				}).then(res => {
+					const resdata = res.Msg_info
+					console.log(resdata);
+					if(resdata[0].error){
+						this.chartData.categories = []
+						this.chartData.series = []
+					}else{
+						this.chartData.categories = []
+						this.chartData.series = []
+						this.chartData.categories = resdata[0].dates.split('+')
+						// this.chartData.series[0].name = resdata[0].dates.split('+')
+						resdata.map(item => {
+							let name = item.item_name
+							let data = item.item_array.split('+').map(Number)
+							let color = item.item_color
+							this.chartData.series.push({
+								name,
+								data,
+								color
+							})
+						})
+						this.showColumn("canvasColumn",this.$data.chartData);
+					}
+				})
+				this.$request({
+					data:{
+						proc:'APP_YWY_PORT',
+						type:'销售类别分布',
+						userid:this.$userinfo.userid,
+						role:this.$userinfo.role,
+					}
+				}).then(res => {
+					const resdata = res.Msg_info
+					console.log(resdata);
+					if(resdata[0].error){
+						this.chartData2.series = []
+					}else{
+						let line = []
+						let linenum = []
+						this.chartData2.series = []
+						line = resdata[0].items.split('+')
+						linenum = resdata[0].percents.split('+').map(Number)
+						// console.log(linenum);
+						line.map((item,index) => {
+							let name = line[index]
+							let data = linenum[index] * 100 
+							this.chartData2.series.push({
+								name,
+								data:+data.toFixed(2)
+							})
+						})
+						this.showPie("canvasPie",this.$data.chartData2);
+					}
+				})
+				
+			}
+			
 			//导航显示当前地址信息
-			uni.getLocation({
-				type: 'gcj02',
-				geocode:true,
-				success: (res) => {
+			// uni.getLocation({
+			// 	type: 'gcj02',
+			// 	geocode:true,
+			// 	success: (res) => {
 					
-					const address = res.address.city || '唐山市'
-					_self.navbarlist.address = address
-					// console.log(res.address);
-					// console.log(address.city);
-				}
-			})
+			// 		const address = res.address.city || '唐山市'
+			// 		_self.navbarlist.address = address
+			// 		// console.log(res.address);
+			// 		// console.log(address.city);
+			// 	}
+			// })
 		},
 		methods: {
 			saoma() {
@@ -284,6 +366,13 @@
 					},
 					yAxis: {
 						//disabled:true
+						gridType:'dash',
+						gridColor:'#CCCCCC',
+						dashLength:8,
+						splitNumber:5,
+						// min:0.0,
+						// max:3.7,
+						format:(val)=>{return val.toFixed(1)+'万元'}
 					},
 					dataLabel: true,
 					width: _self.cWidth*_self.pixelRatio,
@@ -436,9 +525,6 @@
 	}
 	.module {
 		width: 100vw;
-
-	
-		/* background-color: #0086B3; */
 		border-top: 20rpx solid #eeeeee;
 	}
 	.module-title {

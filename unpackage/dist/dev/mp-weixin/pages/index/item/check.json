@@ -1,6 +1,9 @@
 {
   "usingComponents": {
     "uni-nav-bar": "/components/uni-nav-bar/uni-nav-bar",
-    "sun-tab": "/components/sun-tab/sun-tab"
+    "uni-search-bar": "/components/uni-search-bar/uni-search-bar",
+    "u-empty": "/uview-ui/components/u-empty/u-empty",
+    "u-back-top": "/uview-ui/components/u-back-top/u-back-top",
+    "u-loadmore": "/uview-ui/components/u-loadmore/u-loadmore"
   }
 }

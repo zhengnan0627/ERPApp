@@ -7,10 +7,10 @@
 				</view>
 				<view class="header-mine">
 					<view class="mine-name">
-						52号业务员
+						{{userName}}
 					</view>
 					<view class="mine-name">
-						13350001513
+						{{userDept}}
 					</view>
 					<view   style="text-align: right; width: 60vw; display: flex; flex-direction: row-reverse;">
 						<view class="mine-qiehuan" @click="changerole">
@@ -42,16 +42,14 @@
 					</view>
 				</view>
 			</navigator>
-			<navigator url="../../pages/mine/item/order" hover-class="none">
-				<view class="content-item" style="display: flex;">
-					<view class="icon-font">
-						<image src="../../static/image/dingdan.png" mode=""></image>
-					</view>
-					<view class="item-title">
-						我的订单
-					</view>
+			<view class="content-item" style="display: flex;" @click="ERPorderList">
+				<view class="icon-font">
+					<image src="../../static/image/dingdan.png" mode=""></image>
 				</view>
-			</navigator>
+				<view class="item-title">
+					我的订单
+				</view>
+			</view>	
 			<navigator url="../../pages/mine/item/news" hover-class="none">
 				<view class="content-item" style="display: flex;">
 					<view class="icon-font"> 
@@ -95,7 +93,7 @@
 				<view class="item-title">
 					版本信息
 					<view class="number" style="float: right; font-size: 26rpx; margin-right: 14rpx;">
-						1.0
+						{{version}}
 					</view>
 				</view>
 				
@@ -106,10 +104,29 @@
 
 <script>
 	export default {
+		data(){
+			return{
+				userName:'未登录',
+				userDept:'暂无部门信息',
+				version:'1.0.1'//版本号
+			}
+		},
+		created(){
+			//#ifdef APP-PLUS
+			this.version = plus.runtime.version  ? plus.runtime.version  : '1.0.1'
+			//#endif
+			this.userName = this.$userinfo.userName ? this.$userinfo.userName: '未登录'
+			this.userDept = this.$userinfo.userDept ? this.$userinfo.userDept: '暂无部门信息'
+		},
 		methods:{
 			changerole() {
 				uni.reLaunch({
 					url: '../../pages/login/loginpages'
+				})
+			},
+			ERPorderList(){
+				uni.navigateTo({
+					url:'../../pages/order/item/orderlist?pageindex=2&item={"order_type_id":"0","order_type_name":"待发货","count":"52"}&currentIndex=0'
 				})
 			}
 		}

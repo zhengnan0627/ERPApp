@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "uni-nav-bar": "/components/uni-nav-bar/uni-nav-bar",
+    "tui-list-cell": "/components/tui-list-cell/tui-list-cell",
+    "uni-combox": "/components/uni-combox/uni-combox",
+    "tui-button": "/components/tui-button/tui-button"
+  }
+}

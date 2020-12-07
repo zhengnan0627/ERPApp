@@ -21,7 +21,7 @@
 		<!-- 底部下单 -->
 		<view class="main_bottom" ref="mapBottom">
 			<view class="old_address">
-				<text class="add_text">原地址:清镇市新店镇街上</text>
+				<text class="add_text">原地址:{{kehuinfo.c_gs_address|| '无'}}</text>
 			</view>
 			<view class="choose_address">
 				<text class="add_text">当前地址:{{addressText}}</text>
@@ -50,6 +50,8 @@ import { inputtips } from '@/api/api.js'//输入提示功能
 export default {
 	data() {
 		return {
+			kehuinfo:{},//客户信息,从上级页面传进来
+			userid:null,//用户id(从缓存中取)
 			iStatusBarHeight:0,
 			mapStyle:{'width':'393px','height':'530px'},
 			mapWAH:{width:0,height:0},
@@ -73,13 +75,32 @@ export default {
 			})
 		},
 		//点击确定跳出页面并发送坐标方法
-		emitcorrect: function(){
+		emitcorrect:async  function(){
 					
-			let pages = getCurrentPages();             //获取所有页面栈实例列表
-			let nowPage = pages[ pages.length - 1];    //当前页页面实例
-			let prevPage = pages[ pages.length - 2 ];  //上一页页面实例
-			prevPage.$vm.chooselocation.latitude = this.chooselatitude;         //修改上一页面的 couponNumber 参数值为 value
-			prevPage.$vm.chooselocation.longitude = this.chooselongitude;                  //修改上一页面的 couid 参数值为 vid
+			
+	await this.Request({
+				data:{
+					proc:'APP_YWY_PORT',
+					type:'纠正坐标',
+					userid:this.userid,
+					c_id:this.kehuinfo.c_id,
+					c_jd:this.chooselongitude,
+					c_wd:this.chooselatitude
+				}
+			}).then(res => {
+				const resdata = res.Msg_info
+				console.log(resdata);
+				let pages = getCurrentPages();             //获取所有页面栈实例列表
+				let nowPage = pages[ pages.length - 1];    //当前页页面实例
+				let prevPage = pages[ pages.length - 2 ];  //上一页页面实例
+				prevPage.$vm.kehuinfo.c_wd = this.chooselatitude;         //修改上一页面的 couponNumber 参数值为 value
+				prevPage.$vm.kehuinfo.c_jd= this.chooselongitude;                  //修改上一页面的 couid 参数值为 vid
+				// prevPage.$vm.markers[0].longitude = this.chooselongitude
+				// prevPage.$vm.markers[0].latitude = this.chooselatitude
+				// prevPage.$vm.mapkey += 1
+				
+			})
+			uni.$emit('add')//目前仅向seeclient页面发送地址(add)变更事件，触发该页面更新地图
 			uni.navigateBack({                         //uni.navigateTo跳转的返回，默认1为返回上一级
 			
 			});
@@ -111,7 +132,10 @@ export default {
 			that.addressIndex=''
 			that.showListView=false
 			// 选择完成之后移动地图到指定位置
-			this.location={longitude:item.location.split(',')[0],latitude:item.location.split(',')[1]}
+			this.location={
+				longitude:item.location.split(',')[0],
+				latitude:item.location.split(',')[1]
+				}
 			that.addressIndex=''
 			that.showListView=false
 		},
@@ -182,8 +206,7 @@ export default {
 			})
 		},
 		async checkPermission() {
-			let status = permision.isIOS ? await permision.requestIOS('location') :
-				await permision.requestAndroid('android.permission.ACCESS_FINE_LOCATION');
+			let status = await permision.requestAndroid('android.permission.ACCESS_FINE_LOCATION');
 			if (status === null || status === 1) {
 				status = 1;
 			} else if (status === 2) {
@@ -214,12 +237,47 @@ export default {
 			}
 			return status;
 		},
+		//请求封装
+		Request(options){
+			const baseUrl = uni.getStorageSync('baseUrl') ? uni.getStorageSync('baseUrl') : '152.136.28.147:9007';
+			const api = `http://${baseUrl}/VXMail/PublicUrl.ashx` 
+			const promise = new Promise(function(resolve,reject){
+				uni.showLoading({
+					title:'加载中',	
+				})
+				console.log('加载中');
+				uni.request({
+					url:api,//+options.url
+					method:options.method ||"GET",
+					data:options.data || {},
+					dataType:options.dataType || "json",
+					header:options.header || {},
+					success:function(res){
+						uni.hideLoading()
+						console.log('接口返回'+ res);
+						if(res.statusCode == 200){
+							resolve(res.data)
+						}else{
+							resolve(res.data)
+						}
+					},
+					fail:function(res){
+						uni.hideLoading()
+						// console.log('接口失败'+ res);
+						reject('网络出错')
+					}
+				})
+			})
+			return promise;
+		},
 	},
-	onLoad(e) {
+	onLoad(option) {
 		//监听页面初次渲染完成。注意如果渲染速度快，会在页面进入动画完成前触发
 		this.iStatusBarHeight = uni.getSystemInfoSync().statusBarHeight//标题栏顶部距离
 		this.doCheckPermission()//检查定位权限
 		mapContext=uni.createMapContext('map', this)
+		this.kehuinfo = JSON.parse(option.kehuinfo)
+		this.userid = uni.getStorageSync('userid')
 	},
 	onShow() {
 		//监听页面显示。页面每次出现在屏幕上都触发，包括从下级页面点返回露出当前页面 

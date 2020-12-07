@@ -1,58 +1,63 @@
 <template>
 	<view class="container">
 		<uni-nav-bar left-icon="back"  title="账期查询" @clickLeft="back" fixed="true"></uni-nav-bar>
-		<view class="check">
-			<view class="check-item">
-				<view class="check-content" style="border-right: 2px solid #EEEEEE;">
-					<view class="content-num">
-						80000.25
-					</view>
-					<view class="content-title">
-						总应收款(元)
+		<view class="" style="position: fixed; top: 44px; left: 0; right: 0;">
+			<view class="check">
+				<view class="check-item">
+					<view class="check-content" style="border-right: 2px solid #EEEEEE;">
+						<view class="content-num">
+							{{amountList.total_amount}}
+						</view>
+						<view class="content-title">
+							总应收款(元)
+						</view>
 					</view>
 				</view>
+				<view class="check-item">
+					<view class="check-content">
+						<view class="content-num">
+							{{amountList.yingshou_amount}}
+						</view>
+						<view class="content-title">
+							本月应收款(元)
+						</view>
+					</view>
+				</view>	
+				<view class="check-item">
+					<view class="check-content" style="border-right: 2px solid #EEEEEE;">
+						<view class="content-num">
+							{{amountList.yishou_amount}}
+						</view>
+						<view class="content-title">
+							本月已收款(元)
+						</view>
+					</view>
+				</view>	
+				<view class="check-item">
+					<view class="check-content">
+						<view class="content-num">
+							{{amountList.total_clients}}
+						</view>
+						<view class="content-title">
+							总应收客户数
+						</view>
+					</view>
+				</view>			
 			</view>
-			<view class="check-item">
-				<view class="check-content">
-					<view class="content-num">
-						34000.25
-					</view>
-					<view class="content-title">
-						本月应收款(元)
-					</view>
-				</view>
-			</view>	
-			<view class="check-item">
-				<view class="check-content" style="border-right: 2px solid #EEEEEE;">
-					<view class="content-num">
-						25300.25
-					</view>
-					<view class="content-title">
-						本月已收款(元)
-					</view>
-				</view>
-			</view>	
-			<view class="check-item">
-				<view class="check-content">
-					<view class="content-num">
-						241
-					</view>
-					<view class="content-title">
-						总应收客户数
-					</view>
-				</view>
-			</view>			
+			<view class="searchbar" style="border-top: 10rpx solid #EEEEEE; border-bottom: 1px solid #EEEEEE;">
+				<uni-search-bar placeholder="请输入客户名/联系人" @confirm="search" @cancel="cancle"/>			
+			</view>
 		</view>
-		<view class="searchbar" style="margin-top: 10rpx; border-bottom: 1px solid #EEEEEE;">
-			<uni-search-bar placeholder="请输入客户号/联系人" @confirm="search" @cancel="cancle"/>			
+		<view class="zhanwei" style="width: 100%; height: 198px;">
+			
 		</view>
 		<view class="receivable">
-			<block v-for="item in 10">
-				<view class="receivablelist">
+			<block v-for="(item,index) in zqList">
+				<view class="receivablelist" :key="index" @click="checkdatil(item,index)">
 					<view class="list-title">
-						<view style="font-size: 18px; ">东莞市步前方药店</view>
-						<text style="margin-right:14rpx;">刘伟</text>
-						<text>13429585373</text>
+						<view style="font-size: 18px; width: 95%; padding: 10px 0;">{{item.c_company_name}}</view>
+						<text style="margin:6px 14px 6px 0;">{{item.c_contact}}</text>
+						<text>{{item.c_phone}}</text>
 					</view>
 					<view class="list-money">
 						<view class="money-item" style="border-right: 2px solid #EEEEEE;">
@@ -60,7 +65,7 @@
 								应收金额
 							</view>
 							<view class="" style="color: #ff0000;">
-								¥3194
+								¥{{item.yingshou_amount}}
 							</view>
 						</view>
 						<view class="money-item">
@@ -68,131 +73,109 @@
 								逾期金额
 							</view>
 							<view class="" style="color: #ff0000;">
-								¥3194
+								¥{{item.yuqi_amount}}
 							</view>
 						</view>
 					</view>
 				</view>
 			</block>
+			<u-empty  text="没有搜索结果" mode="search"  :show="zqList.length < 1"
+					:marginTop="200"
+			></u-empty>
+			<u-back-top :scroll-top="scrollTop" :top="1200"></u-back-top>
+			<u-loadmore :status="status" v-if="zqList.length > 1"/>
 		</view>
-		<!-- <view class="u-charts">
-			<view class="bode-top">
-				<view class="top-container">
-					<view class="top-title" style="font-size: 38rpx; font-weight: 600; color: #000000;">
-						每月收款金额
-					</view>
-					<view class="tabbar" style="width: 20vw; ">
-						<sun-tab style="font-size: 20px;" :value.sync="index2" :tabList="tabList2" bgColor="#ffffff" activeColor="#55aa00"></sun-tab>
-					</view>
-					</view>
-				</view>
-			</view>
-			<view class="return2" >
-				<view class="qiun-columns"  style="padding-top: 20px; background-color: #FFFFFF;">					
-						<view class="qiun-charts">
-							<canvas canvas-id="canvasColumn2" id="canvasColumn2" class="charts" @touchstart="touchColumn2"></canvas>
-						</view>
-				</view>
-			</view>
-		</view>
-		<view class="tabbar" style="margin-top: 5px;">
-			<sun-tab :value.sync="index" :tabList="tabList" bgColor="#ffffff" activeColor="#55aa00"></sun-tab>
-		</view>
-		<view class="check2">
-			<view class="check-item2" @click="navigator0">
-				<view class="check-content" style="border-right: 2px solid #EEEEEE;">
-					<view class="content-num">
-						27160.25
-					</view>
-					<view class="content-title">
-						本月到期(元)
-					</view>
-				</view>
-			</view>
-			<view class="check-item2" @click="navigator1">
-				<view class="check-content" style="border-right: 2px solid #EEEEEE;">
-					<view class="content-num">
-						7150.25
-					</view>
-					<view class="content-title">
-						未到期(元)
-					</view>
-				</view>
-			</view>	
-			<view class="check-item2" @click="navigator2">
-				<view class="check-content" >
-					<view class="content-num">
-						4150.25
-					</view>
-					<view class="content-title">
-						逾期(元)
-					</view>
-				</view>
-			</view>			
-		</view>
-		<view class="footer" style="color: #505050; font-size: 15px; margin-left: 10px;">
-			<text>*点击对应账单查看明细</text>
-		</view> -->
 	</view>
 </template>
 
 <script>
 	import sunTab from '@/components/sun-tab/sun-tab.vue';
-	import uCharts from '@/components/u-charts/u-charts.js';
-		var _self;
-		var canvaColumn=null;
-			var canvaColumn2=null;
+
 export default {
 
 		data() {
 			return {
-				index: 0,
-				tabList: ['账期','客户'], //普通数据赋值
-				index2: 0,
-				tabList2: ['日','月'], //普通数据赋值
-				cWidth:'',
-				cHeight:'',
-				serverData:'',
-				pixelRatio:1,
-				chartData2: {
-				  "categories": ["1", "2", "3","4", "5", "6"],
-				  "series": [{
-					"name": "收款金额(万元)",
-					"data": [18.42, {"value": 29.87,"color":"" }, 23.56,18.49,20.98,18.42]
-				  }]
-				}
+				amountList:{},//账期汇总数据对象
+				zqList:[],//账期列表数据
+				status: 'loadmore',//加载更多组件：加载前值为loadmore，加载中为loading，没有数据为nomore
+				pageindex:1,//当前数据分页数
+				total_page:null,//总分页数
+				key:'',//搜索key
+				scrollTop: 0,//页面滚动高度
 			}
 		},
 		onLoad() {
-					_self = this;
-					this.cWidth=uni.upx2px(750);
-					this.cHeight=uni.upx2px(500);
-					this.showColumn2("canvasColumn2",this.$data.chartData2);
-					// console.log(this.$data)
+			this.$request({
+				data:{
+					proc:'APP_YWY_PORT',
+					type:'账期汇总',
+					userid:this.$userinfo.userid,
+					role:this.$userinfo.role
+				}
+			}).then(res => {
+				const resdata = res.Msg_info
+				this.amountList = resdata[0]
+				console.log(resdata);
+			})
+			this.request()
+			// this.cWidth=uni.upx2px(750);
+			// this.cHeight=uni.upx2px(500);
+			// this.showColumn2("canvasColumn2",this.$data.chartData2);
+			// console.log(this.$data)
+		},
+		onPageScroll(e) {
+				this.scrollTop = e.scrollTop;
+		},
+		onReachBottom(){
+			if(this.pageindex >= this.total_page){
+				this.status = 'nomore'
+			}else{
+				// console.log('到底了');
+				this.status = 'loading';
+				this.pageindex += 1;
+				this.request()
+			}
+			
 		},
 		methods: {
-			//底部栏跳转页面方法
-			navigator0() {
-				uni.navigateTo({
-					url:'checksubpage?id=0'
-				})
-			},
-			navigator1() {
-				uni.navigateTo({
-					url:'checksubpage?id=1'
-				})
-			},
-			navigator2() {
-				uni.navigateTo({
-					url:'checksubpage?id=2'
+			//数据请求方法
+			request(){
+				this.$request({
+					data:{
+						proc:'APP_YWY_PORT',
+						type:'账期列表',
+						userid:this.$userinfo.userid,
+						current_page:this.pageindex,
+						key:this.key,
+						role:this.$userinfo.role
+					}
+				}).then(res => {
+					const resdata = res.Msg_info
+					if(resdata[0].error){
+						this.zqList = []
+					}else{
+						this.zqList.push(...resdata)
+						this.pageindex = resdata[0].current_page * 1
+						this.total_page = resdata[0].total_page * 1
+						this.status = 'loadmore'
+						console.log(resdata);
+					}
 				})
 			},
 			//搜索方法
 			search(e){ //点击键盘确定
 				// console.log(e.value);
+				this.pageindex = 1
+				this.key = e.value
+				this.zqList = []
+				this.request()
 			},
 			cancle(e){	//点击搜索二字
 				// console.log(e.value);
+				this.pageindex = 1
+				this.key = e.value
+				this.zqList = []
+				this.request()
 			},
 			//返回上级页面方法
 			back(){
@@ -200,60 +183,26 @@ export default {
 					
 				})
 			},
-						showColumn2(canvasId,chartData){
-							// console.log("aaa")
-							canvaColumn2=new uCharts({ 
-								$this:_self,
-								canvasId: canvasId,
-								type: 'column',
-								legend:{show:true},
-								fontSize:11,
-								background:'#FFFFFF',
-								pixelRatio:_self.pixelRatio,
-								animation: true,
-								categories: chartData.categories,
-								series: chartData.series,
-								xAxis: {
-									disableGrid:true,
-								},
-								yAxis: {
-									//disabled:true
-								},
-								dataLabel: true,
-								width: _self.cWidth*_self.pixelRatio,
-								height: _self.cHeight*_self.pixelRatio,
-								extra: {
-									column: {
-										type:'group',
-										width: _self.cWidth*_self.pixelRatio*0.4/chartData.categories.length
-									}
-								  }
-							});
-							
-						},		
-						touchColumn2(e){
-							canvaColumn2.showToolTip(e, {
-								format: function (item, category) {
-									if(typeof item.data === 'object'){
-										return category + ' ' + item.name + ':' + item.data.value 
-									}else{
-										return category + ' ' + item.name + ':' + item.data 
-									}
-								}
-							});
-						},
-						
+			//跳转到往来账明细页面
+			checkdatil(item,index){
+				uni.navigateTo({
+					url:'checkdetail?kehuinfo='+JSON.stringify(item)
+				})
+			},
 		}
 	}
 </script>
 
 <style>
+	page{
+		background-color: #EEEEEE;
+	}
 	.container{
 		width: 100vw;
 		background-color: #EEEEEE;
 		overflow:hidden;
 		text-overflow:ellipsis;
-		white-space:nowrap;
+		/* white-space:nowrap; */
 	}
 	.check {
 		width: 100vw;
@@ -314,14 +263,14 @@ export default {
 	}
 	.list-title {
 		width: 100vw;
-		height: 70px;
-		line-height: 35px;
+		/* height: 70px; */
+		/* line-height: 35px; */
+		padding-bottom: 10px;
 		padding-left: 10px;
 	}
 	.list-money {
 		width: 100vw;
 		height: 54px;
-		
 		display: flex;
 		align-items: center;
 		border-top: 1px solid #EEEEEE;

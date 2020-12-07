@@ -1,7 +1,7 @@
 
 .container {
 	width: 100vw;
-	height: 100vh;
+	height:1500px;
 	background-color: #EEEEEE;
 }
 .header {
@@ -16,7 +16,7 @@
 	        align-items: center;
 }
 .header-icon {
-	width: 25vw;
+	width: 24vw;
 	height: 14vh;
 	margin-left: 60rpx;
 	border-radius: 20px;
@@ -28,7 +28,7 @@
 	height: 16vh;
 	position: relative;
 	top: -16rpx;
-	left: -6rpx;
+	left: -10rpx;
 	overflow: hidden;
 	border-radius: 30px;
 }

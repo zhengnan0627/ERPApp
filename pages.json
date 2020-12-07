@@ -180,7 +180,10 @@
         }
         ,{
             "path" : "pages/index/item/taskdetail",
-            "style" : {}
+            "style" : {},
+			"app-plus": {
+				"softinputMode" : "adjustResize"
+			}
         }
         ,{
             "path" : "pages/index/item/deliverylistdetails",
@@ -268,7 +271,10 @@
         }
         ,{
             "path" : "pages/order/item/goodsdetail",
-            "style" : {}
+            "style" : {
+				"navigationStyle": "custom" ,// 隐藏系统导航栏
+				"navigationBarTextStyle": "black" // 状态栏字体为白色，只能为 white-白色，black-黑色 二选一
+			}
         }
         ,{
             "path" : "pages/order/item/search",
@@ -284,7 +290,11 @@
         }
         ,{
             "path" : "pages/order/item/submitOrder",
-            "style" : {}
+            "style" : {
+				"app-plus":{
+					// "softinputMode":"adjustResize"
+				}
+			}
         }
         ,{
             "path" : "pages/order/item/address",
@@ -313,6 +323,112 @@
         ,{
             "path" : "pages/index/item/openaccountjindu",
             "style" : {}
+        }
+        ,{
+            "path" : "pages/index/item/kehumap",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/index/item/kehumap",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/index/item/jiesuan",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/login/peizhi",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/index/item/checkdetail",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/index/item/search",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/index/item/spdengji",
+			"style" : {
+				"app-plus":{
+					"bounce":"vertical",
+					"softinputMode": "adjustPan"
+				}
+			}
+            
+        }
+        ,{
+            "path" : "pages/index/item/qianshou",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/index/item/commitjiesuan",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/index/item/baifangjilu",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/index/item/baifangjiludetail",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/index/item/jiagefankui",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/index/item/jiagefankuidetail",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/index/item/ygdingwei",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/index/item/ygdingweimap",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
         }
     ],
 	// "tabBar":{

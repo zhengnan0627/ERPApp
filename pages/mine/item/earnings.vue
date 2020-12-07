@@ -6,12 +6,12 @@
 				电子钱包(元)
 			</view>
 			<view class="content-item" style="width: 100vw; height: 100px; line-height: 100px; font-size: 50px; ">
-				1200
+				0
 			</view>
 			<view class="content-item content-item3">
 				<view class="item-text" style="border-right: 2px solid #FFFFFF;">
 					<view class="">
-						500
+						0
 					</view>
 					<view class="">
 						本月收益(元)
@@ -19,7 +19,7 @@
 				</view>
 				<view class="item-text">
 					<view class="">
-						500
+						0
 					</view>
 					<view class="">
 						本月提取(元)

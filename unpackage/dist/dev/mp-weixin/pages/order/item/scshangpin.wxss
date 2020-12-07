@@ -1,0 +1,87 @@
+
+page{
+	background: #EEEEEE;
+}
+.container {
+	width: 100vw;
+	background-color: #EEEEEE;
+	overflow: hidden;
+}
+.badge {
+	position: absolute;
+	right: -7px;
+	top: 3px;
+}
+.goodlist {
+	width: 100vw;
+	margin: 4px 0;
+	background-color: #FFFFFF;
+	border-top: 1px solid #EEEEEE;
+	border-bottom: 1px solid #EEEEEE;
+}
+.list-content {
+	width: 97vw;
+	padding: 5px 5px;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+}
+.content-img {
+	width: 30vw;
+	margin-right: 10px;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	        justify-content: center;
+	vertical-align: middle;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+}
+.content-img image {
+	width: 100%;
+	height: 100%;
+}
+.content-text {
+	-webkit-box-flex: 1;
+	-webkit-flex: 1;
+	        flex: 1;	
+	font-size: 15px;
+	color: #767676;
+}
+.text-item {
+	margin: 3px 0;
+	font-size: 14px;
+}
+.text-guige {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-pack: justify;
+	-webkit-justify-content: space-between;
+	        justify-content: space-between;
+	padding-right: 5px;
+}
+.list-icon {
+	width: 97vw;
+	height: 35px;
+	line-height: 35px;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: reverse;
+	-webkit-flex-direction: row-reverse;
+	        flex-direction: row-reverse;
+}
+.staricon {	
+	width: 21px;
+	height: 21px;
+	line-height: 21px;
+	text-align: center;
+	font-size: 14px;
+	border: 1px solid #EEEEEE;
+}
+

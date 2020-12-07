@@ -1,0 +1,32 @@
+
+page{
+	background-color: #EEEEEE;
+}
+.container {
+	width: 100vw;
+	
+	background-color: #FFFFFF;
+	text-overflow:ellipsis;
+	white-space:wrap;
+	overflow: hidden;
+}
+.jinduList{
+	width: 100vw;
+	padding-left: 10px;
+	background-color: #FFFFFF;
+	margin: 1px 0 5px 0;
+	overflow: hidden;
+}
+.list-name {
+	font-size: 18px;
+	padding: 2px 0;
+}
+.list-time {
+	font-size: 14px;
+	padding: 2px 0;
+}
+.list-state {
+	font-size: 14px;
+	padding: 2px 0;
+}
+

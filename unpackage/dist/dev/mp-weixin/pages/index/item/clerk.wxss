@@ -1,15 +1,16 @@
 
 .container{
 	width: 100vw;
-	height: 100vh;
 	background-color: #FFFFFF;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	white-space:nowrap;
 }
 .content {
 	width: 100vw;
 }
 .content-item{
 	width: 100vw;
-	height: 80px;
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: flex;
@@ -23,22 +24,28 @@
 }
 .item-left {
 	width: 15vw;
-	height: 80px;
-	line-height: 80px;
-	font-size: 22px;
+	height: 60px;
+	line-height: 60px;
+	font-size: 15px;
 	text-align: center;
+}
+.item-left text {
+	background-color: #00E700;
+	padding: 3px 9px;
+	border-radius: 50px;
+	color: #FFFFFF;
 }
 .item-middle {
 	width: 70vw;
-	height: 80px;
-	line-height: 40px;
+	height: 60px;
+	line-height: 30px;
 	font-size: 14px;
 }
 .item-right {
-	height: 80px;
-	line-height: 40px;
-	font-size: 17px;
+	height: 60px;
+	line-height: 30px;
 	text-align: right;
 	padding-right: 5px;
+	font-size: 14px;
 }
 

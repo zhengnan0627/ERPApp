@@ -1,0 +1,68 @@
+
+.container{
+	width: 100vw;
+	height: 100vh;
+	background-color: #FFFFFF;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	white-space:nowrap;
+	font-size: 18px;
+}
+.content {
+	margin-top: 10px;
+}
+.content-title {
+	width: 95vw;
+	margin: 0 auto;
+	height: 150px;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	        flex-direction: column;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	        justify-content: center;
+}
+.logitem {
+	width: 100%;
+	-webkit-box-flex: 1;
+	-webkit-flex: 1;
+	        flex: 1;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	        justify-content: center;
+	vertical-align: middle;
+	/* border-bottom: 1px solid #EEEEEE; */
+}
+.footer {
+	width: 100vw;
+	border-top: 1px solid #EEEEEE;
+}
+.input {
+	width: 95vw;
+	height: 200px;
+	margin: 0 auto;
+	margin-top: 10px;
+	background-color: #EEEEEE;
+}
+.commit {
+	position: fixed;
+	bottom: 2vh;
+	left: 30%;
+	width: 40vw;
+	height: 30px;
+	line-height: 30px;
+	border-radius: 30px;
+	background-color: #00A200;
+	text-align: center;
+	color: #FFFFFF;
+}
+.upload{
+	box-sizing: border-box;
+	/* width: 95vw; */
+	padding: 5px 2.5vw;
+}
+

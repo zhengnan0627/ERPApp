@@ -1,0 +1,9 @@
+{
+  "component": true,
+  "usingComponents": {
+    "uni-nav-bar": "/components/uni-nav-bar/uni-nav-bar",
+    "uni-icons": "/components/uni-icons/uni-icons",
+    "uni-collapse": "/components/uni-collapse/uni-collapse",
+    "uni-collapse-item": "/components/uni-collapse-item/uni-collapse-item"
+  }
+}

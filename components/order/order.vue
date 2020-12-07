@@ -8,7 +8,7 @@
 						今日订单(元)
 					</view>
 					<view class="" style="	font-size: 56rpx;">
-						0.00
+						{{dingdan.jrddje ? dingdan.jrddje : '0'}}
 					</view>
 				</view>
 				<view class="top-item">	
@@ -16,7 +16,7 @@
 						本月订单(元)
 					</view>
 					<view class="" style="	font-size: 56rpx;">
-						39004.00
+						{{dingdan.byddje ? dingdan.byddje : '0'}}
 					</view>
 				</view>
 			</view>
@@ -26,13 +26,13 @@
 				APP订单
 			</view>
 			<view class="body-item">
-				<block v-for="(item,index) in orderList.APPList">
-					<view class="item-list" :key="index" @click="ToorderList(item,index)">
-						<view class="">
-							{{item.num}}
+				<block v-for="(item,index) in APPList">
+					<view class="item-list" :key="index" @click="APPorderList(item,index)">
+						<view class="" style="width: 100%;">
+							{{item.count}}
 						</view>
-						<view class="item-font">
-							{{item.title}}
+						<view class="item-font" style="width: 100%;">
+							{{item.order_type_name}}
 						</view>
 					</view>
 				</block>
@@ -43,13 +43,13 @@
 					ERP订单
 				</view>
 				<view class="body-item">
-					<block v-for="(item,index) in orderList.ERPList">
-						<view class="item-list" :key="index"  @click="ToorderList(item,index)">
-							<view class="">
-								{{item.num}}
+					<block v-for="(item,index) in ERPList">
+						<view class="item-list" :key="index"  @click="ERPorderList(item,index)">
+							<view class="" style="width: 100%;">
+								{{item.count}}
 							</view>
-							<view class="item-font">
-								{{item.title}}
+							<view class="item-font" style="width: 100%;">
+								{{item.order_type_name}}
 							</view>
 						</view>
 					</block>
@@ -69,7 +69,6 @@
 							</view>
 						</view>
 					</view>	
-					
 				</block>
 			</view>
 		</view>
@@ -80,6 +79,9 @@
 	export default {
 		data() {
 			return {
+				dingdan:{
+					
+				},
 				//功能栏相关数据
 				gridlist:[
 					{"id":"0","imgurl":"../../static/image/daikexiadan.png","text":"代客下单","url":"selectkehu"},
@@ -90,24 +92,69 @@
 					// {"id":"5","imgurl":"../../static/image/chuku.png","text":"出库单回访","url":"chukudanhf"},
 					// {"id":"6","imgurl":"../../static/image/fapiaohuifang.png","text":"发票回访","url":"fphuifang"},
 				],
-				orderList:{
-					"APPList":[
-						{"id":"1","title":"待审核","num":"0",},
-						{"id":"2","title":"已审核","num":"113",},
-						{"id":"3","title":"拒绝审核","num":"0",},
-						{"id":"4","title":"撤销","num":"4",},						
-					],
-					"ERPList":[
-						{"id":"1","title":"待发货","num":"0",},
-						{"id":"2","title":"已发货","num":"0",},
-						{"id":"3","title":"已配车","num":"0",},
-						{"id":"4","title":"已完成","num":"0",},	
-					]
-						
-				}
+				"APPList":[
+					// {"id":"1","title":"待审核","num":"0",},
+					// {"id":"2","title":"已审核","num":"113",},
+					// {"id":"3","title":"拒绝审核","num":"0",},
+					// {"id":"4","title":"撤销","num":"4",},						
+				],
+				"ERPList":[
+					// {"id":"1","title":"待发货","num":"0",},
+					// {"id":"2","title":"已发货","num":"0",},
+					// {"id":"3","title":"已配车","num":"0",},
+					// {"id":"4","title":"已完成","num":"0",},	
+				]
+					
+
 			}
 		},
+		created() {
+			this.$request({
+				data:{
+					proc:'APP_YWY_PORT',
+					type:'订单金额',
+					userid:this.$userinfo.userid,
+				}
+			}).then(res => {
+				const resdata = res.Msg_info
+				// this.noticeList = resdata
+				console.log(resdata);
+				this.dingdan = resdata[0]
+			})
+			this.APPrequest()
+			this.ERPrequest()
+		},
 		methods:{
+			APPrequest(){
+				this.$request({
+					data:{
+						proc:'APP_YWY_PORT',
+						type:'订单类型',
+						userid:this.$userinfo.userid,
+						sub_type:'APP'
+					}
+				}).then(res => {
+					const resdata = res.Msg_info
+					// this.noticeList = resdata
+					console.log(resdata);
+					this.APPList = resdata
+				})
+			},
+			ERPrequest(){
+				this.$request({
+					data:{
+						proc:'APP_YWY_PORT',
+						type:'订单类型',
+						userid:this.$userinfo.userid,
+						sub_type:'ERP'
+					}
+				}).then(res => {
+					const resdata = res.Msg_info
+					// this.noticeList = resdata
+					console.log(resdata);
+					this.ERPList = resdata
+				})
+			},
 			//navbar消息中心跳转方法
 			Tonews(){
 				uni.navigateTo({
@@ -115,11 +162,16 @@
 				})
 			},
 			//订单列表跳转方法
-			ToorderList(item) {
+			APPorderList(item,index) {
 				uni.navigateTo({
-					url:'../../pages/order/item/orderlist'
+					url:'../../pages/order/item/orderlist?pageindex=1&item='+JSON.stringify(item) +'&currentIndex='+index
 				})
 			},
+			//订单列表跳转方法			ERPorderList(item,index) {
+				uni.navigateTo({
+					url:'../../pages/order/item/orderlist?pageindex=2&item='+JSON.stringify(item) +'&currentIndex='+index
+				})
+			},		
 			//功能页面跳转方法
 			jumphome(item,index){
 				uni.navigateTo({
@@ -183,9 +235,14 @@
 		padding: 10rpx;
 		flex: 1;
 		text-align: center;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
 	}
 	.item-font {
 		color: #626262;
+		padding: 4px 0;
 	}
 	.module {
 		width: 100vw;		

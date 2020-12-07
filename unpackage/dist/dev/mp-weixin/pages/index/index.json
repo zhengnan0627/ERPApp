@@ -1,7 +1,10 @@
 {
   "navigationBarTitleText": "主页",
   "usingComponents": {
-    "uni-nav-bar": "/components/uni-nav-bar/uni-nav-bar",
-    "uni-search-bar": "/components/uni-search-bar/uni-search-bar"
+    "index": "/components/index/index",
+    "order": "/components/order/order",
+    "cart": "/components/cart/cart",
+    "mine": "/components/mine/mine",
+    "tui-tabbar": "/components/tui-tabbar/tui-tabbar"
   }
 }

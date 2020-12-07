@@ -1,0 +1,23 @@
+
+.container {
+	width: 100vw;
+	height: 100vh;
+	background-color: #EEEEEE;
+}
+.content-item {
+	width: 100vw;
+	height: 100px;
+	background-color: #FFFFFF;
+}
+.item-time {
+	margin: 0 5px;
+	margin-top: 10px;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-pack: justify;
+	-webkit-justify-content: space-between;
+	        justify-content: space-between;
+}
+
+

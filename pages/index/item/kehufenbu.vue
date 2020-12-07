@@ -70,12 +70,39 @@
 		},
 		onLoad() {
 			this.markerspush()
+			
 			// console.log(this.markers);
+			uni.getLocation({
+			    type: 'gcj02',
+			    success: function (res) {
+			        console.log('当前位置的经度：' + res.longitude);
+			        console.log('当前位置的纬度：' + res.latitude);
+					this.longitude = res.longitude
+					this.latitude = res.latitude
+					this.request()
+			    }
+			});
 		},
 		methods: {
 			back(){
 				uni.navigateBack({
 					
+				})
+			},
+			request(){
+				this.$request({
+					data:{
+						proc:'APP_YWY_PORT',
+						type:'客户分布',
+						userid:this.$userinfo.userid,
+						radius:0,
+						current_jd:this.longitude,
+						current_wd:this.latitude
+						
+					}
+				}).then(res => {
+					const resdata = res.Msg_info
+					console.log(resdata);
 				})
 			},
 			markerspush() {

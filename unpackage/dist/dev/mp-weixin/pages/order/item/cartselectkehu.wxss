@@ -1,0 +1,80 @@
+
+page{
+		background: #EEEEEE;
+}
+.container {
+	width: 100vw;
+	background-color: #EEEEEE;
+	overflow: hidden;
+}
+.content {
+	width: 100vw;
+	height: 200px;
+	margin-top: 10px;
+	background-color: #EEEEEE;
+}
+.ordercontent {
+	box-sizing: border-box;
+	margin: 5px 0;
+	padding: 10px 10px;
+	background-color: #FFFFFF;
+	position: relative;
+}
+.ordercontent-title{
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-pack: justify;
+	-webkit-justify-content: space-between;
+	        justify-content: space-between;
+}
+.ordercontent-scroll{
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	width: 100%;
+	height: 80px;
+	line-height: 80px;
+}
+.scroll-left{
+	width: 98rpx;
+	height: 50px;
+	line-height: 50px;
+	text-align: left;
+	border-right: 1px solid #000000;
+}
+.scroll-box{
+	box-sizing: border-box;
+	padding-left: 10px;
+	width: 450rpx;
+	height: 70px;
+	line-height: 70px;
+	
+	/* background-color: #0086B3; */
+}
+.scroll-img{
+	margin: 0 3px;
+	width: 70px;
+	height: 70px;
+}
+.scroll-img image{
+	width: 70px;
+	height: 70px;
+}
+.scroll-right{
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-pack: end;
+	-webkit-justify-content: flex-end;
+	        justify-content: flex-end;
+	width: 150rpx;
+	height: 70px;
+	line-height: 70px;
+	text-align: right;
+	font-size: 16px;
+}
+

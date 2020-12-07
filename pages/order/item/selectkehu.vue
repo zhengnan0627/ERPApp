@@ -2,36 +2,41 @@
 	<view class="container">
 		<uni-nav-bar left-icon="back"  @clickLeft="back"  title="选择客户" fixed="true"/>
 		<view class="" style="position: fixed; width: 100%; z-index: 99; border-bottom: 1px solid #EEEEEE;">
-			<uni-search-bar placeholder="客户名/客户地址/联系人/联系人电话"/>
+			<uni-search-bar placeholder="客户名/客户地址/联系人/联系人电话" @confirm="search" @cancel="cancle"/>
 		</view>
 		<view class="zhanwei" style="height: 104rpx;"/>
-		<block v-for="(item,index) in kehuList" >
+		<block v-for="(item,index) in resdataList" >
 			<view class="ordercontent" :key="index" @click="Togoodslist(item,index)">
 				<view class="ordercontent-title">
 					<view class="" style="font-size: 18px;">
-						{{item.store}}
+						{{item.c_company_name}}
 					</view>
 				</view>
 				<view class="ordercontent-body">
 					<view class="body-item">
-						编号:{{item.bianhao}}
+						编号:{{item.c_bianhao}}
 					</view>
 					<view class="body-item">
-						联系人:{{item.person}}&nbsp&nbsp&nbsp{{item.phone}}
+						联系人:{{item.c_contact}}&nbsp&nbsp&nbsp{{item.c_phone}}
 					</view>
 					<view class="body-item">
-						地址:{{item.address}}
+						地址:{{item.c_gs_address}}
 					</view>
 					<view class="body-item" style="color: #ff0000;">
-						{{item.state}}
+						{{item.is_outdate == '1'?'已过期':''}}
 					</view>
 					<view class="staricon"  @click.stop="star(item,index)">
-						<uni-icons type="star" size="18"  v-if="item.star"></uni-icons>
+						<uni-icons type="star" size="18"  v-if="item.is_liked == '0'"></uni-icons>
 						<uni-icons type="star-filled" size="18"  v-else color="#ffaa00"></uni-icons>
 					</view>
 				</view>
 			</view>
-		</block>		
+		</block>	
+		<u-empty  text="没有搜索结果" mode="search"  :show="resdataList.length < 1"
+				:marginTop="500"
+		></u-empty>
+		<u-back-top :scroll-top="scrollTop" :top="1200"></u-back-top>
+		<u-loadmore :status="status" v-if="resdataList.length > 1"/>	
 	</view>
 </template>
 
@@ -39,20 +44,63 @@
 	export default {
 		data() {
 			return {
-				//客户列表信息
-				kehuList:[				
-						{"id":"0","state":"","star":true, "bianhao":"1594837261","time":"2020-04-16","store":"贵安新区安康药店","address":"贵安新区人民路23号","person":"陈玉萍","phone":"13921486865","num":"2","money":"1880"},
-						{"id":"1","state":"已过期","star":false,"bianhao":"1553466322","time":"2020-07-11","store":"郑东新区人民药店","address":"郑东新区人民路23号","person":"王林","phone":"12343232534","num":"1","money":"204"},
-						{"id":"2","state":"","star":false,"bianhao":"1356878565","time":"2020-01-07","store":"绵阳新区东泰康路人民大药店","address":"绵阳新区东泰康路23号","person":"张磊","phone":"1234654656","num":"5","money":"1234"},
-						{"id":"0","state":"","star":false,"bianhao":"1594837261","time":"2020-04-16","store":"贵安新区安康药店","address":"贵安新区人民路23号","person":"朱朝阳","phone":"13921486865","num":"2","money":"1880"},
-						{"id":"1","state":"已过期","star":true,"bianhao":"1553466322","time":"2020-07-11","store":"郑东新区人民药店","address":"贵安新区人民路23号","person":"陈东升","phone":"12343232534","num":"1","money":"204"},
-						{"id":"2","state":"","star":false,"bianhao":"1356878565","time":"2020-01-07","store":"绵阳新区东泰康路人民大药店","address":"贵安新区人民路23号","person":"赵凯","phone":"1234654656","num":"5","money":"1234"},
+				userid:null,//用户id(从缓存中取)
+				//收藏列表信息
+				resdataList:[				
+						// {"id":"0","state":"","star":true, "bianhao":"1594837261","time":"2020-04-16","store":"贵安新区安康药店","address":"贵安新区人民路23号","person":"陈玉萍","phone":"13921486865","num":"2","money":"1880"},
 				],
 				//收藏星颜色
-				starcolor:''
+				starcolor:'',
+				status: 'loadmore',//加载更多组件：加载前值为loadmore，加载中为loading，没有数据为nomore
+				pageindex:1,//当前数据分页数
+				total_page:null,//总分页数
+				key:'',//搜索key
+				scrollTop: 0,//页面滚动高度
 			}
 		},
+		onLoad() {
+			this.userid = uni.getStorageSync('userid')
+			this.request()
+		},
+		onPageScroll(e) {
+				this.scrollTop = e.scrollTop;
+		},
+		onReachBottom(){
+			if(this.pageindex >= this.total_page){
+				this.status = 'nomore'
+			}else{
+				// console.log('到底了');
+				this.status = 'loading';
+				this.pageindex += 1;
+				this.request()
+			}
+			
+		},
 		methods: {
+			//数据请求方法
+			request(){
+				this.$request({
+					data:{
+						proc:'APP_YWY_PORT',
+						type:'我的客户',
+						userid:this.$userinfo.userid,
+						current_page:this.pageindex,
+						key:this.key
+					}
+				}).then(res => {
+					const resdata = res.Msg_info
+					console.log(resdata);
+					if(resdata[0].error){
+						this.resdataList = []
+					}else{
+						this.resdataList.push(...resdata)
+						this.pageindex = resdata[0].current_page * 1
+						this.total_page = resdata[0].total_page * 1
+						this.status = 'loadmore'
+					}
+					
+				})
+			},
 			//返回方法
 			back(){
 				uni.navigateBack({				
@@ -60,12 +108,52 @@
 			},
 			//收藏方法
 			star(item,index) {
-					item.star = !item.star	
+				// console.log(item);
+				// console.log(item.is_liked);
+				// item.is_liked = !item.is_liked
+				if(item.is_liked == '0') {
+					this.$request({
+						data:{
+							proc:'APP_YWY_PORT',
+							type:'客户收藏',
+							userid:this.userid,
+							c_id:item.c_id,
+							is_liked:1
+						}
+					}).then(res => {
+						item.is_liked = '1'
+						const resdata = res.Msg_info[0]
+						console.log(resdata);
+						uni.showToast({
+							title:'收藏成功',
+							duration:800
+						})
+					})
+					
+				}else {
+					this.$request({
+						data:{
+							proc:'APP_YWY_PORT',
+							type:'客户收藏',
+							userid:this.userid,
+							c_id:item.c_id,
+							is_liked:0
+						}
+					}).then(res => {
+						item.is_liked = '0'
+						const resdata = res.Msg_info[0]
+						console.log(resdata);
+						uni.showToast({
+							title:'取消收藏',
+							duration:800
+						})
+					})
+				}
 			},
 			//跳转商品列表方法
 			Togoodslist(item,index) {
 				// console.log(item);
-				if(item.state != ''){
+				if(item.is_outdate != '0'){
 					uni.showModal({
 						content:'该客户证件照已过期',
 						showCancel:false,
@@ -78,7 +166,22 @@
 						url:'goodslist?kehuinfo='+ kehuinfo
 					})
 				}
-			}
+			},
+			//搜索方法
+			search(e){ //点击键盘确定
+				// console.log(e.value);
+				this.pageindex = 1
+				this.key = e.value
+				this.resdataList = []
+				this.request()
+			},
+			cancle(e){	//点击搜索二字
+				// console.log(e.value);
+				this.pageindex = 1
+				this.key = e.value
+				this.resdataList = []
+				this.request()
+			},
 		}
 	}
 </script>

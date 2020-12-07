@@ -18,19 +18,18 @@
 				<u-input :border="border" type="select" :select-open="pickerShow" v-model="model.region" placeholder="请选择地区" @click="pickerShow = true"></u-input>
 			</u-form-item>
 			<u-picker mode="region" v-model="pickerShow" @confirm="regionConfirm"></u-picker>
-			<u-form-item :leftIconStyle="{color: '#888', fontSize: '32rpx'}"  label-width="200" :label-position="labelPosition" label="企业名称" prop="name" :required="true">
+			<u-form-item :label-position="labelPosition" label="企业名称" prop="name" :required="true" :leftIconStyle="{color: '#888', fontSize: '32rpx'}"  label-width="200" >
 				<u-input :border="border" placeholder="请输入企业名称" v-model="model.name" type="text"></u-input>
 			</u-form-item>
 			<u-form-item :label-position="labelPosition" label="客户类型" prop="goodsType" label-width="200">
 				<u-input :border="border" type="select" :select-open="selectShow2" v-model="model.goodsType" placeholder="请选择客户类型" @click="selectShow2 = true"></u-input>
 			</u-form-item>
-			<u-select mode="single-column" :list="selectList2" v-model="selectShow2" title="请选择客户类型" @confirm="selectConfirm"></u-select>
-			
-			<u-form-item :label-position="labelPosition" label="营业执照号" prop="" label-width="200" placeholder="请输入营业执照号">
-				<u-input :border="border" type="number" placeholder="请输入营业执照号"></u-input>
+			<u-select mode="single-column" :list="selectList2" v-model="selectShow2" title="请选择客户类型" @confirm="selectConfirm"></u-select>	
+			<u-form-item :label-position="labelPosition" label="营业执照号" prop="yingyebianhao" label-width="200" placeholder="请输入营业执照号">
+				<u-input :border="border" type="number" v-model="model.yingyebianhao" placeholder="请输入营业执照号"></u-input>
 			</u-form-item>
-			<u-form-item :label-position="labelPosition" label="身份证号" prop="" label-width="200" placeholder="请输入身份证号">
-				<u-input :border="border" type="number" placeholder="请输入身份证号"></u-input>
+			<u-form-item :label-position="labelPosition" label="身份证号" prop="shenfenzheng" label-width="200" placeholder="请输入身份证号">
+				<u-input :border="border" type="number" v-model="model.shenfenzheng" placeholder="请输入身份证号"></u-input>
 			</u-form-item>
 			<u-form-item label-width="200" :label-position="labelPosition" label="联系人" prop="person" :required="true">
 				<u-input :border="border" placeholder="请输入联系人联系人姓名" v-model="model.person" type="text"></u-input>
@@ -42,7 +41,7 @@
 				常规证照
 			</view>
 			<u-form-item :label-position="labelPosition" label="营业执照" prop="photo" label-width="550">
-				<u-upload ref="uUpload1" :action="action" :file-list="fileList" :auto-upload="false" width="120" :max-count="1" :custom-btn="true"   >
+				<u-upload ref="uUpload1" :action="action" :file-list="fileList" :auto-upload="true" name="upload_file" width="120" :max-count="1" :custom-btn="true">
 					<view class="" slot="addBtn">
 						<view class="u-list-item u-add-wrap" style="width: 120prx;height: 120rpx;">
 							<u-icon  name="plus" class="u-add-btn" size="60"></u-icon>
@@ -51,7 +50,7 @@
 				</u-upload>
 			</u-form-item>
 			<u-form-item :label-position="labelPosition" label="委托书" prop="photo" label-width="550">
-				<u-upload width="120" :max-count="1" :custom-btn="true">
+				<u-upload ref="uUpload2" :action="action" name="upload_file" width="120" :max-count="1" :custom-btn="true" >
 					<view class="" slot="addBtn">
 						<view class="u-list-item u-add-wrap" style="width: 120prx;height: 120rpx;">
 							<u-icon  name="plus" class="u-add-btn" size="60"></u-icon>
@@ -60,7 +59,7 @@
 				</u-upload>
 			</u-form-item>
 			<u-form-item :label-position="labelPosition" label="GSP证书" prop="photo" label-width="550">
-				<u-upload width="120" :max-count="1" :custom-btn="true">
+				<u-upload ref="uUpload3" :action="action" width="120" :max-count="1" :custom-btn="true" name="upload_file">
 					<view class="" slot="addBtn">
 						<view class="u-list-item u-add-wrap" style="width: 120prx;height: 120rpx;">
 							<u-icon  name="plus" class="u-add-btn" size="60"></u-icon>
@@ -69,7 +68,7 @@
 				</u-upload>
 			</u-form-item>
 			<u-form-item :label-position="labelPosition" label="身份证" prop="photo" label-width="550">
-				<u-upload width="120" :max-count="1" :custom-btn="true">
+				<u-upload ref="uUpload4" :action="action" width="120" :max-count="1" :custom-btn="true" name="upload_file">
 					<view class="" slot="addBtn">
 						<view class="u-list-item u-add-wrap" style="width: 120prx;height: 120rpx;">
 							<u-icon  name="plus" class="u-add-btn" size="60"></u-icon>
@@ -82,10 +81,22 @@
 			</view>
 			<u-form-item :label-position="labelPosition"  prop="payType" >
 				<u-radio-group v-model="radio" @change="radioGroupChange" :width="radioCheckWidth" :wrap="radioCheckWrap">
-					<u-radio shape="circle" v-model="item.checked" v-for="(item, index) in radioList" :key="index" :name="item.name">
+					<u-radio shape="circle" v-model="radioList[0].checked" :name="radioList[0].name">
 						<view class="" style="width: 636rpx; display: flex;justify-content: space-between; align-items: center;" >
-							<text> {{ item.name }}</text>
-							<u-upload :ref="item.ref" width="120" :max-count="1" :custom-btn="true">
+							<text> {{ radioList[0].name }}</text>
+							<u-upload  ref="radio1" :action="action" width="120" :max-count="1" :custom-btn="true" :disabled="radioList[0].checked" name="upload_file">
+								<view class="" slot="addBtn">
+									<view class="u-list-item u-add-wrap" style="width: 120prx;height: 120rpx;">
+										<u-icon  name="plus" class="u-add-btn" size="60"></u-icon>
+									</view>
+								</view>
+							</u-upload>
+						</view>
+					</u-radio>
+					<u-radio shape="circle" v-model="radioList[1].checked" :name="radioList[1].name">
+						<view class="" style="width: 636rpx; display: flex;justify-content: space-between; align-items: center;" >
+							<text> {{ radioList[1].name }}</text>
+							<u-upload  ref="radio2" :action="action" width="120" :max-count="1" :custom-btn="true" :disabled="radioList[1].checked" name="upload_file">
 								<view class="" slot="addBtn">
 									<view class="u-list-item u-add-wrap" style="width: 120prx;height: 120rpx;">
 										<u-icon  name="plus" class="u-add-btn" size="60"></u-icon>
@@ -100,7 +111,7 @@
 				其他证照
 			</view>
 			<u-form-item style="display: flex;">
-				<u-upload width="120" :max-count="4" :custom-btn="true" >
+				<u-upload ref="uUpload5" :action="action" width="120" :show-progress="false" :max-count="4" :custom-btn="true" name="upload_file">
 					<view class="" slot="addBtn">
 						<view class="u-list-item u-add-wrap" style="width: 120prx;height: 120rpx;">
 							<u-icon  name="plus" class="u-add-btn" size="60"></u-icon>
@@ -113,14 +124,11 @@
 				<u-input type="textarea" :border="border" placeholder="请填写备注信息" v-model="model.intro" />
 			</u-form-item>
 			
-			
-			
-			
-			
-			
 		</u-form>
 		<u-button @click="submit" style="margin:10px;">提交</u-button>
-		
+		<uni-popup ref="popup" type="center">
+		    <uni-popup-message type="success" message="提交成功" :duration="1500"></uni-popup-message>
+		</uni-popup>
 		
 		
 	</view>	
@@ -128,29 +136,34 @@
 </template>
 
 <script>
+	import uniPopup from '@/components/uni-popup/uni-popup.vue'
+	import uniPopupMessage from '@/components/uni-popup/uni-popup-message.vue'
 export default {
+	components: {
+		uniPopup,
+	    uniPopupMessage
+	},
 	data() {
 		let that = this;
 		return {
-			fileList:[{},{}],//(数组，元素为对象),显示预置的图片。其中元素的url属性为图片路径
-			action:'https://mpshopapi.timeschip.com/api/Upload/Uploadfile',//上传图片服务器地址
+			fileList:[],//(数组，元素为对象),显示预置的图片。其中元素的url属性为图片路径
+			action: 'https://www.tsdjyy.com/wxpay/upload.php',//图片上传配置地址
 			model: {
-				qyType:'',
-				name: '',
-				person:'',
-				sex: '',
-				likeFruit: '',
-				intro: '',
-				payType: '支付宝',
-				region: '',
-				goodsType: '',
-				phone: '',
-				code: '',
-		
-			
-				
-				photo: ''
+				qyType:'',//企业类型
+				name: '',//企业名称
+				region: '',//所在地区
+				goodsType: '',//客户类型
+				yingyebianhao:'',//营业执照号
+				shenfenzheng:'',//身份证号
+				person:'',//联系人
+				phone: '',//联系人电话
+				payType: '',//单选按钮
+				intro: '',//备注信息
+				photo: '',//上传图片
+				// sex: '',
+				// likeFruit: '',
 			},
+			//-----------------------选择企业类型数据项----------------
 			selectList: [
 				{
 					value: '诊所',
@@ -173,6 +186,7 @@ export default {
 					label: '其他'
 				}
 			],
+			//-----------------------选择客户类型数据项----------------
 			selectList2: [
 				{
 					value: '诊所',
@@ -195,7 +209,9 @@ export default {
 					label: '其他'
 				}
 			],
+			//-----------------------表单验证数据项----------------
 			rules: {
+				//企业类型
 				qyType:[
 					{
 						required: false,
@@ -203,6 +219,7 @@ export default {
 						trigger: 'blur',
 					}
 				],	
+				//企业名称
 				name: [
 					{
 						required: true,
@@ -243,6 +260,7 @@ export default {
 					// 	},
 					// }
 				],
+				//备注项
 				intro: [
 					{
 						required: false,
@@ -256,6 +274,7 @@ export default {
 					// 	trigger: 'change',
 					// },
 				],
+				//单选按钮
 				payType: [
 					{
 						required: true,
@@ -263,6 +282,7 @@ export default {
 						trigger: 'blur',
 					}
 				],
+				//选择地区
 				region: [
 					{
 						required: false,
@@ -270,13 +290,31 @@ export default {
 						trigger: 'change',
 					}
 				],
+				//客户类型
 				goodsType: [
 					{
 						required: false,
-						message: '请选择企业类型',
+						message: '请选择客户类型',
 						trigger: 'change',
 					}
 				],
+				//营业执照号
+				yingyebianhao: [
+					{
+						required: false,
+						message: '请输入营业执照号',
+						trigger: 'blur' ,
+					},
+				],
+				//身份证号
+				shenfenzheng: [
+					{
+						required: false,
+						message: '请输入身份证号',
+						trigger: 'blur' ,
+					},
+				],
+				//联系人
 				person:[
 					{
 						required: true,
@@ -289,6 +327,7 @@ export default {
 						trigger: ['change','blur'],
 					},
 				],
+				//联系人电话
 				phone: [
 					{
 						required: true,
@@ -304,9 +343,7 @@ export default {
 						// 触发器可以同时用blur和change，二者之间用英文逗号隔开
 						trigger: 'blur',
 					}
-				],
-				
-				
+				],				
 			},
 			border: false,
 			check: false,
@@ -326,9 +363,9 @@ export default {
 				}
 			],
 			radio: '',
-			actionSheetList: [
+			// actionSheetList: [
 				
-			],
+			// ],
 			actionSheetShow: false,
 			pickerShow: false,
 			selectShow: false,
@@ -336,7 +373,6 @@ export default {
 			radioCheckWidth: 'auto',
 			radioCheckWrap: true,
 			labelPosition: 'left',
-			codeTips: '',
 			errorType: ['message'],
 		};
 	},
@@ -366,24 +402,86 @@ export default {
 		},
 		//点击提交按钮方法
 		submit() {
-			this.$refs.uUpload1.upload();
-			let files = this.$refs.uUpload1.lists;
-			console.log(files)
-			this.$refs.uForm.validate(valid => {
-				
+			const _this = this
+			// this.$refs.uUpload1.upload();
+			let files1 = _this.$refs.uUpload1.lists;
+			let files2 = _this.$refs.uUpload2.lists;
+			let files3 = _this.$refs.uUpload3.lists;
+			let files4 = _this.$refs.uUpload4.lists;
+			let files5 = _this.$refs.uUpload5.lists;
+			let files6 = _this.$refs.radio1.lists;
+			let files7 = _this.$refs.radio2.lists;
+			console.log(files1)
+			console.log(files2)
+			console.log(files3)
+			console.log(files4)
+			console.log(files5)
+			console.log(files6)
+			console.log(files7)
+			_this.$refs.uForm.validate(valid => {
 				if (valid) {
-					
 					console.log('验证通过');
+					let iamge_url = '+'
+					files5.map(item => {
+							// console.log(prev,cur);
+								iamge_url += item.response.imageUrl + "+";
+							});		
+					iamge_url = iamge_url.substr(1, iamge_url.length - 2);
+					console.log(iamge_url);
+					_this.$request({
+						data:{
+							proc:'APP_YWY_PORT',
+							type:'客户开户',
+							userid:_this.$userinfo.userid,
+							c_address:_this.model.region || '',
+							c_name:_this.model.name,
+							contact:_this.model.person,
+							phone:_this.model.phone,
+							company_type:_this.model.goodsType ,
+							yyzh_bianhao:_this.model.yingyebianhao,
+							shfzh_bianhao:_this.model.shenfenzheng,
+							yyzz_url:files1.length > 0 ? files1[0].response.imageUrl : '',
+							weituoshu_url:files2.length > 0  ? files2[0].response.imageUrl : '',
+							gsp_url:files3.length > 0 ? files3[0].response.imageUrl : '',
+							shfzh_url:files4.length > 0 ? files4[0].response.imageUrl : '',
+							jyxk_url:files6.length > 0 ? files6[0].response.imageUrl : '',
+							yljgjyxk_url:files7.length > 0 ? files7[0].response.imageUrl : '',
+							other_url:iamge_url,
+							beizhu:_this.model.intro,
+						}
+					}).then(res => {
+						console.log(res);
+						const resdata = res.Msg_info
+						console.log(resdata);
+						if(resdata[0].note){
+							_this.$refs.popup.open()
+							setTimeout(() => {
+								uni.navigateBack({
+									
+								})
+							},1500)
+						}else{
+							uni.showToast({
+								title:resdata[0].error,
+								icon:'none'
+							})
+						}
+						
+					})				  
 				} else {
+					uni.showToast({
+						title:'请完善开户信息',
+						icon:'none'
+					})
 					console.log('验证失败');
 				}
 			});
 		},
 		// 点击actionSheet回调
-		actionSheetCallback(index) {
-			uni.hideKeyboard();
-			this.model.sex = this.actionSheetList[index].text;
-		},
+		// actionSheetCallback(index) {
+		// 	uni.hideKeyboard();
+		// 	this.model.sex = this.actionSheetList[index].text;
+		// },
 		// radio选择发生变化
 		radioGroupChange(e) {
 			this.model.payType = e;
@@ -391,6 +489,7 @@ export default {
 		// 选择地区回调
 		regionConfirm(e) {
 			this.model.region = e.province.label + '-' + e.city.label + '-' + e.area.label;
+			console.log(e);
 		},
 		// 选择商品类型回调
 		selectConfirm1(e) {
@@ -398,6 +497,7 @@ export default {
 			e.map((val, index) => {
 				this.model.qyType += this.model.qyType == '' ? val.label : '-' + val.label;
 			})
+			console.log(this.model.qyType);
 		},
 		selectConfirm(e) {
 			this.model.goodsType = '';

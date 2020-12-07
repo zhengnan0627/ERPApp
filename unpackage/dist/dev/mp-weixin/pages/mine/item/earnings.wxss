@@ -1,0 +1,26 @@
+
+.container{
+	width: 100vw;
+	height: 100vh;
+	background-color: #FFFFFF;
+}
+.content {
+	width: 100vw;
+	height: 210px;
+	padding-top: 15px;
+	text-align: center;
+	color: #FFFFFF;
+	background-color: #00AA00;
+}
+.content-item3 {
+	width: 100vw;
+	height: 50px;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+}
+.item-text {
+	width: 49vw;
+	height: 50px;
+}
+

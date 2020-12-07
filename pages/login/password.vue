@@ -2,7 +2,7 @@
 	<view class="container">
 		<uni-nav-bar left-icon="back"  title="忘记密码" @clickLeft="back"></uni-nav-bar>
 		<view class="icon-img">
-			<image src="../../static/image/carticon.png" mode=""></image>
+			<image src="../../static/image/ERPfill.png" mode=""></image>
 		</view>
 		<view class="input">
 			<view class="input-item" >

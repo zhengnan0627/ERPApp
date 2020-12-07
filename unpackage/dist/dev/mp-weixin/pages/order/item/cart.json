@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "uni-nav-bar": "/components/uni-nav-bar/uni-nav-bar",
+    "tui-swipe-action": "/components/tui-swipe-action/tui-swipe-action",
+    "u-number-box": "/uview-ui/components/u-number-box/u-number-box",
+    "tui-button": "/components/tui-button/tui-button"
+  }
+}

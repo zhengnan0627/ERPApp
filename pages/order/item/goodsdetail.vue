@@ -2,11 +2,14 @@
 	<view class="container">
 		<uni-nav-bar left-icon="back"  @clickLeft="back"  title="商品详情" fixed="true"/>
 		<view class="swiper">
-			<swiper autoplay="true" circular="true" interval="2000" duration="1000" class="swiper_warp" style="height: 100%;">
-				<block v-for="(item,index) in 1" :key="index">
-					<swiper-item >
+			<swiper 
+				autoplay="true" circular="true" interval="2000" duration="1000"
+				:indicator-dots="true" indicator-color="#ffffff" indicator-active-color="#ff0000"
+				class="swiper_warp" style="height: 100%;">
+				<block v-for="(item,index) in imgList" :key="index">
+					<swiper-item>
 						<view class="swiper-item">
-							<image :src="goodsdetail.g_image" mode=""></image>
+							<image :src="item.imageurl" mode=""></image>
 						</view>
 					</swiper-item>
 				</block>	
@@ -20,60 +23,34 @@
 				{{goodsdetail.g_name}}
 			</view>
 			<view class="">
-				规格:&nbsp{{goodsdetail.g_guige}}
+				规格:&nbsp{{goodsdetail.g_property}}
 			</view>
 		</view>
 		<view class="detaillist">
-			<view class="detaillist-item">
-				<view class="item-left">
-					商品名称
-				</view>
-				<view class="item-right">
-					{{goodsdetail.g_name}}
-				</view>
+			<view class="detaillist-title">
+				产品介绍
 			</view>
-			<view class="detaillist-item">
-				<view class="item-left">
-					成分
-				</view>
-				<view class="item-right">
-					成分
-				</view>
-			</view>
-			<view class="detaillist-item">
-				<view class="item-left">
-					规格
-				</view>
-				<view class="item-right">
-					{{goodsdetail.g_guige}}
-				</view>
-			</view>
-			<view class="detaillist-item">
-				<view class="item-left">
-					用量方法
-				</view>
-				<view class="item-right">
-					服用天数
-				</view>
+			<view class="g_description">
+				{{goodsdetail.g_description}}
 			</view>
 		</view>
-		<view class="detail-footer">
-			<view class="" style="color: #ff0000;">
-				注意事项
+		<view :class="[fromyemian != 'scshangpin' ? 'detail-footer' : 'detail-footer2']">
+			<view class=""  style="font-size: 22px;">
+				图文详情
 			</view>
 			<view class="" style="margin-top: 5px;">
-				无
+				<u-parse :html="goodsdetail.g_detail"></u-parse>	
 			</view>
 		</view>
-		<view class="goodsNav">
+		<view class="goodsNav" v-if="fromyemian != 'scshangpin'">
 			<view class="goodsNav-item"  @click="ToCart" style="border-right: 2px solid #EEEEEE;">
 				<uni-icons type="cart" size="26"></uni-icons>
 				<view class="">
 					购物车
 				</view>
 			</view>
-			<view class="goodsNav-item" @click="star">
-				<uni-icons v-if="!goodsdetail.star" type="star" size="26"></uni-icons>
+			<view class="goodsNav-item" @click="star(goodsdetail)">
+				<uni-icons v-if="goodsdetail.is_liked == '0'" type="star" size="26"></uni-icons>
 				<uni-icons v-else type="star-filled" size="26" color="#ffaa00" ></uni-icons>
 				<view class="">
 					收藏
@@ -86,12 +63,15 @@
 		<!-- 购物车弹出层start -->
 		<uni-popup ref="popup" type="bottom">
 			<view class="popup" v-if="goodsdetail">
-				<view class="" style="display: flex; flex-direction: row-reverse;padding:5px 5px 0 0;">
+				<view class="" style="display: flex; padding:5px 5px 0 0;">
+					<view class="popup-kehu">
+						代下单客户:&nbsp{{kehuinfo.c_company_name}}
+					</view>
 					<uni-icons type="close" size="24" color="#b4b4b4" @click="close"></uni-icons>
 				</view>
 				<view class="popup-content">
 					<view class="popup-img">
-						<image :src="goodsdetail.g_image" mode="aspectFit"></image>
+						<image :src="goodsdetail.imageurl" mode="aspectFit"></image>
 					</view>
 					<view class="popup-text">
 						<view class="popup-item">
@@ -101,7 +81,8 @@
 							¥&nbsp{{goodsdetail.g_price}}
 						</view>
 						<view class="popup-item">
-							库存:&nbsp{{goodsdetail.g_kucun}}
+							库存:&nbsp{{goodsdetail.kx_count}}
+							<!-- <text>{{popuplist.kx_count * 1 > popuplist.warning_count * 1? '库存紧张' : ''}}</text> -->
 						</view>
 					</view>
 				</view>
@@ -112,24 +93,29 @@
 					<scroll-view scroll-y="true" style="height: 300rpx;">
 						<view class="" style="height: 1px;">
 						</view>
-						<view class="pihao-text" v-for="item in 1">
+						<view class="pihao-text" v-for="(item,index) in pihaoList" :key="index">
 								<view class="pihao-item">
-									批号:&nbsp{{goodsdetail.g_pihao+item*157}}
+									批号:&nbsp{{item.g_pihao}}
 								</view>
 								<view class="pihao-item">
-									有效期至:&nbsp{{goodsdetail.g_youxiaoqi}}
+									有效期至:&nbsp{{item.g_expired_date}}
 								</view>
 								<view class="pihao-item">
-									库存:&nbsp{{goodsdetail.g_kucun1}}盒
+									库存:&nbsp{{item.ku_count}}盒
 								</view>
 								<view class="pihao-item">
-									<uni-number-box value="1" @change="numchange"></uni-number-box>
+									<!-- <uni-number-box :key="index" value="1" @change="numchange(item,$event)"></uni-number-box> -->
+									<u-number-box v-model="item.g_number" :index="item.g_buy_ratio"
+									:step="item.g_buy_ratio" 
+									:min="0" :max="item.ku_count"
+									
+									></u-number-box>
 								</view>
 						</view>
 						
 					</scroll-view>
 				</view>
-				<view class="popup-addcart" @click="addcart(goodsdetail)">
+				<view class="popup-addcart" @click="addcart(goodsdetail,pihaoList)">
 					<text>添加到购物车</text>
 				</view>
 			</view>
@@ -146,15 +132,57 @@
 		data() {
 			return {
 					//上级页面传进来的客户信息
-					kehuinfo:{},
-					goodsdetail:{}
+					kehuinfo:{},//上级页面传递过来的客户数据对象
+					goodsdetail:{},//商品详情数据对象
+					imgList:[],//药品图片轮播数据
+					popuplist:{},//购物车弹出层数据
+					pihaoList:[],//购物车页面批号数据列表
+					fromyemian:'',//来自页面
 			}
 		},
 		onLoad:function(option){
-			// console.log(option);
+			console.log(option);
 			this.goodsdetail =JSON.parse(option.item)
-			this.kehuinfo = JSON.parse(option.kehuinfo)
-			// console.log(this.goodsdetail);
+			if(option.from){
+				this.fromyemian = option.from
+			}
+			if(option.kehuinfo){
+				this.kehuinfo = JSON.parse(option.kehuinfo)
+			}
+			console.log(this.goodsdetail);
+			console.log(this.kehuinfo);
+			this.$request({
+				data:{
+					proc:'APP_YWY_PORT',
+					type:'药品详情',
+					userid:this.$userinfo.userid,
+					g_id:this.goodsdetail.g_id,
+				}
+			}).then(res => {
+				const resdata = res.Msg_info
+				console.log(resdata);
+				if(resdata[0].error){
+					this.goodsdetail = {}
+				}else{
+					this.goodsdetail = resdata[0]
+				}
+			})
+			this.$request({
+				data:{
+					proc:'APP_YWY_PORT',
+					type:'药品详情轮播',
+					userid:this.$userinfo.userid,
+					g_id:this.goodsdetail.g_id,
+				}
+			}).then(res => {
+				const resdata = res.Msg_info
+				console.log(resdata);
+				if(resdata[0].error){
+					this.imgList = []
+				}else{
+					this.imgList = resdata
+				}
+			})
 		},
 		methods: {
 			//返回方法
@@ -166,49 +194,144 @@
 			ToCart(){
 				const kehuinfo = JSON.stringify(this.kehuinfo)
 				uni.navigateTo({
-					url:'cart?kehuinfo='+ kehuinfo
+					url:'cart?kehuinfo='+ kehuinfo +'&pageindex=2'
 				})
 			},
 			//收藏方法
-			star() {
-					this.goodsdetail.star = !this.goodsdetail.star
-					if(this.goodsdetail.star) {
-						uni.showToast({
-							title:'收藏成功',
-							duration:800
+			star(goodsdetail) {	
+				if(goodsdetail.is_liked == '0') {
+						this.$request({
+							data:{
+								proc:'APP_YWY_PORT',
+								type:'商品收藏',
+								userid:this.$userinfo.userid,
+								g_id:goodsdetail.g_id,
+								is_liked:1
+							}
+						}).then(res => {
+							goodsdetail.is_liked = '1'
+							const resdata = res.Msg_info[0]
+							console.log(resdata);
+							uni.showToast({
+								title:'收藏成功',
+								duration:800
+							})
 						})
-					}else {
-						uni.showToast({
-							title:'取消收藏',
-							duration:800
+						
+				}else {
+					this.$request({
+							data:{
+								proc:'APP_YWY_PORT',
+								type:'商品收藏',
+								userid:this.$userinfo.userid,
+								g_id:goodsdetail.g_id,
+								is_liked:0
+							}
+						}).then(res => {
+							goodsdetail.is_liked = '0'
+							const resdata = res.Msg_info[0]
+							console.log(resdata);
+							uni.showToast({
+								title:'取消收藏',
+								duration:800
+							})
 						})
 					}
-					
+			
 			},
 			//购物车弹出层方法
 			open(item,index){
 			    this.$refs.popup.open()
-				this.popuplist = item
+				this.$request({
+					data:{
+						proc:'APP_YWY_PORT',
+						type:'药品批号',
+						userid:this.$userinfo.userid,
+						g_id:this.goodsdetail.g_id,
+					}
+				}).then(res => {
+					const resdata = res.Msg_info
+					console.log(resdata);
+					if(resdata[0].error){
+						this.pihaoList = []
+					}else{
+						this.pihaoList = resdata.map(item =>{
+						item.ku_count = item.ku_count * 1
+						item.g_buy_ratio = item.g_buy_ratio * 1
+						item.g_number = item.g_number * 1
+						return item
+					})
+				
+					}
+				})
 			},
 			//数字输入框方法
 			numchange(e) {
 				this.badgenumchange = e
 			},
 			//添加到购物车方法
-			addcart(popuplist) {
+			addcart(goodsdetail,pihaoList) {
+				console.log(pihaoList);
+				console.log(goodsdetail);
+				// console.log(this.kehuinfo);
 				const _this = this
-				uni.showToast({
-					title:'添加成功',
-					duration:1500,
-				})
-				_this.badge = _this.badge*1+_this.badgenumchange*1
-				_this.$refs.popup.close()	
+				// _this.badge = _this.badge*1+_this.badgenumchange*1
+				if(pihaoList.every(item => item.g_number == 0)){
+					uni.showToast({
+						icon:'none',
+						title:'添加失败,请选择数量'
+					})
+				}else if (pihaoList.some(item => item.g_number % item.g_buy_ratio != 0)){
+					uni.showToast({
+						icon:'none',
+						title:'添加失败,请确认数量'
+					})
+				}else{
+					pihaoList.map(item =>{
+						if(item.g_number != 0){
+							_this.$request({
+								data:{
+									proc:'APP_YWY_PORT',
+									type:'加入购物车',
+									userid:_this.$userinfo.userid,
+									c_id:_this.kehuinfo.c_id,
+									g_id:goodsdetail.g_id,
+									g_pihao:item.g_pihao,
+									g_number:item.g_number
+								}
+							}).then(res => {
+								const resdata = res.Msg_info
+								console.log(resdata);
+								if(resdata[0].error){
+									uni.hideToast()
+									uni.showToast({
+										title:resdata[0].error,
+										icon:'none'
+									})
+									_this.$refs.popup.close()
+								}else{
+									_this.$refs.popup.close()
+									_this.$bus.$emit('CartUpdata')
+									uni.hideToast()
+									uni.showToast({
+										title:resdata[0].note,
+										duration:1500,
+									})
+								}
+								
+							})
+						}
+					})
+				}
 				
 			},
 			close(){
 				this.$refs.popup.close()
 			},
-		}
+		},
+		// onUnload(){
+		//   this.$bus.$off('CartUpdata')
+		// }
 	}
 </script>
 
@@ -220,6 +343,7 @@
 		width: 100vw;
 		background-color: #EEEEEE;
 		overflow: hidden;
+		font-size: 18px;
 	}
 	.swiper {
 		width: 100vw;
@@ -242,8 +366,19 @@
 	.detaillist {
 		margin-top: 10px;
 		width: 100vw;
-
+		padding: 5px 0;
 		background-color: #FFFFFF;
+	}
+	.detaillist-title{
+		box-sizing: border-box;
+		padding:0 2vw 0 4vw;
+		width: 100vw;
+		font-size: 22px;
+	}
+	.g_description{
+		box-sizing: border-box;
+		padding:0 2vw 0 4vw;
+		width: 100vw;
 	}
 	.detaillist-item {
 		padding-left: 4vw;
@@ -265,7 +400,13 @@
 		width: 96vw;
 		padding-left: 4vw;
 		margin-top: 10px;
-		height: 100px;
+		margin-bottom: 110rpx;
+		background-color: #FFFFFF;
+	}
+	.detail-footer2 {
+		width: 96vw;
+		padding-left: 4vw;
+		margin-top: 10px;
 		background-color: #FFFFFF;
 	}
 	.goodsNav {
@@ -295,11 +436,20 @@
 		text-align: center;
 	}
 /* 购物车弹出层样式 */
-.popup {
+	.popup {
 		width: 100vw;
 		height: 370px;
 		background-color: #FFFFFF;
 		border-radius: 10px 10px 0 0;
+	}
+	.popup-kehu{
+		flex: 1;
+		padding-left: 10px;
+		font-size: 16px;
+		max-width: 90vw;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
 	}
 	.popup-content {
 		width: 94vw;

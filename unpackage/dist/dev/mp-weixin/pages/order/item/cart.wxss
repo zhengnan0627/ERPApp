@@ -1,0 +1,200 @@
+
+page{
+	background: #fafafa;
+}
+.container {
+	width: 100vw;
+	background-color: #fafafa;
+	overflow: hidden;
+}
+.kehu-box {
+	position: fixed;
+	box-sizing: border-box;
+	z-index: 9999999;
+
+	width: 100vw;
+	font-size: 15px;
+	background-color: #FFFFFF;
+}
+.kehu-item{
+	box-sizing: border-box;
+	padding-left: 3vw;
+	width: 100%;
+	height: 26px;
+	line-height: 26px;
+	color: #333333;
+}
+.tui-cart-cell {
+	margin-bottom: 24rpx;
+	width: 100%;
+	border-radius: 12rpx;
+	background: #FFFFFF;
+	padding: 40rpx 0;
+	overflow: hidden;
+}
+.tui-cart-cell {
+	width: 100%;
+	border-radius: 12rpx;
+	background: #FFFFFF;
+	padding: 40rpx 0;
+	overflow: hidden;
+}
+.tui-goods-item {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	padding: 0 30rpx;
+	box-sizing: border-box;
+}
+.tui-checkbox {
+	min-width: 70rpx;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+}
+.tui-checkbox .wx-checkbox-input {
+	width: 40rpx;
+	height: 40rpx;
+	margin-right: 0 !important;
+	border-radius: 50% !important;
+	-webkit-transform: scale(0.8);
+	        transform: scale(0.8);
+	border-color: #d1d1d1 !important;
+}
+.tui-checkbox .wx-checkbox-input.wx-checkbox-input-checked {
+	background: #eb0909;
+	width: 44rpx !important;
+	height: 44rpx !important;
+	border: none;
+}
+.tui-goods-img {
+	width: 220rpx;
+	height: 220rpx !important;
+	border-radius: 12rpx;
+	-webkit-flex-shrink: 0;
+	        flex-shrink: 0;
+	display: block;
+}
+.tui-goods-info {
+	width: 100%;
+	padding-left: 20rpx;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	        flex-direction: column;
+	-webkit-box-align: start;
+	-webkit-align-items: flex-start;
+	        align-items: flex-start;
+	-webkit-box-pack: justify;
+	-webkit-justify-content: space-between;
+	        justify-content: space-between;
+	box-sizing: border-box;
+	overflow: hidden;
+}
+.tui-goods-title {
+	white-space: normal;
+	word-break: break-all;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	font-size: 24rpx;
+	color: #333;
+}
+.tui-goods-model {
+	max-width: 100%;
+	color: #333;		
+	display: -webkit-box;		
+	display: -webkit-flex;		
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	-webkit-box-pack: justify;
+	-webkit-justify-content: space-between;
+	        justify-content: space-between;
+	box-sizing: border-box;
+}
+.tui-model-text {
+	max-width: 100%;
+	-webkit-transform: scale(0.9);
+	        transform: scale(0.9);
+	-webkit-transform-origin: 0 center;
+	        transform-origin: 0 center;
+	font-size: 24rpx;
+	line-height: 32rpx;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.tui-price-box {
+	width: 100%;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: end;
+	-webkit-align-items: flex-end;
+	        align-items: flex-end;
+	-webkit-box-pack: justify;
+	-webkit-justify-content: space-between;
+	        justify-content: space-between;
+}
+.tui-goods-price {
+	font-size: 34rpx;
+	font-weight: 500;
+	color: #e41f19;
+}
+.tui-tabbar {
+	width: 100%;
+	height: 100rpx;
+	background: #fff;
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	-webkit-box-pack: justify;
+	-webkit-justify-content: space-between;
+	        justify-content: space-between;
+	padding: 0 30rpx;
+	box-sizing: border-box;
+	font-size: 24rpx;
+	z-index: 99999;
+}
+.tui-tabbar::before {
+	content: '';
+	width: 100%;
+	border-top: 1rpx solid #d9d9d9;
+	position: absolute;
+	top: 0;
+	left: 0;
+	-webkit-transform: scaleY(0.5);
+	transform: scaleY(0.5);
+}
+.tui-checkAll {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+}
+.tui-checkbox-pl {
+	padding-left: 12rpx;
+}
+.tui-total-price {
+	padding-left: 30rpx;
+	font-size: 30rpx !important;
+}
+

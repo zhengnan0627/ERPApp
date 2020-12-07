@@ -37,7 +37,7 @@
 			},
 			clearButton: {
 				type: String,
-				default: "auto"
+				default: "always"
 			},
 			cancelButton: {
 				type: String,
@@ -101,6 +101,9 @@
 				// #endif
 			},
 			confirm() {
+				this.$emit("confirm", {
+					value: this.searchVal
+				})
 				this.searchVal = ""
 				this.show = false
 				this.showSync = false
@@ -110,9 +113,6 @@
 				// #ifdef APP-PLUS
 				plus.key.hideSoftKeybord()
 				// #endif
-				this.$emit("confirm", {
-					value: this.searchVal
-				})
 			},
 			//聚焦失焦隐藏显示tabbar
 			// //#ifdef APP-PLUS

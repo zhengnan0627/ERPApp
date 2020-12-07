@@ -1,0 +1,108 @@
+
+page {
+	background-color: #EEEEEE;
+}
+.container {
+	width: 100vw;
+	overflow: hidden;
+}
+.header {
+	position: fixed;
+	width: 100vw;
+	padding: 5px 10px;
+	background-color: #FFFFFF;
+	border-bottom: 1px solid #CCCCCC;
+}
+.header-store {
+	width: 92vw;
+	height: 40px;
+	line-height: 40px;
+	font-size: 17px;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-pack: justify;
+	-webkit-justify-content: space-between;
+	        justify-content: space-between;
+}
+.header-state {
+	margin: auto 0;
+	padding: 3px 5px;
+	font-size: 14px;
+	height: 17px;
+	line-height: 17px;
+	border-radius: 4px;
+	background-color: #00A200;
+	color: #FFFFFF;
+}
+.header-name,
+.header-address,
+.header-fapiao{
+	font-size: 14px;
+	color: #5e5e5e;
+	height: 20px;
+	line-height: 20px;
+}
+.header-title {
+	box-sizing: border-box;
+	width: 100vw;
+	padding: 0 3vw;
+	height: 35px;
+	line-height: 35px;
+	font-size: 15px;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-pack: justify;
+	-webkit-justify-content: space-between;
+	        justify-content: space-between;
+	background-color: #EEEEEE;
+}
+.detailList {
+	margin-bottom: 10px;
+	width: 100vw;
+	padding: 5px 10px;
+	
+	background-color: #FFFFFF;
+}
+.detailList-item {
+	font-size: 15px;
+	color: #5e5e5e;
+}
+.detailList-name {
+	height: 30px;
+	line-height: 30px;
+	font-size: 16px;
+}
+.detailList-pihao {
+	width: 94vw;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-pack: justify;
+	-webkit-justify-content: space-between;
+	        justify-content: space-between;
+}
+.detailList-heji {
+	width: 94vw;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-pack: justify;
+	-webkit-justify-content: space-between;
+	        justify-content: space-between;
+	font-size: 15px;
+	border-top: 1px solid #EEEEEE;
+}
+.footer {
+	position: fixed;
+	bottom: 0;
+	width: 100vw;
+	height: 50px;
+	line-height: 25px;
+	padding: 0 10px;
+	font-size: 15px;
+	border-top: 1px solid #EEEEEE;
+	background-color: #FFFFFF;
+}
+

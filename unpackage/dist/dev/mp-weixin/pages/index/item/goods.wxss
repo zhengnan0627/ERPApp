@@ -3,6 +3,9 @@
 	width: 100vw;
 	height: 100vh;
 	background-color: #FFFFFF;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	white-space:nowrap;
 }
 .ser {
 	width: 100vw;
@@ -10,7 +13,7 @@
 }
 .icon-container {
 	width: 100vw;
-	height: 180px;
+	/* height: 180px; */
 	margin-top: 15px;
 	display: -webkit-box;
 	display: -webkit-flex;
@@ -29,7 +32,8 @@
 }
 .icon-item {
 	width: 25vw;
-	height: 88px;
+	/* height: 88px; */
+	padding:4px 0;
 	text-align: center;
 	/* background-color: #FFFFFF; */
 }
@@ -45,22 +49,10 @@
 }
 .icon-title {
 	width:100%;
-	height: 20px;
+	/* height: 20px; */
+	padding: 1px 0;
+	font-size: 36rpx;
 	color: #818181;
 }
-.footer {
-	width: 100vw;
-	height: 40px;
-	
-	background-color: #EEEEEE;
-	display: -webkit-box;
-	display: -webkit-flex;
-	display: flex;
-	-webkit-box-pack: justify;
-	-webkit-justify-content: space-between;
-	        justify-content: space-between;
-	-webkit-box-align: center;
-	-webkit-align-items: center;
-	        align-items: center;
-}	
+
 

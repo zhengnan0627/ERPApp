@@ -117,6 +117,8 @@
 					scrollTop: 0,
 					duration: this.duration
 				});
+				// this.scrollTop2 = 0
+				this.$emit('scrollTop2');
 			}
 		}
 	}

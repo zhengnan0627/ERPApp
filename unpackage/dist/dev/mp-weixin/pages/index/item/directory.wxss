@@ -1,27 +1,84 @@
 
-.container{
-	width: 100vw;
-	height: 100vh;
+page {
 	background-color: #EEEEEE;
 }
-.scroll-item {
+.container {
 	width: 100vw;
-	padding-left: 20rpx;
-	padding-bottom: 20rpx;
+	background-color: #EEEEEE;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.scroll-item {
+	position: relative;
+	box-sizing: border-box;
+	width: 100vw;
+	padding: 20rpx 20rpx;
 	margin-top: 10px;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	        flex-direction: column;
 	background-color: #FFFFFF;
 	border-bottom: 2rpx solid #EEEEEE;
 }
+.items {
+	/* box-sizing: border-box; */
+	-webkit-box-flex: 1;
+	-webkit-flex: 1;
+	        flex: 1;
+	margin: 4rpx 0;
+}
+.scroll-number{
+	width: 100%;
+	height: 28px;
+	line-height: 28px;
+}
+.gotask {
+	width: 30vw;
+	height: 28px;
+	line-height: 28px;
+	text-align: center;
+	color:#FFFFFF;
+	background-color: #4CD964;
+	border-radius: 30px;
+}
 .scroll-item .scroll-title {
-	font-size: 30rpx;
+	-webkit-box-flex: 1;
+	-webkit-flex: 1;
+	        flex: 1;
+	font-size: 24rpx;
 	color: #4CD964;
 }
 .scroll-item .scroll-store {
-	font-size: 40rpx;
+	-webkit-box-flex: 1;
+	-webkit-flex: 1;
+	        flex: 1;
+	font-size: 38rpx;
 	font-weight: 500;
 	color: #000000;
 }
+.scroll-item .scroll-address,
 .scroll-item .scroll-person {
+	-webkit-box-flex: 1;
+	-webkit-flex: 1;
+	        flex: 1;
 	font-size: 30rpx;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+}
+.staricon {
+	position: absolute;
+	right: 13px;
+	bottom: 13px;
+	width: 21px;
+	height: 21px;
+	line-height: 21px;
+	text-align: center;
+	font-size: 14px;
+	border: 1px solid #EEEEEE;
 }
 

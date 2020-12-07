@@ -100,7 +100,7 @@ export default {
 		// 后端地址
 		action: {
 			type: String,
-			default: ''
+			default: 'https://myc.jbsage.com/wxpay/upload.php?from=APP'
 		},
 		// 最大上传数量
 		maxCount: {
@@ -110,7 +110,7 @@ export default {
 		//  是否显示进度条
 		showProgress: {
 			type: Boolean,
-			default: true
+			default: false
 		},
 		// 是否启用
 		disabled: {
@@ -139,7 +139,7 @@ export default {
 		// 上传的文件字段名
 		name: {
 			type: String,
-			default: 'file'
+			default: ''
 		},
 		// 所选的图片的尺寸, 可选值为original compressed
 		sizeType: {
@@ -324,7 +324,7 @@ export default {
 					if (this.autoUpload) this.uploadFile(listOldLength);
 				})
 				.catch(error => {
-					// this.$emit('on-error', error);
+					this.$emit('on-error', error);
 				});
 		},
 		// 提示用户消息
@@ -338,6 +338,7 @@ export default {
 		},
 		// 该方法供用户通过ref调用，手动上传
 		upload() {
+			console.log('123213');
 			this.uploadFile();
 		},
 		// 对失败的图片重新上传
@@ -352,6 +353,7 @@ export default {
 		},
 		// 上传图片
 		async uploadFile(index = 0) {
+			console.log('上传开始');
 			if (this.disabled) return;
 			if (this.uploading) return;
 			// 全部上传完成
@@ -398,9 +400,8 @@ export default {
 				url: this.action,
 				filePath: this.lists[index].url,
 				name: this.name,
-				formData: this.formData,
-				header: this.header,
 				success: res => {
+					console.log(res);
 					// 判断是否json字符串，将其转为json格式
 					let data = this.toJson && this.$u.test.jsonString(res.data) ? JSON.parse(res.data) : res.data;
 					if (![200, 201, 204].includes(res.statusCode)) {

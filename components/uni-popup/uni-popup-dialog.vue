@@ -6,7 +6,7 @@
 		<view class="uni-dialog-content">
 			<!-- <text class="uni-dialog-content-text" v-if="mode === 'base'">{{content}}</text>
 			<input v-else class="uni-dialog-input" v-model="val" type="number" :placeholder="placeholder" :focus="focus" > -->
-			<uni-number-box @change="bindChange" :value="numValue" :min="1" :max="5"></uni-number-box>
+			<uni-number-box @change="bindChange" :value="numValue" :min="0" :max="max"></uni-number-box>
 		</view>
 		<view class="uni-dialog-button-group">
 			<view class="uni-dialog-button" @click="close">
@@ -48,6 +48,11 @@ import uniNumberBox from "@/components/uni-number-box/uni-number-box.vue"
 				type: [String, Number],
 				default: ''
 			},
+			max: {
+				type: Number,
+				default: 1,
+			},
+			
 			placeholder: {
 				type: [String, Number],
 				default: '请输入内容'

@@ -1,50 +1,55 @@
 <template>
 	<view class="container">
-		<uni-nav-bar left-icon="back"  @clickLeft="back"  title="APP订单列表" rightIcon="more-filled" @clickRight="right" fixed="true"/>
+		<uni-nav-bar left-icon="back"  @clickLeft="back"  :title="pagecurrentindex == '1'?  'APP订单列表' :'ERP订单列表'" fixed="true"/>
 		<view class="" style="position: fixed; width: 100%;">
-			<uni-search-bar placeholder="客户名/客户地址/联系人/联系人电话"/>
+			<uni-search-bar placeholder="客户名/客户地址/联系人/联系人电话" @confirm="search" @cancel="cancle"/>
 			<view class="tabcontrol">
 				<view v-for="(item,index) in titles"
 						 class="tabcontrolitem"
 						 @click="itemclick(index)">
-					<view class="tabcontrolitem2" :class="{active:index === currentIndex}">{{item}}({{orderList[index].length}})</view>
+					<view class="tabcontrolitem2" :class="{active:index === currentIndex}">{{item}}</view>
 				</view>
 			</view>	
 		</view>
 		<view class="zhanwei" style="height: 192rpx;"/>
-		<block v-for="(item,index) in orderList[currentIndex]" >
+		<block v-for="(item,index) in orderList" >
 			<view class="ordercontent" :key="index" @click="Todetail(item,index)">
 				<view class="ordercontent-title">
 					<view class="">
-						{{item.bianhao}}
+						{{item.order_bianhao}}
 					</view>
 					<view class="">
-						{{item.time}}
+						{{item.created_date}}
 					</view>
 					<view class="" style="padding:0 4px; text-align: center; border-radius: 4px; background-color: #00A200; color: #FFFFFF;">
 						<view class="">
-							{{item.state}}
+							{{item.order_status}}
 						</view>
 					</view>
 				</view>
 				<view class="ordercontent-body">
 					<view class="body-item">
-						{{item.store}}
+						{{item.c_company_name}}
 					</view>
 					<view class="body-item">
-						联系人:{{item.person}}&nbsp&nbsp&nbsp{{item.phone}}
+						联系人:{{item.c_contact}}&nbsp&nbsp&nbsp{{item.c_phone}}
 					</view>
 				</view>
 				<view class="ordercontent-footer">
 					<view class="">
-						共{{item.num}}个商品
+						共{{item.goods_count}}个商品
 					</view>
 					<view class="">
-						实付:<text style="margin-left: 3px; color: #ff0000;">¥{{item.money}}</text>
+						实付:<text style="margin-left: 3px; color: #ff0000;">¥{{item.goods_amount}}</text>
 					</view>
 				</view>
 			</view>
 		</block>
+		<u-empty  text="没有搜索结果" mode="search"  :show="orderList.length < 1"
+				:marginTop="400"
+		></u-empty>
+		<u-back-top :scroll-top="scrollTop" :top="1200"></u-back-top>
+		<u-loadmore :status="status" v-if="orderList.length > 5"/>
 	</view>
 </template>
 
@@ -52,35 +57,68 @@
 	export default {
 		data() {
 			return {
+				pagecurrentindex:'1',//上级页面传过来的页面来源参数
+				sub_type:'APP',//上级页面传过来的点击item内的sub_type参数
+				order_type_id:'',//上级页面传过来的点击item内的order_type_id参数
+				status: 'loadmore',//加载更多组件：加载前值为loadmore，加载中为loading，没有数据为nomore
+				pageindex:1,//当前数据分页数
+				total_page:null,//总分页数
+				key:'',//搜索key
+				scrollTop: 0,//页面滚动高度
 				//tabbar数据
-				titles:['待审核','已审核','拒绝审核','撤销'],
+				titles:['待审核','已审核','已拒绝','已撤销'],
+				order_type_list:[],
 				currentIndex:0,
 				orderList:[
-					[
-						{"id":"0","state":"待审核","bianhao":"1594837261","time":"2020-04-16","store":"贵安新区安康药店","person":"陈玉萍","phone":"13921486865","num":"2","money":"1880","address":"镇西县大元村"},
-						{"id":"1","state":"待审核","bianhao":"1553466322","time":"2020-07-11","store":"郑东新区人民药店","person":"陈玉萍","phone":"12343232534","num":"1","money":"204","address":"郑东新区人民路23号"},
-						{"id":"2","state":"待审核","bianhao":"1356878565","time":"2020-01-07","store":"绵阳新区东泰康路人民大药店","person":"陈玉萍","phone":"1234654656","num":"5","money":"1234","address":"东莞市步行街"},
-					],
-					[
-						{"id":"0","state":"已审核","bianhao":"1594837261","time":"2020-04-16","store":"贵安新区安康药店","person":"陈玉萍","phone":"13921486865","num":"2","money":"1880","address":"医学院东100米"},
-						{"id":"1","state":"已审核","bianhao":"1553466322","time":"2020-07-11","store":"郑东新区人民药店","person":"陈玉萍","phone":"12343232534","num":"1","money":"204","address":"中心街59号"},
-						{"id":"2","state":"已审核","bianhao":"1356878565","time":"2020-01-07","store":"绵阳新区东泰康路人民大药店","person":"陈玉萍","phone":"1234654656","num":"5","money":"1234","address":"唐山市保乐区正光街"},
-						{"id":"0","state":"已审核","bianhao":"1594837261","time":"2020-04-16","store":"贵安新区安康药店","person":"陈玉萍","phone":"13921486865","num":"2","money":"1880","address":"镇西县大元村"},
-						{"id":"1","state":"已审核","bianhao":"1553466322","time":"2020-07-11","store":"郑东新区人民药店","person":"陈玉萍","phone":"12343232534","num":"1","money":"204","address":"镇西县大元村"},
-						{"id":"2","state":"已审核","bianhao":"1356878565","time":"2020-01-07","store":"绵阳新区东泰康路人民大药店","person":"陈玉萍","phone":"1234654656","num":"5","money":"1234","address":"镇西县大元村"},
-					],
-					[
-						{"id":"0","state":"拒绝审核","bianhao":"1594837261","time":"2020-04-16","store":"贵安新区安康药店","person":"陈玉萍","phone":"13921486865","num":"2","money":"1880","address":"镇西县大元村"},
-						{"id":"1","state":"拒绝审核","bianhao":"1553466322","time":"2020-07-11","store":"郑东新区人民药店","person":"陈玉萍","phone":"12343232534","num":"1","money":"204","address":"镇西县大元村"},
-						{"id":"2","state":"拒绝审核","bianhao":"1356878565","time":"2020-01-07","store":"绵阳新区东泰康路人民大药店","person":"陈玉萍","phone":"1234654656","num":"5","money":"1234","address":"镇西县大元村"},
-					],
-					[
-						{"id":"0","state":"撤销","bianhao":"1594837261","time":"2020-04-16","store":"贵安新区安康药店","person":"陈玉萍","phone":"13921486865","num":"2","money":"1880","address":"镇西县大元村"},
-						{"id":"1","state":"撤销","bianhao":"1553466322","time":"2020-07-11","store":"郑东新区人民药店","person":"陈玉萍","phone":"12343232534","num":"1","money":"204","address":"镇西县大元村"},
-						{"id":"2","state":"撤销","bianhao":"1356878565","time":"2020-01-07","store":"绵阳新区东泰康路人民大药店","person":"陈玉萍","phone":"1234654656","num":"5","money":"1234","address":"镇西县大元村"},
-					],
+					// [
+					// 	{"id":"0","state":"待审核","bianhao":"1594837261","time":"2020-04-16","store":"贵安新区安康药店","person":"陈玉萍","phone":"13921486865","num":"2","money":"1880","address":"镇西县大元村"},
+					// 	{"id":"1","state":"待审核","bianhao":"1553466322","time":"2020-07-11","store":"郑东新区人民药店","person":"陈玉萍","phone":"12343232534","num":"1","money":"204","address":"郑东新区人民路23号"},
+					// 	{"id":"2","state":"待审核","bianhao":"1356878565","time":"2020-01-07","store":"绵阳新区东泰康路人民大药店","person":"陈玉萍","phone":"1234654656","num":"5","money":"1234","address":"东莞市步行街"},
+					// ],
+					// [
+					// 	{"id":"0","state":"已审核","bianhao":"1594837261","time":"2020-04-16","store":"贵安新区安康药店","person":"陈玉萍","phone":"13921486865","num":"2","money":"1880","address":"医学院东100米"},
+					// 	{"id":"1","state":"已审核","bianhao":"1553466322","time":"2020-07-11","store":"郑东新区人民药店","person":"陈玉萍","phone":"12343232534","num":"1","money":"204","address":"中心街59号"},
+					// 	{"id":"2","state":"已审核","bianhao":"1356878565","time":"2020-01-07","store":"绵阳新区东泰康路人民大药店","person":"陈玉萍","phone":"1234654656","num":"5","money":"1234","address":"唐山市保乐区正光街"},
+					// 	{"id":"0","state":"已审核","bianhao":"1594837261","time":"2020-04-16","store":"贵安新区安康药店","person":"陈玉萍","phone":"13921486865","num":"2","money":"1880","address":"镇西县大元村"},
+					// 	{"id":"1","state":"已审核","bianhao":"1553466322","time":"2020-07-11","store":"郑东新区人民药店","person":"陈玉萍","phone":"12343232534","num":"1","money":"204","address":"镇西县大元村"},
+					// 	{"id":"2","state":"已审核","bianhao":"1356878565","time":"2020-01-07","store":"绵阳新区东泰康路人民大药店","person":"陈玉萍","phone":"1234654656","num":"5","money":"1234","address":"镇西县大元村"},
+					// ],
+					// [
+					// 	{"id":"0","state":"拒绝审核","bianhao":"1594837261","time":"2020-04-16","store":"贵安新区安康药店","person":"陈玉萍","phone":"13921486865","num":"2","money":"1880","address":"镇西县大元村"},
+					// 	{"id":"1","state":"拒绝审核","bianhao":"1553466322","time":"2020-07-11","store":"郑东新区人民药店","person":"陈玉萍","phone":"12343232534","num":"1","money":"204","address":"镇西县大元村"},
+					// 	{"id":"2","state":"拒绝审核","bianhao":"1356878565","time":"2020-01-07","store":"绵阳新区东泰康路人民大药店","person":"陈玉萍","phone":"1234654656","num":"5","money":"1234","address":"镇西县大元村"},
+					// ],
+					// [
+					// 	{"id":"0","state":"撤销","bianhao":"1594837261","time":"2020-04-16","store":"贵安新区安康药店","person":"陈玉萍","phone":"13921486865","num":"2","money":"1880","address":"镇西县大元村"},
+					// 	{"id":"1","state":"撤销","bianhao":"1553466322","time":"2020-07-11","store":"郑东新区人民药店","person":"陈玉萍","phone":"12343232534","num":"1","money":"204","address":"镇西县大元村"},
+					// 	{"id":"2","state":"撤销","bianhao":"1356878565","time":"2020-01-07","store":"绵阳新区东泰康路人民大药店","person":"陈玉萍","phone":"1234654656","num":"5","money":"1234","address":"镇西县大元村"},
+					// ],
 				]
 			}
+		},
+		onLoad(option) {
+			console.log(option);
+			this.currentIndex = option.currentIndex * 1
+			this.pagecurrentindex = option.pageindex
+			this.titles = this.pagecurrentindex == '1'?['待审核','已审核','已拒绝','撤销'] :['待发货','已发货','已配车','已完成']
+			// this.order_type_list= this.pageindex == '1'?['APP1','APP2','APP3','APP4'] :['待发货','已发货','已配车','已完成']
+			this.order_type_id = JSON.parse(option.item).order_type_id
+			this.sub_type = this.pagecurrentindex == '1'? 'APP':'ERP'
+			this.request()
+		},
+		onPageScroll(e) {
+				this.scrollTop = e.scrollTop;
+		},
+		onReachBottom(){
+			if(this.pageindex >= this.total_page){
+				this.status = 'nomore'
+			}else{
+				console.log('到底了');
+				this.status = 'loading';
+				this.pageindex += 1;
+				this.request()
+			}
+			
 		},
 		methods: {
 			//返回上级页面方法
@@ -88,13 +126,57 @@
 				uni.navigateBack({				
 				})
 			},
-			//navbar右侧按钮方法
-			right(){
-				
+			//数据请求方法
+			request(){
+				const _this = this
+				this.$request({
+					data:{
+						proc:'APP_YWY_PORT',
+						type:'订单列表',
+						userid:this.$userinfo.userid,
+						sub_type:this.sub_type,
+						order_type_id:this.currentIndex,
+						current_page:this.pageindex,
+						key:this.key
+					}
+				}).then(res => {
+					const resdata = res.Msg_info
+					// this.noticeList = resdata
+					// console.log(resdata);
+					if(resdata[0].error){
+						this.orderList = []
+					}else{
+						// this.orderList = resdata
+						
+						_this.orderList.push(...resdata)
+						_this.pageindex = resdata[0].current_page * 1
+						_this.total_page = resdata[0].total_page * 1
+						_this.status = 'loadmore'
+						// console.log(_this.orderList);
+					}
+				})
 			},
-			//tabbar切换地图标记点方法
+			//搜索方法
+			search(e){ //点击键盘确定
+				// console.log(e.value);
+				this.pageindex = 1
+				this.key = e.value
+				this.orderList = []
+				this.request()
+			},
+			cancle(e){	//点击搜索二字
+				console.log(e.value);
+				this.pageindex = 1
+				this.key = e.value
+				this.orderList = []
+				this.request()
+			},
+			//tabbar切换方法
 			itemclick(index) {
 				let _this = this
+				this.pageindex = 1
+				this.key =''
+				this.orderList = []
 				//点击切换视图并回到顶部
 				if (_this.currentIndex != index) {
 					uni.pageScrollTo({
@@ -102,7 +184,8 @@
 					    duration: 100
 					});
 				}
-				_this.currentIndex = index				
+				_this.currentIndex = index
+				_this.request()
 			},
 			//点击列表跳转订单详情方法
 			Todetail(item,index){

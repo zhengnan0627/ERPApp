@@ -1,0 +1,29 @@
+
+page {
+	background-color: #EEEEEE;
+}
+.container {
+	width: 100vw;
+	padding-bottom: 50px;
+	background-color: #EEEEEE;
+	overflow: hidden;
+}
+.news-container {
+	width: 91vw;
+	padding: 10px 10px;
+	margin: 10px auto;
+	background-color: #FFFFFF;
+	border-radius: 10px;
+}
+.news-text {
+	height: 40px;
+	line-height:20px; 
+	 font-size: 15px; 
+	 color: #8a8a8a;
+	display: -webkit-box;
+	text-overflow:ellipsis; 
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2; 	
+	overflow: hidden;
+}
+

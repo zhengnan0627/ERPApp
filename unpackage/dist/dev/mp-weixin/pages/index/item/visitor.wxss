@@ -3,6 +3,9 @@
 	width: 100vw;
 	height: 100vh;
 	background-color: #EEEEEE;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	white-space:nowrap;
 }
 .day {
 	width: 100vw;

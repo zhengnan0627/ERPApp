@@ -282,9 +282,20 @@
 				} else if (val < this.min) {
 					val = this.min;
 				}
-				this.$nextTick(() => {
-					this.inputVal = val;
-				})
+				if(val % this.index != 0){
+					// console.log('不整');
+					val = this.min;
+					uni.showToast({
+						icon:'none',
+						title:`输入值必须是${this.index}的正整数倍`
+					})
+					// return
+				}
+					this.$nextTick(() => {
+						this.inputVal = val;
+					})
+				
+				
 			},
 			handleChange(value, type) {
 				if (this.disabled) return;

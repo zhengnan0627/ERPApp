@@ -1,0 +1,36 @@
+
+.container {
+	width: 100vw;
+	height: 100vh;
+	background-color: #FFFFFF;
+
+	text-overflow:ellipsis;
+	white-space:wrap;
+}
+.notice {
+	width: 100vw;
+	margin: 5px 0;
+	padding-left: 2.5vw;
+	background-color: #FFFFFF;
+}
+.notice-title {
+	width: 100vw;
+	height: 50px;
+	line-height: 50px;
+	font-size: 20px;
+}
+.notice-time {
+	width: 100vw;
+	height: 30px;
+	/* line-height: 50px; */
+	color: #a7a7a7;
+	font-size: 16px;
+}
+.notice-content {
+	width: 95vw;
+	margin: 0 auto;
+	font-size: 17px;
+	color: #4b4b4b;
+}
+
+

@@ -165,7 +165,7 @@
 			},
 			emitEvent() {
 				// u-radio的name不等于父组件的v-model的值时(意味着未选中)，才发出事件，避免多次点击触发事件
-				if(this.parent.value != this.name) this.$emit('change', this.name);
+				this.$emit('change', this.name);
 			},
 		}
 	};

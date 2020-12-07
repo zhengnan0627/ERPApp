@@ -7,10 +7,10 @@
 			</view>
 			<view class="header-mine">
 				<view class="mine-name">
-					员工姓名(员工编号)
+					{{$userinfo.userName}}
 				</view>
 				<view class="mine-name">
-					金牌业务员
+					{{$userinfo.userDept}}
 				</view>
 			</view>
 		</view>
@@ -30,7 +30,7 @@
 					本月销售排名
 				</view>
 				<view class="top-num" style="color: #00aa00; margin-right: 20rpx; font-size: 40rpx;">
-					第一名
+					第{{resdata.month_rank}}名
 				</view>
 			</view>
 		</view>
@@ -105,15 +105,19 @@
 						{"itemname":"上月客户数","itemnum":"123"},
 					],
 					"dataList3":[
-						{"itemname":"期初中类","itemnum":74.44},
-						{"itemname":"抗感染药","itemnum":9.11},
-						{"itemname":"散装普通中药饮片","itemnum":7.59},
-						{"itemname":"肠胃道疾病用药","itemnum":5.42},
-						{"itemname":"滋补营养药","itemnum":3.44}
+						// {"itemname":"期初中类","itemnum":74.44},
+						// {"itemname":"抗感染药","itemnum":9.11},
+						// {"itemname":"散装普通中药饮片","itemnum":7.59},
+						// {"itemname":"肠胃道疾病用药","itemnum":5.42},
+						// {"itemname":"滋补营养药","itemnum":3.44}
 					],
 				},
+				resdata:{
+					month_rank:'1',
+				},
 				index2: 0,
-				tabList2: ['日','月'], //普通数据赋值
+				tabList2: ['周','月'], //普通数据赋值
+				sub_type:'周',
 				//u-chart相关数据
 				cWidth:'',
 				cHeight:'',
@@ -140,7 +144,56 @@
 			_self = this;
 			this.cWidth=uni.upx2px(750);
 			this.cHeight=uni.upx2px(500);
-			this.showLineA("canvasLineA",this.$data.chartData);
+			
+			this.$request({
+				data:{
+					proc:'APP_YWY_PORT',
+					type:'个人业绩',
+					userid:this.$userinfo.userid,
+				}
+			}).then(res => {
+				const resdata = res.Msg_info
+				if(!resdata[0].error){
+					this.dataList.dataList1[0].itemnum = resdata[0].day_sales
+					this.dataList.dataList1[1].itemnum = resdata[0].month_yingshou
+					this.dataList.dataList1[2].itemnum = resdata[0].month_huikuan
+					this.dataList.dataList1[3].itemnum = resdata[0].month_xiaoshou
+					this.dataList.dataList2[0].itemnum = resdata[0].month_orders
+					this.dataList.dataList2[1].itemnum = resdata[0].month_avg_price
+					this.dataList.dataList2[2].itemnum = resdata[0].month_clients
+					this.dataList.dataList2[3].itemnum = resdata[0].pre_month_clients
+					this.resdata.month_rank = resdata[0].month_rank
+				}
+			})
+			this.$request({
+				data:{
+					proc:'APP_YWY_PORT',
+					type:'销售类别分布',
+					userid:this.$userinfo.userid,
+				}
+			}).then(res => {
+				const resdata = res.Msg_info
+				console.log(resdata);
+				if(!resdata[0].error){
+					let line = []
+					let linenum = []
+					line = resdata[0].items.split('+')
+					linenum = resdata[0].percents.split('+').map(Number)
+					console.log(linenum);
+					line.map((item,index) => {
+						let itemname = line[index]
+						let itemnum = linenum[index] * 100 
+						this.dataList.dataList3.push({
+							itemname,
+							itemnum:+itemnum.toFixed(2)
+						})
+					})
+					console.log(this.dataList.dataList3);
+				}
+			})
+		},
+		onShow() {
+			this.chartrequest()
 		},
 		methods: {
 			//返回上级页面方法
@@ -153,6 +206,40 @@
 			objectChange(e){
 				// console.log(e.tab);日/月
 				console.log(e.tab == '日');
+				this.sub_type = e.tab
+				this.chartrequest()
+			},
+			chartrequest(){
+				this.$request({
+					data:{
+						proc:'APP_YWY_PORT',
+						type:'个人业绩报表',
+						userid:this.$userinfo.userid,
+						sub_type:this.sub_type,
+						role:this.$userinfo.role,
+					}
+				}).then(res => {
+					const resdata = res.Msg_info
+					// console.log(resdata);
+					if(!resdata[0].error){
+						this.chartData.categories = []
+						this.chartData.series = []
+						this.chartData.categories = resdata[0].dates.split('+')
+						// this.chartData.series[0].name = resdata[0].dates.split('+')
+						resdata.map(item => {
+							let name = item.item_name
+							let data = item.item_array.split('+').map(Number)
+							let color = item.item_color
+							this.chartData.series.push({
+								name,
+								data,
+								color
+							})
+						})
+						// console.log(this.chartData.series);
+						this.showLineA("canvasLineA",this.$data.chartData);
+					}
+				})
 			},
 			showLineA(canvasId,chartData){
 				canvaLineA=new uCharts({
@@ -179,9 +266,9 @@
 						gridColor:'#CCCCCC',
 						dashLength:8,
 						splitNumber:5,
-						min:0.0,
-						max:3.7,
-						format:(val)=>{return val.toFixed(0)+'万元'}
+						// min:0.0,
+						// max:3.7,
+						format:(val)=>{return val.toFixed(1)+'万元'}
 					},
 					width: _self.cWidth*_self.pixelRatio,
 					height: _self.cHeight*_self.pixelRatio,
@@ -263,7 +350,7 @@
 		height: 100rpx;
 		font-size: 30rpx;
 		text-align: center;
-		padding: 0 4rpx;
+		padding: 0 2rpx;
 		border-right: 4rpx solid #EEEEEE;
 	}
 	.title-item:last-child{

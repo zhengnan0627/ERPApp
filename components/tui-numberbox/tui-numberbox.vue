@@ -75,8 +75,10 @@
 			},
 			//自定义参数
 			custom: {
-				type: [Number, String],
-				default: 0
+				type: Object,
+				default () {
+					return {};
+				}
 			}
 		},
 		created() {

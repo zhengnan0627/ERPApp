@@ -151,7 +151,7 @@
 	}
 
 	.tui-btn-green {
-		background: #35b06a !important;
+		background: #00aa00 !important;
 		color: #fff;
 	}
 

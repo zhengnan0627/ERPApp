@@ -1,7 +1,7 @@
 <template>
 	<view class="container" :style="{height:screenHeight+'px'}">
 		<uni-nav-bar left-icon="back"title="客户分布" @clickLeft="back" style="z-index:999"></uni-nav-bar>
-		<map :latitude="latitude" :longitude="longitude" id="fenbumap" ref="fenbumap"
+		<map :latitude="latitude" :longitude="longitude" id="fenbumap" ref="fenbumap" :key='mapkey'
 			 :markers="markers"	:scale="scale"
 			 @markertap="markertap"
 			 @regionchange="regionchange"
@@ -13,17 +13,17 @@
 		<view class="content"  v-if="mapview">
 			<view class="scrollitem">
 				<view class="scrolltime">
-					<text class="text" style="font-size: 40rpx;">{{markerspoplist[makersindex].store}}</text>
+					<text class="text" style="font-size: 40rpx;">{{markerspoplist[makersindex].c_company_name}}</text>
 				</view>
 				<view class="scrolltime">
 					<view class="" style="display: flex; flex-direction: row;">
-						<text class="text">{{markerspoplist[makersindex].person}}</text>
-						<text class="text">{{markerspoplist[makersindex].phone}}</text>
+						<text class="text">{{markerspoplist[makersindex].c_contact}}</text>
+						<text class="text">{{markerspoplist[makersindex].c_phone}}</text>
 					</view>
 					<uni-icons type="phone" size="30" @click="makePhoneCall" color="#3cff06"></uni-icons>
 				</view>
 				<view class="scrolltime">
-						<text class="text">{{markerspoplist[makersindex].address}}</text>
+						<text class="text">{{markerspoplist[makersindex].c_address}}</text>
 				</view>
 				<view class="scrollnavigation" @click="mapnavigation">
 						<text class="text2">前往导航</text>
@@ -38,6 +38,9 @@
 		 // :style="{height:windowHeight+'px'}" 
 		data() {
 			return {
+				userid:null,//用户id(从缓存中取)
+				role:'业务员',//用户角色role(从缓存中取)
+				mapkey:1,//地图key,重新渲染使用
 				//屏幕高度
 				screenHeight:0,
 				//可使用屏幕高度
@@ -46,9 +49,9 @@
 				//地图组件相应数据
 				fenbumap:null,
 				title:"map",
-				latitude: 39.909,
-				longitude: 116.39742,
-				scale:10,//缩放数据
+				latitude: 39.909,//纬度
+				longitude: 116.39742,//经度
+				scale:7,//缩放数据
 				//控件数据
 				controls:[
 					{
@@ -74,67 +77,62 @@
 						clickable:true,
 					}
 				],
+				//标记点数据
 				markers:[
-					{
-						id:1,
-						latitude: 39.909,
-						longitude: 116.39742,
-						// #ifdef APP-NVUE
-						iconPath:'../../../static/image/map.png',
-						width:20,
-						height:20,
-						// #endif
-					},
-					{
-						id:2,
-						latitude: 39.922,
-						longitude: 116.40015,
-						// #ifdef APP-NVUE
-						iconPath:'../../../static/image/map.png',
-						width:20,
-						height:20,
-						// #endif
-					},
-					{
-						id:3,
-						latitude: 39.920,
-						longitude: 116.39300,
-						// #ifdef APP-NVUE
-						iconPath:'../../../static/image/map.png',
-						width:20,
-						height:20,
-						// #endif
-					},
+					// {
+					// 	id:1,
+					// 	latitude: 34.765515,
+					// 	longitude: 113.753602,
+					// 	// #ifdef APP-NVUE
+					// 	iconPath:'../../../static/image/map.png',
+					// 	width:20,
+					// 	height:20,
+					// 	// #endif
+					// },
+					// {
+					// 	id:2,
+					// 	latitude: 39.922,
+					// 	longitude: 116.40015,
+					// 	// #ifdef APP-NVUE
+					// 	iconPath:'../../../static/image/map.png',
+					// 	width:20,
+					// 	height:20,
+					// 	// #endif
+					// },
+					// {
+					// 	id:3,
+					// 	latitude: 39.920,
+					// 	longitude: 116.39300,
+					// 	// #ifdef APP-NVUE
+					// 	iconPath:'../../../static/image/map.png',
+					// 	width:20,
+					// 	height:20,
+					// 	// #endif
+					// },
 				],
 				makersindex:0,//标记点下标
 				//标记点点击弹出层数据
 				markerspoplist:[
-					{"store":"东莞市寮步前方药店","person":"张三","phone":"138503721923","address":"广东省东莞市寮步镇向西村",},
-					{"store":"贵安新区安康药店","person":"王萍","phone":"13338410321","address":"贵安新区人民路23号",},
-					{"store":"郑东新区人民药店","person":"李磊","phone":"13451232123","address":"郑东新区医学院路56号",},
-					{"store":"东莞市寮步前方药店","person":"张三","phone":"138503721923","address":"广东省东莞市寮步镇向西村",},
-					{"store":"贵安新区安康药店","person":"王萍","phone":"13338410321","address":"贵安新区人民路23号",},
-					{"store":"郑东新区人民药店","person":"李磊","phone":"13451232123","address":"郑东新区医学院路56号",},
-					{"store":"东莞市寮步前方药店","person":"张三","phone":"138503721923","address":"广东省东莞市寮步镇向西村",},
-					{"store":"贵安新区安康药店","person":"王萍","phone":"13338410321","address":"贵安新区人民路23号",},
-					{"store":"郑东新区人民药店","person":"李磊","phone":"13451232123","address":"郑东新区医学院路56号",},
-					{"store":"东莞市寮步前方药店","person":"张三","phone":"138503721923","address":"广东省东莞市寮步镇向西村",},
-					{"store":"贵安新区安康药店","person":"王萍","phone":"13338410321","address":"贵安新区人民路23号",},
-					{"store":"郑东新区人民药店","person":"李磊","phone":"13451232123","address":"郑东新区医学院路56号",},
-					{"store":"东莞市寮步前方药店","person":"张三","phone":"138503721923","address":"广东省东莞市寮步镇向西村",},
-					{"store":"贵安新区安康药店","person":"王萍","phone":"13338410321","address":"贵安新区人民路23号",},
-					{"store":"郑东新区人民药店","person":"李磊","phone":"13451232123","address":"郑东新区医学院路56号",},
-					{"store":"东莞市寮步前方药店","person":"张三","phone":"138503721923","address":"广东省东莞市寮步镇向西村",},
-					{"store":"贵安新区安康药店","person":"王萍","phone":"13338410321","address":"贵安新区人民路23号",},
-					{"store":"郑东新区人民药店","person":"李磊","phone":"13451232123","address":"郑东新区医学院路56号",},
-					{"store":"贵安新区安康药店","person":"王萍","phone":"13338410321","address":"贵安新区人民路23号",},
-					{"store":"郑东新区人民药店","person":"李磊","phone":"13451232123","address":"郑东新区医学院路56号",},
+					// {"store":"东莞市寮步前方药店","person":"张三","phone":"138503721923","address":"广东省东莞市寮步镇向西村",},
+					// {"store":"贵安新区安康药店","person":"王萍","phone":"13338410321","address":"贵安新区人民路23号",},
 				],
 			}
 		},	
 		onLoad:function(){
 			let _this = this
-			_this.markerspush()
+			_this.userid = uni.getStorageSync('userid')
+			_this.role = uni.getStorageSync('role')
+			uni.getLocation({
+			    type: 'gcj02',
+			    success: function (res) {
+			        console.log('当前位置的经度：' + res.longitude);
+			        console.log('当前位置的纬度：' + res.latitude);
+					_this.longitude = res.longitude
+					_this.latitude = res.latitude
+					_this.request()
+			    }
+			});
+			// _this.markerspush()
 			// let height = plus.navigator.getStatusbarHeight()
 			//定义设备高度
 			uni.getSystemInfo({
@@ -147,8 +145,9 @@
 			});
 		},
 		onReady:function(){
+			let _this = this
+			_this.fenbumap = uni.createMapContext('fenbumap',_this)
 			
-			this.fenbumap = uni.createMapContext('fenbumap',this)
 			// this.fenbumap = this.$refs.fenbumap
 			// console.log(_this.fenbumap);
 		},
@@ -158,8 +157,48 @@
 					
 				})
 			},
+			request(){
+				let _this = this
+				console.log('当前位置的经度：' + _this.longitude);
+				console.log('当前位置的纬度：' + _this.latitude);
+				console.log('当前位置的角色：' + _this.role);
+				_this.Request({
+					data:{
+						proc:'APP_YWY_PORT',
+						type:'客户分布',
+						userid:_this.userid,
+						radius:0,
+						current_jd:_this.longitude,
+						current_wd:_this.latitude,
+						role:_this.role
+					}
+				}).then(res => {
+					const resdata = res.Msg_info
+					console.log(resdata[0],resdata[1]);
+					_this.markerspoplist = resdata
+					resdata.forEach((item,index) => {
+						// let {C_JD,C_WD,c_phone} = item
+						// let map = {}
+						// _this.$set(map,'id',+c_phone)
+						// _this.$set(map,'longitude',+C_JD)
+						// _this.$set(map,'latitude',+C_WD)
+						// _this.markers.push(map)
+						// console.log(item);
+						var markerspush = {}
+						markerspush.id = index
+						markerspush.latitude = +item.C_WD
+						markerspush.longitude = +item.C_JD
+						// _this.markers.push(markerspush)		
+						_this.$set( _this.markers,index,markerspush)
+					})
+					_this.markers = JSON.parse(JSON.stringify(_this.markers))
+					// console.log(_this.markers);
+					// _this.mapkey += 1
+					_this.$forceUpdate();
+				})
+			},
 			markerspush() {			
-				var _this = this
+				let _this = this
 				// var markerspush = {}
 				// console.log(_this.markers);
 				// console.log("开始push");
@@ -178,10 +217,8 @@
 					_this.markers.push(markerspush),
 					_this.markerspoplist.push(_this.markerspoplist[i])
 				}
-				// console.log(_this.markers);
+				console.log(_this.markers);
 				_this.$forceUpdate();
-				
-
 			},
 			//点击添加标记点测试
 			markerspush2() {
@@ -216,7 +253,7 @@
 			//电话图标方法
 			makePhoneCall() {
 				uni.makePhoneCall({
-					phoneNumber: this.markerspoplist[this.makersindex].phone
+					phoneNumber: this.markerspoplist[this.makersindex].c_phone
 				})
 			},
 			//放回上一页方法
@@ -231,8 +268,9 @@
 				// this.scale = this.fenbumap.getScale()
 				_this.fenbumap.getScale({
 					success:(e)=>{
-						// console.log(e.scale);
+						console.log(e.scale);
 						_this.scale = Math.round(e.scale) 
+						// _this.scale = e.scale.toFixed(2)
 						}
 					},
 					{
@@ -258,34 +296,36 @@
 			},
 			//点击标记点显示底部内容框
 			markertap(e) {
+				
 				//如果点击的是同一个标记点则顶部弹出层隐藏
-				if(this.mapview && this.makersindex == e.detail.markerId - 1) {
+				if(this.mapview && this.makersindex == e.detail.markerId ) {
 					this.mapview = false
 					return
+				}else{
+					console.log(e);
+					this.makersindex =  e.detail.markerId 
+								
+					this.mapview = true 
 				}
-				// console.log(e);
-				this.makersindex =  e.detail.markerId - 1
-			
-				this.mapview = true 
 					// const markerId = e.detail.markerId
-				
 			},	
 			//地图导航方法
 			mapnavigation() {
 				let _this = this
+				console.log(_this.markerspoplist[_this.makersindex].C_WD);
 				uni.getLocation({
 				    type: 'gcj02', //返回可以用于uni.openLocation的经纬度
 					geocode: true,
 				    success: function (res) {
 				        const latitude = res.latitude;
 				        const longitude = res.longitude;
+						// console.log(latitude,        longitude);
 					// 	const address = res.address;
 					// console.log('详细地址123：' + address.name);
 				        uni.openLocation({
-				            latitude: latitude+0.0094,
-				            longitude: longitude+0.0084,
-							name:"青春大药房",
-							address:"清镇市新店镇街上",
+				            latitude: _this.markerspoplist[_this.makersindex].C_WD * 1,
+				            longitude: _this.markerspoplist[_this.makersindex].C_JD * 1,
+							name:_this.markerspoplist[_this.makersindex].c_contact,							address:_this.markerspoplist[_this.makersindex].c_address,
 				            success: function (res) {
 				                console.log('success');
 								 console.log('详细地址：' + res.address);
@@ -293,6 +333,39 @@
 				        });
 				    }
 				});
+			},
+			//请求封装
+			Request(options){
+				const baseUrl = uni.getStorageSync('baseUrl') ? uni.getStorageSync('baseUrl') : '';
+				const api = `http://${baseUrl}/VXMail/PublicUrl.ashx` 
+				const promise = new Promise(function(resolve,reject){
+					uni.showLoading({
+						title:'加载中',	
+					})
+					console.log('加载中');
+					uni.request({
+						url:api,//+options.url
+						method:options.method ||"GET",
+						data:options.data || {},
+						dataType:options.dataType || "json",
+						header:options.header || {},
+						success:function(res){
+							uni.hideLoading()
+							console.log('接口返回'+ res);
+							if(res.statusCode == 200){
+								resolve(res.data)
+							}else{
+								resolve(res.data)
+							}
+						},
+						fail:function(res){
+							uni.hideLoading()
+							// console.log('接口失败'+ res);
+							reject('网络出错')
+						}
+					})
+				})
+				return promise;
 			},
 		}
 	}

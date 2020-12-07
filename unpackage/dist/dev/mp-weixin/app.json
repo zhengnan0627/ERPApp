@@ -1,12 +1,12 @@
 {
   "pages": [
+    "pages/login/loginpages",
     "pages/index/index",
     "pages/order/order",
     "pages/cart/cart",
     "pages/mine/mine",
     "pages/index/item/perf",
     "pages/index/item/sell",
-    "pages/index/item/map",
     "pages/index/item/scheme",
     "pages/index/item/notice",
     "pages/index/item/directory",
@@ -15,48 +15,66 @@
     "pages/index/item/client",
     "pages/index/item/clerk",
     "pages/index/item/check",
-    "pages/index/item/goods"
+    "pages/index/item/goods",
+    "pages/index/item/news",
+    "pages/mine/item/integral",
+    "pages/mine/item/earnings",
+    "pages/mine/item/news",
+    "pages/mine/item/order",
+    "pages/mine/item/feedback",
+    "pages/mine/item/password",
+    "pages/index/item/seeclient",
+    "pages/index/item/map",
+    "pages/index/item/stockout",
+    "pages/index/item/maps",
+    "pages/index/item/taskdetail",
+    "pages/index/item/deliverylistdetails",
+    "pages/index/item/goodsitems",
+    "pages/index/item/sellsubpage",
+    "pages/index/item/checksubpage",
+    "pages/index/item/visitorsubpage",
+    "pages/index/item/mapcorrect",
+    "pages/index/item/chooseLocation",
+    "pages/login/login",
+    "pages/login/password",
+    "pages/index/item/noticsubpages",
+    "pages/index/item/visitorslog",
+    "pages/index/item/kehufenbu",
+    "pages/order/item/orderlist",
+    "pages/order/item/sckehu",
+    "pages/order/item/scshangpin",
+    "pages/order/item/fphuiqian",
+    "pages/order/item/fphuifang",
+    "pages/order/item/chukudanhf",
+    "pages/order/item/selectkehu",
+    "pages/order/item/goodslist",
+    "pages/order/item/goodsdetail",
+    "pages/order/item/search",
+    "pages/order/item/cart",
+    "pages/order/item/cartselectkehu",
+    "pages/order/item/submitOrder",
+    "pages/order/item/address",
+    "pages/order/item/news",
+    "pages/order/item/orderdetail",
+    "pages/index/item/kehufenbu",
+    "pages/index/item/openaccount",
+    "pages/index/item/openaccountjindu",
+    "pages/index/item/kehumap",
+    "pages/index/item/kehumap"
   ],
   "subPackages": [],
   "window": {
+    "scrollIndicator": "none",
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "uni-app",
     "navigationBarBackgroundColor": "#F8F8F8",
     "backgroundColor": "#F8F8F8"
   },
-  "tabBar": {
-    "color": "#1a1a1a",
-    "selectedColor": "#65fc00",
-    "borderStyle": "white",
-    "backgroundColor": "#ffffff",
-    "fontSize": "14px",
-    "iconWidth": "24px",
-    "list": [
-      {
-        "pagePath": "pages/index/index",
-        "iconPath": "static/image/home.png",
-        "selectedIconPath": "static/image/homefill.png",
-        "text": "主页"
-      },
-      {
-        "pagePath": "pages/order/order",
-        "iconPath": "static/image/order.png",
-        "selectedIconPath": "static/image/orderfill.png",
-        "text": "代客下单"
-      },
-      {
-        "pagePath": "pages/cart/cart",
-        "iconPath": "static/image/cart.png",
-        "selectedIconPath": "static/image/cartfill.png",
-        "text": "购物车"
-      },
-      {
-        "pagePath": "pages/mine/mine",
-        "iconPath": "static/image/mine.png",
-        "selectedIconPath": "static/image/minefill.png",
-        "text": "个人中心"
-      }
-    ]
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将被用于小程序位置信息的展示"
+    }
   },
-  "usingComponents": {}
+  "usingComponents": {},
+  "sitemapLocation": "sitemap58.json"
 }

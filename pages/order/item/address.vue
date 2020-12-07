@@ -4,21 +4,18 @@
 		<view class="tui-address">
 			<block v-for="(item,index) in addressList" :key="index">
 				<tui-list-cell padding="0">
-					<view class="tui-address-flex">
-						<view class="tui-address-left">
-							<view class="tui-address-main">
-								<view class="tui-address-name tui-ellipsis">{{["echo.","王大大","大长腿"][index]}}</view>
-								<view class="tui-address-tel">138****7708</view>
-							</view>
-							<view class="tui-address-detail">
-								<view class="tui-address-label" v-if="index===0">默认</view>
-								<view class="tui-address-label" v-if="index!=2">{{["公司","住宅","其它"][index]}}</view>
-								<text>广东省深圳市南山区高新科技园中区一路</text>
-							</view>
-						</view>
-						<view class="tui-address-imgbox">
-							<image class="tui-address-img" src="/static/images/mall/my/icon_addr_edit.png" />
-						</view>
+					<view class="tui-address-flex" @click="selectaddress(item,index)">
+						<view class="tui-address-name tui-ellipsis">{{item.a_name}}</view>
+						<view class="tui-address-name tui-address-tel">{{item.a_phone}}</view>
+						<view class="tui-address-name tui-address-detail">
+							<view class="tui-address-label" v-if="item.is_default == '1'">默认</view>
+							<text>{{item.a_address}}</text>
+						</view>	
+								
+							
+							
+						
+
 					</view>
 				</tui-list-cell>
 			</block>
@@ -34,11 +31,28 @@
 	export default {
 		data() {
 			return {
-				addressList: [1,2,3]
+				addressList: [1,2,3],
+				kehuinfo:{}
 			}
 		},
 		onLoad: function(options) {
-
+			this.kehuinfo = JSON.parse(options.kehuinfo)
+			this.$request({
+				data:{
+					proc:'APP_YWY_PORT',
+					type:'收货地址',
+					userid:this.$userinfo.userid,
+					c_id:this.kehuinfo.c_id,
+				}
+			}).then(res => {
+			const resdata = res.Msg_info
+			console.log(resdata);
+			if(resdata[0].error){
+				this.addressList = []
+			}else{
+				this.addressList = resdata
+				}
+			})
 		},
 		onShow: function() {},
 		methods: {
@@ -47,10 +61,14 @@
 				uni.navigateBack({				
 				})
 			},
-			editAddr(index, addressType) {
-				uni.navigateTo({
-					url: "../editAddress/editAddress"
+			selectaddress(item,index){
+				console.log(item);
+				uni.navigateBack({
 				})
+				this.$nextTick(function(){
+					this.$bus.$emit('selectaddress',item)
+				})
+				
 			}
 		}
 	}
@@ -63,35 +81,40 @@
 		padding-bottom: 160rpx;
 	}
 	.tui-address-flex {
-		display: flex;
+		box-sizing: border-box;
+		padding: 5px 15px;
+		/* display: flex;
 		justify-content: space-between;
-		align-items: center;
+		align-items: center; */
 	}
 
 	.tui-address-main {
 		width: 600rpx;
 		height: 70rpx;
 		display: flex;
-		font-size: 30rpx;
+		font-size: 36rpx;
 		line-height: 86rpx;
 		padding-left: 30rpx;
 	}
 
 	.tui-address-name {
-		width: 120rpx;
+		width: 100%;
 		height: 60rpx;
+		line-height: 60rpx;
+		font-size: 36rpx;
 	}
 
 	.tui-address-tel {
-		margin-left: 10rpx;
+		/* margin-left: 10rpx; */
+		font-size: 30rpx;
 	}
 
 	.tui-address-detail {
-		font-size: 24rpx;
+		font-size: 30rpx;
 		word-break: break-all;
 		padding-bottom: 25rpx;
-		padding-left: 25rpx;
-		padding-right: 120rpx;
+		/* padding-left: 25rpx; */
+		/* padding-right: 120rpx; */
 	}
 
 	.tui-address-label {

@@ -5,7 +5,7 @@
 		<!-- <u-tabs :is-scroll="false" :list="tabList" :current="index" @change="change"
 				active-color="#55aa00" inactive-color="#000000" :bold="false"  
 		/> -->
-		<block v-for="item in 3">
+		<!-- <block v-for="item in 3">
 			<view class="content">
 				<view class="content-item">
 					<view class="item-title">
@@ -38,7 +38,7 @@
 					</view>
 				</view>
 			</view>
-		</block>
+		</block> -->
 		
 	</view>
 </template>

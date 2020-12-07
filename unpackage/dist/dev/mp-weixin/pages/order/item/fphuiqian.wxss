@@ -1,0 +1,9 @@
+
+page{
+	background: #EEEEEE;
+}
+.container {
+	width: 100vw;
+	overflow: hidden;
+}	
+

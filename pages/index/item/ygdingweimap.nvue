@@ -1,0 +1,396 @@
+<template>
+	<view class="container" :style="{height:screenHeight+'px'}">
+		<uni-nav-bar left-icon="back" :title="title" @clickLeft="back" style="z-index:999"></uni-nav-bar>
+		<map :latitude="latitude" :longitude="longitude" id="fenbumap" ref="fenbumap" :key='mapkey'
+			 :markers="markers"	:scale="scale"
+			 @markertap="markertap"
+			 style="width: 750rpx;"
+			 :style="{height:windowHeight+'px'}" 
+		></map>	
+		<view class="content"  v-if="mapview">
+			<view class="scrollitem">
+				<view class="scrolltime">
+					<text class="text" style="font-size: 36rpx;">{{markerspoplist[makersindex].yg_name}}</text>
+				</view>
+				<view class="scrolltime">
+					<view class="" style="display: flex; flex-direction: row;">
+						<!-- <text class="text">{{markerspoplist[makersindex].yg_name}}</text> -->
+						<text class="text">{{markerspoplist[makersindex].phone}}</text>
+					</view>
+					<uni-icons type="phone" size="30" @click="makePhoneCall" color="#3cff06"></uni-icons>
+				</view>
+				<view class="scrolltime">
+						<text class="text">{{markerspoplist[makersindex].riqi}}</text>
+				</view>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		 // :style="{height:windowHeight+'px'}" 
+		data() {
+			return {
+				userid:null,//用户id(从缓存中取)
+				role:'业务员',//用户角色role(从缓存中取)
+				title:'员工定位',
+				//上级页面传递的数据
+				starttime:'',
+				endtime:'',
+				subtype:'',
+				yg_name:'',
+				yg_id:'',
+				//上级页面传递的数据----结束
+				mapkey:1,//地图key,重新渲染使用
+				//屏幕高度
+				screenHeight:0,
+				//可使用屏幕高度
+				windowHeight:0,
+				mapview:false,
+				//地图组件相应数据
+				fenbumap:null,
+				title:"map",
+				latitude: 39.909,//纬度
+				longitude: 116.39742,//经度
+				scale:7,//缩放数据
+				//控件数据
+				controls:[
+					{
+						id:1,
+						iconPath:'/static/image/controls1.png',
+						position:{
+							left:310,
+							top:300,
+							width:40,
+							height:40,
+						},
+						clickable:true,
+					},
+					{
+						id:2,
+						iconPath:'/static/image/controls2.png',
+						position:{
+							left:310,
+							top:340,
+							width:40,
+							height:40,
+						},
+						clickable:true,
+					}
+				],
+				//标记点数据
+				markers:[
+					// {
+					// 	id:1,
+					// 	latitude: 34.765515,
+					// 	longitude: 113.753602,
+					// 	// #ifdef APP-NVUE
+					// 	iconPath:'../../../static/image/map.png',
+					// 	width:20,
+					// 	height:20,
+					// 	// #endif
+					// },
+				],
+				makersindex:0,//标记点下标
+				//标记点点击弹出层数据
+				markerspoplist:[
+					// {"store":"东莞市寮步前方药店","person":"张三","phone":"138503721923","address":"广东省东莞市寮步镇向西村",},
+					// {"store":"贵安新区安康药店","person":"王萍","phone":"13338410321","address":"贵安新区人民路23号",},
+				],
+			}
+		},	
+		onLoad:function(option){
+			let _this = this
+			console.log(option);
+			_this.subtype = option.subtype
+			_this.starttime = option.starttime
+			_this.endtime = option.endtime
+			if(_this.subtype == '全部'){
+				_this.title = '所有业务员-定位信息'
+			}else{
+				_this.yg_name =  JSON.parse(option.yginfo).yg_name
+				_this.yg_id =  JSON.parse(option.yginfo).yg_id
+				_this.title = `${_this.yg_name}-定位信息`
+			}	
+			_this.userid = uni.getStorageSync('userid')
+			_this.role = uni.getStorageSync('role')
+			uni.getLocation({
+			    type: 'gcj02',
+			    success: function (res) {
+			        console.log('当前位置的经度：' + res.longitude);
+			        console.log('当前位置的纬度：' + res.latitude);
+					_this.longitude = res.longitude
+					_this.latitude = res.latitude
+					_this.request()
+			    },
+				complete: function (res) {
+				    // console.log('获取位置信息接口调用完成：' + res);
+				}
+			});
+		
+			// let height = plus.navigator.getStatusbarHeight()
+			//定义设备高度
+			uni.getSystemInfo({
+			    success: function (res) {
+					_this.windowHeight = res.windowHeight		
+					 _this.screenHeight = res.screenHeight - plus.navigator.getStatusbarHeight()
+					// _this.screenHeight = res.screenHeight - res.statusBarHeight 无效改为原生方法
+					 // _this.markers[1].label.content = '452'视图数据可更新
+			    }
+			});
+		},
+		onReady:function(){
+			let _this = this
+			_this.fenbumap = uni.createMapContext('fenbumap',_this)
+			
+			// this.fenbumap = this.$refs.fenbumap
+			// console.log(_this.fenbumap);
+		},
+		methods: {
+			//放回上一页方法
+			back(){
+				uni.navigateBack({
+				   
+				})
+			},
+			request(){
+				let _this = this
+				_this.markers = []
+				console.log('当前位置的经度：' + _this.longitude);
+				console.log('当前位置的纬度：' + _this.latitude);
+				console.log('当前位置的subtype：' + _this.subtype);
+				console.log('当前位置的yg_id：' + _this.yg_id);
+				console.log('当前位置的start_date：' + _this.starttime);
+				console.log('当前位置的end_date：' + _this.endtime);
+				_this.Request({
+					data:{
+						proc:'APP_YWY_PORT',
+						type:'历史定位',
+						subtype:_this.subtype,
+						yg_id:_this.yg_id,
+						start_date:_this.starttime,
+						end_date:_this.endtime,
+					}
+				}).then(res => {
+					const resdata = res.Msg_info
+					console.log(resdata[0],resdata[1]);
+					if(resdata[0].error){
+						uni.showToast({
+							title:resdata[0].error,
+							icon:'none'
+						})
+						_this.markers = []
+						return
+					}
+					_this.markerspoplist = resdata
+					resdata.forEach((item,index) => {
+						// let {C_JD,C_WD,c_phone} = item
+						// let map = {}
+						// _this.$set(map,'id',+c_phone)
+						// _this.$set(map,'longitude',+C_JD)
+						// _this.$set(map,'latitude',+C_WD)
+						// _this.markers.push(map)
+						// console.log(item);
+						var markerspush = {}
+						markerspush.id = index
+						markerspush.latitude = +item.wd
+						markerspush.longitude = +item.jd
+						// _this.markers.push(markerspush)		
+						_this.$set( _this.markers,index,markerspush)
+					})
+					_this.markers = JSON.parse(JSON.stringify(_this.markers))
+					// console.log(_this.markers);
+					console.log(_this.markerspoplist);
+					// _this.mapkey += 1
+					_this.$forceUpdate();
+				})
+			},
+			//电话图标方法
+			makePhoneCall() {
+				uni.makePhoneCall({
+					phoneNumber: this.markerspoplist[this.makersindex].phone
+				})
+			},
+			//视野变化时触发
+			regionchange(e){
+				let _this = this
+				// this.scale = this.fenbumap.getScale()
+				_this.fenbumap.getScale({
+					success:(e)=>{
+						console.log(e.scale);
+						_this.scale = Math.round(e.scale) 
+						}
+					},
+					{
+						fail:(e)=>{
+							console.log(e);
+						}
+					}
+				);
+			},
+			//控件点击方法
+			controltap(e) {
+				//点击添加标记点测试(先有安卓机最大6500个标记点，超出无法显示程序未响应)
+				// this.markerspush2()
+				// console.log(e.detail.controlId);
+				const controlId = e.detail.controlId
+				if(controlId == 1){
+					this.scale = (this.scale == 18)?this.scale:this.scale + 1;//三目运算累加
+					// console.log(this.scale);
+				}else{
+					this.scale = (this.scale == 5)?this.scale:this.scale - 1;//三目运算累减
+					// console.log(this.scale);
+				}
+			},
+			//点击标记点显示底部内容框
+			markertap(e) {
+				
+				//如果点击的是同一个标记点则顶部弹出层隐藏
+				if(this.mapview && this.makersindex == e.detail.markerId ) {
+					this.mapview = false
+					return
+				}else{
+					console.log(e);
+					this.makersindex =  e.detail.markerId 
+								
+					this.mapview = true 
+				}
+					// const markerId = e.detail.markerId
+			},	
+			//地图导航方法
+			mapnavigation() {
+				let _this = this
+				console.log(_this.markerspoplist[_this.makersindex].C_WD);
+				uni.getLocation({
+				    type: 'gcj02', //返回可以用于uni.openLocation的经纬度
+					geocode: true,
+				    success: function (res) {
+				        const latitude = res.latitude;
+				        const longitude = res.longitude;
+						// console.log(latitude,        longitude);
+					// 	const address = res.address;
+					// console.log('详细地址123：' + address.name);
+				        uni.openLocation({
+				            latitude: _this.markerspoplist[_this.makersindex].C_WD * 1,
+				            longitude: _this.markerspoplist[_this.makersindex].C_JD * 1,
+							name:_this.markerspoplist[_this.makersindex].c_contact,							address:_this.markerspoplist[_this.makersindex].c_address,
+				            success: function (res) {
+				                console.log('success');
+								 console.log('详细地址：' + res.address);
+				            }
+				        });
+				    }
+				});
+			},
+			//请求封装
+			Request(options){
+				const baseUrl = uni.getStorageSync('baseUrl') ? uni.getStorageSync('baseUrl') : '';
+				const api = `http://${baseUrl}/VXMail/PublicUrl.ashx` 
+				const promise = new Promise(function(resolve,reject){
+					uni.showLoading({
+						title:'加载中',	
+					})
+					console.log('加载中');
+					uni.request({
+						url:api,//+options.url
+						method:options.method ||"GET",
+						data:options.data || {},
+						dataType:options.dataType || "json",
+						header:options.header || {},
+						success:function(res){
+							uni.hideLoading()
+							console.log('接口返回'+ res);
+							if(res.statusCode == 200){
+								resolve(res.data)
+							}else{
+								resolve(res.data)
+							}
+						},
+						fail:function(res){
+							uni.hideLoading()
+							// console.log('接口失败'+ res);
+							reject('网络出错')
+						}
+					})
+				})
+				return promise;
+			},
+		}
+	}
+</script>
+
+<style>
+	.container {
+		width: 750rpx;
+		overflow:hidden;
+		text-overflow:ellipsis;
+		/* white-space:nowrap; */
+	}
+	.content {
+		width: 750rpx;
+		height: 110px;
+		position: absolute !important;
+		bottom: 0px ;
+		z-index: 9999 !important;
+		background-color: #FFFFFF;
+	}
+	.scrollitem {
+		width: 750rpx; 
+		flex: 1;
+		justify-content: center;
+		background-color: #FFFFFF;
+		border-bottom-width:1px;
+		border-bottom-style:solid;
+		border-bottom-color:#EEEEEE;	
+	}
+	.scrolltime {
+		width: 700rpx;
+		height: 30px;
+		line-height: 30px;
+		padding-left: 10px;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+	}
+	.scrolltitle {
+		width: 600rpx;
+		height: 20px;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		color: #00AA00;
+	}
+	.scrollstore {
+		width: 700rpx;
+		height: 10px;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+	}
+	.scrollperson {
+		width: 700rpx;
+		height: 10px;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+	}
+	.scrollnavigation {
+		width: 400rpx;
+		height: 20px;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		background-color: #00DC00;
+		margin-left: 175rpx;
+		text-align: center;
+		border-radius: 30px;
+	}
+	.text {
+		color: #333333;
+		font-size: 15px;
+	}
+	.text2 {
+		color: #FFFFFF;
+	}
+</style>

@@ -6,10 +6,10 @@
 				<image src="../../../static/image/integral.png" mode=""></image>
 			</view>
 			<view class="content-item" style="margin: 20px 0; ">
-				张三
+				
 			</view>
 			<view class="content-item">
-				当前积分：500
+				当前积分：0
 			</view>
 		</view>
 	</view>

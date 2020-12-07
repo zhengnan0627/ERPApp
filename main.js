@@ -15,44 +15,8 @@ Vue.prototype.$store = store
 import $request from './common/request.js'
 Vue.prototype.$request = $request
 
-
-//涛请求封装
-// import apis from './common/config.js';//引入域名，就是接口前面相同的那一串(涛)
-// //小程序公司编号
-// // let companyId=1;//注释掉 用的上了再说
-
-// Vue.prototype.$request = function(url,data,callback){
-// 	let _this =this;
-// 	// let jwt= uni.getStorageSync('jwt')||'';//jwt加密 没有酒注释掉
-// 	//console.log("jwt:",jwt);
-	
-// 	// data.companyId=companyId;//小程序公司编号
-// 	let promise = uni.request({//简易版
-// 		url: apis + url,
-// 		method: 'POST',
-// 		data: data,
-// 		// header: {'content-type': 'application/x-www-form-urlencoded'},
-// 		// success: res => {},
-// 		// fail: () => {},
-// 		// complete: () => {}
-// 	});
-// 	if (callback) {
-// 		promise.then(function(response){
-// 			if (response) {
-// 				//console.log(response)
-// 				let res = response[1].data
-// 				callback(res)
-// 			// }
-// 			}else{//没有返回值时候触发
-// 				uni.showToast({
-// 					title: response.msg,
-// 					duration:2000,
-// 					icon:"none"
-// 				});
-// 			}
-// 		})
-// 	}
-// }
+//引入eventBus
+Vue.prototype.$bus = new Vue();
 
 App.mpType = 'app'
 

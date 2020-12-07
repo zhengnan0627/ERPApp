@@ -2,19 +2,22 @@
 	<view>
 		<uni-nav-bar fixed="true" left-icon="back"  title="申请进度"  @clickLeft="back"/>
 		<sun-tab :value.sync="index" :tabList="tabList" rangeKey="name"  @change="tabChange" bgColor="#ffffff" activeColor="#55aa00" style="border-bottom: 1px solid #EEEEEE;"></sun-tab>	
-		<block v-for="(item,ind) in jinduList[index]">
+		<block v-for="(item,ind) in jinduList">
 			<view class="jinduList" :key="ind">
 				<view class="list-name">
-					{{item.name}}
+					{{item.company_name}}
 				</view>
 				<view class="list-time">
-					申请时间:{{item.time}}
+					申请时间:{{item.apply_date}}
 				</view>
 				<view class="list-state" :style="{color:index ==1 ? 'green' :  'red'  }">
-					{{item.state}}
+					{{index == 0? '' :index == 1? '已通过':'已拒绝'}}
 				</view>
 			</view>
 		</block>
+		<u-empty  text="没有搜索结果" mode="search"  :show="jinduList.length < 1"
+				:marginTop="400"
+		></u-empty>
 	</view>
 </template>
 
@@ -23,6 +26,7 @@
 		data() {
 			return {
 				index: 0,
+				status:'待审核',
 				tabList: [{
 				        name: '待审核',
 				        value: 0
@@ -36,29 +40,11 @@
 					    value: 2
 					}
 				],
-				jinduList:[
-					[
-						{'name':'白云区王英德诊所','time':'2020-08-01 13:21:33','state':''},
-						{'name':'乌当柯小佳诊所','time':'2020-08-01 13:21:33','state':''},
-						{'name':'乌当柯小佳诊所','time':'2020-08-01 13:21:33','state':''},
-						{'name':'乌当柯小佳诊所','time':'2020-08-01 13:21:33','state':''}
-					],
-					[
-						{'name':'乌当柯小佳诊所','time':'2020-08-01 13:21:33','state':'已通过'},
-						{'name':'白云区王英德诊所','time':'2020-08-01 13:21:33','state':'已通过'},
-						{'name':'乌当柯小佳诊所','time':'2020-08-01 13:21:33','state':'已通过'},
-						{'name':'乌当柯小佳诊所','time':'2020-08-01 13:21:33','state':'已通过'},
-						{'name':'乌当柯小佳诊所','time':'2020-08-01 13:21:33','state':'已通过'}
-					],
-					[
-						{'name':'七星关燕子口镇卫生室','time':'2020-08-01 13:21:33','state':'已拒绝'},
-						{'name':'七星关燕子口镇卫生室','time':'2020-08-01 13:21:33','state':'已拒绝'},
-						{'name':'七星关燕子口镇卫生室','time':'2020-08-01 13:21:33','state':'已拒绝'},
-						{'name':'七星关燕子口镇卫生室','time':'2020-08-01 13:21:33','state':'已拒绝'},
-						
-					]
-				]
+				jinduList:[]
 			}
+		},
+		onLoad() {
+			this.request()
 		},
 		methods: {
 			//返回上级页面方法
@@ -70,10 +56,35 @@
 			//tabbar切换方法
 			tabChange(e) {
 				// console.log(e);
-				if (this.index != e.tab.value){
+			
 					this.index = e.tab.value
-				}
+					this.status = e.tab.name
+					this.jinduList = []
+					this.request()
+			
+				
 			},
+			//数据请求方法
+			request(){
+				const _this = this
+				_this.$request({
+					data:{
+						proc:'APP_YWY_PORT',
+						type:'开户审核进度',
+						userid:_this.$userinfo.userid,
+						status:_this.status
+					}
+				}).then(res => {
+					const resdata = res.Msg_info
+					console.log(resdata);
+					if(resdata[0].error){
+						_this.jinduList = []
+					}else{
+						_this.jinduList = resdata
+					}
+					
+				})
+			}
 		}
 	}
 </script>

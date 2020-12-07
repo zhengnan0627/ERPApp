@@ -1,0 +1,10 @@
+{
+  "usingComponents": {
+    "uni-nav-bar": "/components/uni-nav-bar/uni-nav-bar",
+    "uni-combox": "/components/uni-combox/uni-combox",
+    "w-picker": "/components/w-picker/w-picker",
+    "uni-popup": "/components/uni-popup/uni-popup",
+    "uni-popup-message": "/components/uni-popup/uni-popup-message",
+    "uni-popup-dialog": "/components/uni-popup/uni-popup-dialog"
+  }
+}
