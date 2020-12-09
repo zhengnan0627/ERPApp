@@ -33,14 +33,6 @@
 		</view>
 		<view class="input-box">
 			<view class="inputbox-image">
-				<image src="/static/image/shuxing.png" mode=""></image>
-			</view>
-			<view class="inputbox-field">
-				<input type="text" placeholder="药品规格" v-model="ypguige"/>
-			</view>
-		</view>
-		<view class="input-box">
-			<view class="inputbox-image">
 				<image src="/static/image/jiage.png" mode=""></image>
 			</view>
 			<view class="inputbox-field">
@@ -49,10 +41,18 @@
 		</view>
 		<view class="input-box">
 			<view class="inputbox-image">
+				<image src="/static/image/shuxing.png" mode=""></image>
+			</view>
+			<view class="inputbox-field">
+				<input type="text" placeholder="客户名称" v-model="ypguige"/>
+			</view>
+		</view>
+		<view class="input-box">
+			<view class="inputbox-image">
 				<image src="/static/image/changjia.png" mode=""></image>
 			</view>
 			<view class="inputbox-field">
-				<input type="text" placeholder="生产厂家" v-model="ypfactory"/>
+				<input type="text" placeholder="经销商" v-model="ypfactory"/>
 			</view>
 		</view>
 		<view class="input-box">
@@ -125,6 +125,7 @@
 						g_guige:_this.ypguige,
 						g_price:_this.ypprice,
 						g_factory:_this.ypfactory,
+						// dealer:_this.dealer,
 						beizhu:_this.ypbeizhu
 					}
 				}).then(res => {

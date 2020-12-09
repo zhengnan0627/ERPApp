@@ -127,11 +127,7 @@
 					// {"id":"12","imgurl":"../../static/image/jiesuan.png","text":"结算任务","url":"jiesuan","badge":0}
 				],
 				//轮播图相关数据
-				swiperlist:[
-					// {"id":"1", "urls":"../../static/image/swiper4.jpg"},
-					// {"id":"2","urls":"../../static/image/swiper5.jpg"},
-					// {"id":"3","urls":"../../static/image/swiper6.jpg"},
-				],
+				swiperlist:[],
 				//uchart相关数据
 				cWidth:'',
 				cHeight:'',
@@ -146,15 +142,7 @@
 					// "name": "销售额(万元)",
 					// "data": [15, {"value": 20,"color":"" }, 44,],
 					// // "color": "red"
-				 //  }, {
-					// "name": "毛利额(万元)",
-					// "data": [20, {"value": 4.7,"color":""}, 35, ],
-					// // "color": "green"
-				 //  }, {
-					// "name": "订单数量(万元)",
-					// "data": [30, {"value": 40,"color": ""}, 25, ],
-					// // "color": "yellow"
-				 //  },
+				 //  }
 				  ]
 				},
 				"chartData2": {
@@ -162,19 +150,7 @@
 				 //  {
 					// "name": "抗感染药",
 					// "data": 50
-				 //  }, {
-					// "name": "散装普通中药饮片",
-					// "data": 30
-				 //  }, {
-					// "name": "肠胃道疾病药",
-					// "data": 20
-				 //  }, {
-					// "name": "滋补营养方",
-					// "data": 18
-				 //  }, {
-					// "name": "抗生素药",
-					// "data": 8
-				 //  },
+				 //  }
 				]
 				}
 			}	
@@ -204,7 +180,8 @@
 					{"id":"8","imgurl":"../../static/image/shangpinchaxun.png","text":"商品查询","url":"goods","badge":0},
 					{"id":"11","imgurl":"../../static/image/openaccount.png","text":"客户开户","url":"openaccount","badge":0},
 					{"id":"12","imgurl":"../../static/image/spdengji.png","text":"商品登记","url":"spdengji","badge":0},
-					{"id":"13","imgurl":"../../static/image/jiagefankui.png","text":"价格反馈","url":"jiagefankui","badge":0}
+					{"id":"13","imgurl":"../../static/image/jiagefankui.png","text":"价格反馈","url":"jiagefankui","badge":0},
+					{"id":"15","imgurl":"../../static/image/xsjilu.png","text":"销售记录","url":"xsjilu","badge":0}
 				]
 			}else if(this.name == 1){
 				this.navbarlist.name = '配送员';
@@ -230,7 +207,8 @@
 					{"id":"7","imgurl":"../../static/image/zhangqichaxun.png","text":"应收管理","url":"check","badge":0},
 					{"id":"8","imgurl":"../../static/image/shangpinchaxun.png","text":"商品查询","url":"goods","badge":0},
 					{"id":"3","imgurl":"../../static/image/fangkejihua.png","text":"拜访记录","url":"baifangjilu","badge":0},
-					{"id":"14","imgurl":"../../static/image/yuangongdingwei.png","text":"员工定位","url":"ygdingwei","badge":0}
+					{"id":"14","imgurl":"../../static/image/yuangongdingwei.png","text":"员工定位","url":"ygdingwei","badge":0},
+					{"id":"15","imgurl":"../../static/image/xsjilu.png","text":"销售记录","url":"xsjilu","badge":0}
 				]
 			}
 		},

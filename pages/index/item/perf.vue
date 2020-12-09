@@ -191,6 +191,7 @@
 					console.log(this.dataList.dataList3);
 				}
 			})
+			
 		},
 		onShow() {
 			this.chartrequest()

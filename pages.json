@@ -430,6 +430,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/index/item/xsjilu",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	// "tabBar":{
 		

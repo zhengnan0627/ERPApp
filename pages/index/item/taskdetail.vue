@@ -77,77 +77,24 @@
 						<view class="" style="flex: 1;">
 							{{jilu.js_date}}
 						</view>
-						<view class="" style="flex: 1;">
+						<view class="" style="flex: 0.7;">
 							¥{{jilu.js_amount}}
 						</view>
 						<view class="" style="flex: 1; text-align: left;">
 							结算方式:&nbsp{{jilu.js_type}}
 						</view>
 					</view>
+					<view class="item-jilu" style="padding-right: 15px;" v-if="jiluList.length == 0">
+						<view class="" style="flex: 1; text-align: center;">
+							暂无结算历史
+						</view>
+					</view>
 				</template>
 			</view>
-			<!-- <view class="content">
-				<view class="content-header">
-					<view class="header-item item-left">
-						任务编号:
-					</view>
-					<view class="header-item">
-						ZHCNDA001298537
-					</view>
-					<view class="header-item item-left">
-						公司名称:
-					</view>
-					<view class="header-item">
-						{{taskdetailList.name}}
-						
-					</view>
-					<view class="header-item item-left">
-						公司地址:
-					</view>
-					<view class="header-item  item-site">
-						
-							<view class="site">
-								{{taskdetailList.address}}
-							
-							</view>
-						
-					</view>
-					<view class="header-item item-left">
-						联系人:
-					</view>
-					<view class="header-item item-site">
-						<view class="">
-							{{taskdetailList.person+' '+taskdetailList.phone}}
-						</view>
-						<uni-icons type="phone" size="25"  @click="makePhoneCall" color="#00aa00"></uni-icons>
-					</view>
-				</view>
-				<view class="content-footer">
-					<view class="footer-item" @click="coordinates">
-						<uni-icons type="compose" size="25" color="#00aa00" ></uni-icons>
-						<view class="item-title">
-							纠正坐标
-						</view>
-					</view>
-					<view class="footer-item" @click="mapnavigation">
-						<uni-icons type="location-filled" size="25" color="#00aa00"></uni-icons>
-						<view class="item-title">
-							导航
-						</view>
-					</view>
-				</view>
-			</view> -->
-			
 		</view>
 		<view class="zhanwei" style="width: 100vw; height: 260px; background-color: #EEEEEE;">
 			
 		</view>
-		<!-- <view class="tabbar" style="font-size: 20px;">
-			<sun-tab :value.sync="index" :tabList="tabList" bgColor="#ffffff" activeColor="#55aa00"></sun-tab>
-		</view>
-		<view class="zhanwei" style="width: 100vw; height: 54px; background-color: #EEEEEE;">
-			
-		</view> -->
 		<view class="" style="width: 100%; height: 30px; line-height: 30px; padding-left: 15px;">
 			出库单列表
 		</view>
@@ -253,6 +200,8 @@
 				kehuinfo:{},
 				jiluicon:false,//历史结束记录控制显示字段
 				shyu_amount:'',//剩余结算金额字段(单独通过接口获得)
+				is_qianshou:'',//是否需要签收凭证字段(单独通过接口获得)1需要0不限制
+				is_wcqs:'',//签收凭证完成状态字段(单独通过接口获得)1完成0未完成
 				name:'',
 				address:'',
 				updata:true,
@@ -333,15 +282,15 @@
 			},
 			// navbar右侧图标方法
 			qianshou(){
-				if(this.dataList.some(item => item.chk_bjstatus == '1')){
-					uni.showToast({
-						title:'存在未完成条目',
-						icon:'none'
-					})
-					return
-				}
+				// if(this.dataList.some(item => item.chk_bjstatus == '1')){
+				// 	uni.showToast({
+				// 		title:'存在未完成条目',
+				// 		icon:'none'
+				// 	})
+				// 	return
+				// }
 				uni.navigateTo({
-					url:'qianshou?kehuinfo='+JSON.stringify(this.kehuinfo)
+					url:'qianshou?kehuinfo='+JSON.stringify(this.kehuinfo)+'&wcqs='+this.is_wcqs
 				})
 			},
 			//结算按钮方法
@@ -416,6 +365,8 @@
 					const resdata = res.Msg_info
 					console.log(resdata);
 					_this.shyu_amount = resdata[0].shyu_amount
+					_this.is_qianshou = resdata[0].is_qianshou
+					_this.is_wcqs = resdata[0].is_wcqs
 					_this.kehuinfo.shyu_amount = resdata[0].shyu_amount
 					_this.kehuinfo.js_record_num = resdata[0].js_record_num	
 				})
@@ -667,7 +618,14 @@
 			//卸货按钮
 			xiehuo(){
 				const _this = this
-				_this.modalshow = true
+				// _this.modalshow = true
+				if(_this.is_qianshou =='1'&&_this.is_wcqs =='0'){
+					uni.showToast({
+						title:'请上传签收凭证',
+						icon:'none'
+					})
+					return
+				}
 				let chk_id = ''
 				_this.dataList.map(item => {
 					if(item.chk_bjstatus == '1'&&item.selected){

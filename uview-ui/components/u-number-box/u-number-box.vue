@@ -113,6 +113,11 @@
 				type: [Number, String],
 				default: ''
 			},
+			//购买系数
+			buyratio: {
+				type: [Number, String],
+				default: ''
+			},
 			// 是否禁用输入框，与disabled作用于输入框时，为OR的关系，即想要禁用输入框，又可以加减的话
 			// 设置disabled为false，disabledInput为true即可
 			disabledInput: {
@@ -142,6 +147,7 @@
 		},
 		watch: {
 			value(v1, v2) {
+				console.log(v1,v2);
 				// 只有value的改变是来自外部的时候，才去同步inputVal的值，否则会造成循环错误
 				if(!this.changeFromInner) {
 					this.inputVal = v1;
@@ -154,6 +160,7 @@
 				}
 			},
 			inputVal(v1, v2) {
+				console.log(v1,v2);
 				// 为了让用户能够删除所有输入值，重新输入内容，删除所有值后，内容为空字符串
 				if (v1 == '') return;
 				let value = 0;
@@ -172,7 +179,16 @@
 						})
 					}
 				}
+				// if(+v1 != +this.value){
+				// 	console.log('步进器组件176');
+				// 	this.handleChange(value, 'change');
+				// } 
 				// 发出change事件
+				// if(this.firstchange == 1 && v1!=1){
+				// 	this.handleChange(value, 'change');
+				// 	this.firstchange++
+				// 	return
+				// }
 				this.handleChange(value, 'change');
 			}
 		},
@@ -181,10 +197,14 @@
 				inputVal: 1, // 输入框中的值，不能直接使用props中的value，因为应该改变props的状态
 				timer: null, // 用作长按的定时器
 				changeFromInner: false, // 值发生变化，是来自内部还是外部
+				firstchange:1,
 			};
 		},
 		created() {
 			this.inputVal = Number(this.value);
+			// if(this.value != 1){
+			// 	this.firstchange++
+			// }
 		},
 		computed: {
 			getCursorSpacing() {
@@ -279,11 +299,20 @@
 				val = +value;
 				if (val > this.max) {
 					val = this.max;
+					uni.showToast({
+						icon:'none',
+						title:'超出最大值'
+					})
 				} else if (val < this.min) {
 					val = this.min;
+					uni.showToast({
+						icon:'none',
+						title:'超出最小值'
+					})
 				}
-				if(val % this.index != 0){
+				if(val % this.buyratio != 0){
 					// console.log('不整');
+					console.log(v1,this.buyratio);
 					val = this.min;
 					uni.showToast({
 						icon:'none',

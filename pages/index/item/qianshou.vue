@@ -95,9 +95,10 @@
 				height: 0, //height高度
 				//上级页面传过来的任务详情数据
 				kehuinfo:{},
+				is_wcqs:'',//签收凭证完成状态
 				shangchuanshow:true,//是否显示提交按钮及上传图片按钮
 				beizhu:'',//备注信息
-				action: 'https://www.tsdjyy.com/wxpay/upload.php?from=APP',//图片上传配置地址
+				action: 'https://www.tsdjyy.com/wxpay/upload.php?from=APP&type=qianshou',//图片上传配置地址
 				fileList: [
 					// {
 					// 	url: 'http://pics.sc.chinaz.com/files/pic/pic9/201912/hpic1886.jpg',
@@ -117,6 +118,7 @@
 		onLoad(option) {
 			const _this = this
 			this.kehuinfo = JSON.parse(option.kehuinfo)
+			this.is_wcqs = option.wcqs
 			console.log(this.kehuinfo);
 			setTimeout(() => {
 				uni.getSystemInfo({
@@ -132,6 +134,11 @@
 					}
 				});
 			}, 50);
+			if(this.is_wcqs == '0') {
+				_this.shangchuanshow = true
+				return
+			}
+			_this.shangchuanshow = false
 			_this.$request({
 				data:{
 					proc:'APP_PSY_PORT',
@@ -145,7 +152,6 @@
 				console.log(resdata);
 				if(resdata[0].error){
 					_this.fileList = []
-					_this.shangchuanshow = true
 				}else{
 					_this.fileList = resdata.map(item => {
 						item.url = item.pzh_url
@@ -153,7 +159,6 @@
 					})
 					// console.log(_this.fileList);
 					_this.beizhu = resdata[0].beizhu
-					_this.shangchuanshow = false
 				}
 			})
 		},
@@ -170,15 +175,15 @@
 					return
 				}
 				let files5 = _this.$refs.uUpload5.lists;
-				console.log(files5);
-				if(files5){
-					let iamge_url = '+'
-					files5.map(item => {
-							// console.log(prev,cur);
-								iamge_url += item.response.imageUrl + "+";
-							});		
-					iamge_url = iamge_url.substr(1, iamge_url.length - 2);
-					console.log(iamge_url);
+				// console.log(files5);
+				let iamge_url = '+'
+				files5.map(item => {
+						// console.log(prev,cur);
+							iamge_url += item.response.imageUrl + "+";
+						});		
+				iamge_url = iamge_url.substr(1, iamge_url.length - 2);
+				console.log(iamge_url);
+				if(iamge_url){				
 					_this.$request({
 						data:{
 							proc:'APP_PSY_PORT',
@@ -198,6 +203,7 @@
 								icon:'none'
 							})
 						}else{
+							uni.$emit('tuihuo')
 							uni.showToast({
 								title:resdata[0].note
 							})

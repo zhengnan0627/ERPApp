@@ -4,7 +4,7 @@
 		<view class="height" :style="{ height: height + 'px'}">
 			<view class="jine-box">
 				<view class="jine-input-box">
-					<input class="jine-input" type="number" v-model="amount" placeholder="输入结算金额" />
+					<input class="jine-input" type="number" v-model="amount" :placeholder="placeholder" />
 				</view>
 				<view class="jine-title">
 					实付金额(元)
@@ -22,6 +22,18 @@
 					<input class="beizhu-input" type="textarea" placeholder="填写备注(选填)" v-model="beizhu" />
 				</view>
 			</view>
+			<view class="title" v-if="js_type == '白条'">
+				凭证图片
+			</view>
+			<u-form-item style="display: flex; background-color: #FFFFFF;" v-if="js_type == '白条'">
+				<u-upload ref="uUpload5" :action="action"  width="120" :show-progress="false" :max-count="4" :custom-btn="true" name="upload_file">
+					<view class="" slot="addBtn">
+						<view class="u-list-item u-add-wrap" style="width: 120prx;height: 120rpx;">
+							<u-icon  name="plus" class="u-add-btn" size="60"></u-icon>
+						</view>
+					</view>
+				</u-upload>
+			</u-form-item>
 		</view>
 		
 		<view class="commit" @click="commit">
@@ -38,9 +50,12 @@
 				//上级页面传过来的任务详情数据
 				kehuinfo:{},
 				pickerShow: false,
+				placeholder:'',//结算占位符
 				amount:'',//结算金额
 				js_type:"",//结算类型
 				beizhu:'',//备注信息
+				image_url:'',//图片地址拼接字符串
+				action: 'https://www.tsdjyy.com/wxpay/upload.php?from=APP&type=baitiao',//图片上传配置地址
 				//-----------------------选择企业类型数据项----------------
 				selectList: [
 					// {
@@ -69,6 +84,8 @@
 		onLoad(option) {
 			const _this = this
 			this.kehuinfo = JSON.parse(option.kehuinfo)
+			this.placeholder = _this.kehuinfo.shyu_amount
+			this.amount = _this.kehuinfo.shyu_amount
 			console.log(this.kehuinfo);
 			setTimeout(() => {
 				uni.getSystemInfo({
@@ -117,8 +134,26 @@
 					})
 					return
 				}
+				if(_this.js_type =='白条'){
+					_this.image_url = '+'
+					let files5 = _this.$refs.uUpload5.lists;
+					console.log(files5);	
+					files5.map(item => {
+							// console.log(prev,cur);
+								_this.image_url += item.response.imageUrl + "+";
+							});		
+					_this.image_url = _this.image_url.substr(1, _this.image_url.length - 2);
+					console.log(_this.image_url);
+					if(_this.image_url == ''){
+						uni.showToast({
+							title:'请上传图片凭证',
+							icon:'none'
+						})
+						return
+					}
+				}	
 				if(_this.amount != '' && +_this.amount > 0 && +_this.amount <= +_this.kehuinfo.shyu_amount){
-					console.log(_this.amount);
+					console.log(_this.amount);	
 					_this.$request({
 						data:{
 							proc:'APP_PSY_PORT',
@@ -127,7 +162,8 @@
 							js_type:_this.js_type,
 							rw_dh:_this.kehuinfo.rw_dh,
 							c_id:_this.kehuinfo.c_id,
-							amount:_this.amount
+							amount:_this.amount,
+							image_url:_this.image_url||'',
 						}
 					}).then(res => {
 						const resdata = res.Msg_info
@@ -228,6 +264,31 @@
 	.beizhu-input{
 		width: 100%;
 		height: 100%;
+	}
+	.title{
+		width: 100vw;
+		height: 50rpx;
+		line-height: 50rpx;
+		padding-left: 20rpx;
+		font-size: 16px;
+		color: #000000;
+	}
+	.u-list-item {
+		width: 120rpx;
+		height: 120rpx;
+		overflow: hidden;
+		margin: 10rpx;
+		background: rgb(244, 245, 246);
+		position: relative;
+		border-radius: 10rpx;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.u-add-wrap {
+		flex-direction: column;
+		color: $u-content-color;
+		font-size: 28rpx;
 	}
 	.commit{
 		width: 50vw;

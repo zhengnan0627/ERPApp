@@ -36,7 +36,7 @@
 				:marginTop="500"
 		></u-empty>
 		<u-back-top :scroll-top="scrollTop" :top="1200"></u-back-top>
-		<u-loadmore :status="status" v-if="resdataList.length > 1"/>	
+		<u-loadmore :status="status" v-if="resdataList.length > 5"/>	
 	</view>
 </template>
 

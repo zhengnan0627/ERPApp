@@ -63,9 +63,15 @@
 				_this.kehuList = []
 				_this.request()
 			})
+			uni.$on('CartUpdata',() => {
+				console.log('购物车汇总信息刷新');
+				_this.kehuList = []
+				_this.request()
+			})
 		},
 		onUnload() {
 			uni.$off('cart')
+			uni.$off('CartUpdata')
 		},
 		onPageScroll(e) {
 				this.scrollTop = e.scrollTop;

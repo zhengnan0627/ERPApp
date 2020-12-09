@@ -30,8 +30,8 @@
 		<view class="zhanwei" style="width: 100vw; height: 117px;">
 		</view>	
 		<checkbox-group @change="buyChange" style="padding-bottom: 44px;">
-			<view class="tui-cart-cell" v-for="(item,index) in dataList" :key="index">
-				<tui-swipe-action :actions="actions" @click="handlerButton" :params="{item,index}" :forbid="item.selected">
+			<view class="tui-cart-cell" v-for="(item,index) in dataList" :key="item.g_pihao">
+				<tui-swipe-action :actions="actions" @click="handlerButton" :params="{item,index}" :forbid="item.selected" :key="item.g_pihao">
 					<template v-slot:content>
 						<view class="tui-goods-item">
 							<label class="tui-checkbox" >
@@ -48,16 +48,11 @@
 								<view class="tui-goods-title">
 									<view>批号:{{item.g_pihao}}</view>
 								</view>
-								
-								<view class="tui-price-box">
-									<view class="tui-goods-price">￥{{item.g_price}}</view>
-									<u-number-box v-model="item.g_number" :index="item.g_buy_ratio" @change="valChange(item)"
-									:step="item.g_buy_ratio" :min="item.g_buy_ratio" :max="item.ku_count" :disabled="item.selected"
-									></u-number-box>
-									<!-- <tui-numberbox   :value="item.g_number":step="item.g_buy_ratio" :disabled="item.selected"
-									 :height="36" :width="64" :min="0" :index="index" :max="item.ku_count"
-									 :custom="item" @change="changeNum"
-									 ></tui-numberbox>	 -->								
+								<view class="tui-price-box" :key="item.g_pihao">
+									<view class="tui-goods-price">￥{{item.g_price}}</view> 
+									<u-number-box v-model="item.g_number" :index="index" :buyratio="item.g_buy_ratio" @change="valChange($event,item)" :key="item.g_pihao"
+									:step="item.g_buy_ratio" :min="item.g_buy_ratio" :max="+item.g_maxbuycount" :disabled="item.selected"
+									></u-number-box>							
 								</view>
 							</view>
 						</view>
@@ -168,7 +163,7 @@
 					}
 				}).then(res => {
 				const resdata = res.Msg_info
-				console.log(resdata);
+				// console.log(resdata);
 				if(resdata[0].error){
 					this.dataList = []
 				}else{
@@ -181,11 +176,10 @@
 					})
 					}
 				})
-				
 			},
 			//每次进行操作之后的总合数据计算方法
 			calcHandle() {
-				console.log(this.dataList);
+				// console.log(this.dataList);
 				let g_number = 0;
 				let totalPrice = 0;
 				let selectedNum = 0;
@@ -224,7 +218,7 @@
 						}
 					}).then(res => {
 					const resdata = res.Msg_info
-					console.log(resdata);
+					// console.log(resdata);
 					// this.kehuCart()
 					})
 				}
@@ -232,13 +226,15 @@
 					this.calcHandle()
 				}, 0)
 			},
-			valChange(item){
-				console.log(item);
+			valChange(e,item){
+				// console.log(item);
+				// console.log(e);
 				this.dataList.map(item => {
 					if (item.g_number % item.g_buy_ratio != 0 ){
 						return item.g_number = 0
 					} 
 				})
+				// if(e.value == item.g_number) return
 				if(item.g_number != 0){
 					this.$request({
 						data:{
@@ -252,7 +248,7 @@
 						}
 					}).then(res => {
 					const resdata = res.Msg_info
-					console.log(resdata);
+					// console.log(resdata);
 					// this.dataList = []
 					// this.kehuCart()
 					})
@@ -321,12 +317,12 @@
 					}
 				}).then(res => {
 				const resdata = res.Msg_info
-				console.log(resdata);
+				// console.log(resdata);
 				this.dataList = []
 				this.kehuCart()
 				this.$bus.$emit('CartUpdata')
 				})
-				
+				uni.$emit('CartUpdata')
 				uni.showToast({
 					// title:`${item.g_name}删除成功`
 					title:'删除成功'
