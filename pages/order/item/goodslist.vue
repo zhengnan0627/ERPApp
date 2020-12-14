@@ -8,24 +8,6 @@
 				<uni-icons type="search" size="25"></uni-icons>
 			</view>
 		</uni-nav-bar>
-		<!-- <view class="navbar" style="display: flex; width: 100vw; height: 44px; background-color: #FFFFFF;">
-			<view class="left">
-				<uni-icons type="back" size="25"></uni-icons>
-			</view>
-			<view class="" style="flex: 1;">
-				<sun-tab :value.sync="tabindex" :tabList="tabList" @change="tabChange" rangeKey="name"   bgColor="#ffffff" activeColor="#55aa00"></sun-tab>
-			</view>
-			<view class="">
-				<uni-icons type="search" size="25"></uni-icons>
-			</view>
-		</view> -->
-		<!-- <view class="tui-searchbox">
-			<view class="tui-search-input" @tap="search">
-				<icon type="search" :size="13" color="#999"></icon>
-				<text class="tui-search-text">商品编号/助记码</text>
-			</view>
-		</view> -->
-		<!-- <u-navbar back-text="返回" title="中间文本"></u-navbar> -->
 		<view class="XF-cart" @click="ToCart">
 			<uni-icons type="cart" size="28" color="#ffffff"></uni-icons>
 			<uni-badge v-if="badge != 0" :text="badge" type="error" size="small" class="badge"></uni-badge>
@@ -294,26 +276,6 @@ export default {
 			status2: 'loadmore',//加载更多组件：加载前值为loadmore，加载中为loading，没有数据为nomore
 			popuplist:{},//购物车弹出层数据
 			pihaoList:[],//购物车页面批号数据列表
-			// rightgoodslist:{
-			// 		"g_fenlei":"胶囊类",
-			// 		"g_list":[
-			// 			{"g_name":"A0_(麦克普瑞康)灵芝胶囊","g_image":"../../../static/image/yaopin1.JPG","g_bianhao":"灵芝胶囊","g_zhuji":"MKPRKLZJN","g_factory":"天圣制药集团股份有限公司","g_guige":"12粒/板*1板/盒","star":false,"g_price":"23","g_kucun":"1452","g_pihao":"14321","g_youxiaoqi":"2022-10-11","g_kucun1":"873"},
-			// 		],
-			// 	},
-			// goodList:[
-			// 	{
-			// 		"g_fenlei":"胶囊类",
-			// 		"g_list":[
-			// 			{"g_name":"A0_(麦克普瑞康)灵芝胶囊","g_image":"../../../static/image/yaopin1.JPG","g_bianhao":"灵芝胶囊","g_zhuji":"MKPRKLZJN","g_factory":"天圣制药集团股份有限公司","g_guige":"12粒/板*1板/盒","star":false,"g_price":"23","g_kucun":"1452","g_pihao":"14321","g_youxiaoqi":"2022-10-11","g_kucun1":"873"},
-			// 			{"g_name":"A0_(麦克芬比得)布洛芬颗粒","g_image":"../../../static/image/yaopin1.JPG","g_bianhao":"灵芝胶囊","g_zhuji":"MKPRKLZJN","g_factory":"天圣制药集团股份有限公司","g_guige":"12粒/板*1板/盒","star":false,"g_price":"23","g_kucun":"1452","g_pihao":"2312","g_youxiaoqi":"2022-12-11","g_kucun1":"543"},
-			// 			{"g_name":"A0_(麦克止咳诺)川贝罗汉止咳颗粒","g_image":"../../../static/image/yaopin2.JPG","g_bianhao":"灵芝胶囊","g_zhuji":"MKPRKLZJN","g_factory":"天圣制药集团股份有限公司","g_guige":"12粒/板*1板/盒","star":false,"g_price":"23","g_kucun":"1452","g_pihao":"86321","g_youxiaoqi":"2022-09-11","g_kucun1":"33"},
-			// 			{"g_name":"A0_(麦克维体康)氯化钾注射液","g_image":"../../../static/image/yaopin1.JPG","g_bianhao":"灵芝胶囊","g_zhuji":"MKPRKLZJN","g_factory":"天圣制药集团股份有限公司","g_guige":"12粒/板*1板/盒","star":false,"g_price":"23","g_kucun":"1452","g_pihao":"543242321","g_youxiaoqi":"2023-10-11","g_kucun1":"473"},
-			// 			{"g_name":"A0_(麦克独清)穿心莲片","g_image":"../../../static/image/yaopin2.JPG","g_bianhao":"灵芝胶囊","g_zhuji":"MKPRKLZJN","g_factory":"天圣制药集团股份有限公司","g_guige":"12粒/板*1板/盒","star":false,"g_price":"23","g_kucun":"1452","g_pihao":"64321","g_youxiaoqi":"2022-10-11","g_kucun1":"562"},
-			// 			{"g_name":"A0_(麦克尔小叮当)冷敷贴","g_image":"../../../static/image/yaopin2.JPG","g_bianhao":"灵芝胶囊","g_zhuji":"MKPRKLZJN","g_factory":"天圣制药集团股份有限公司","g_guige":"12粒/板*1板/盒","star":false,"g_price":"23","g_kucun":"1452","g_pihao":"325","g_youxiaoqi":"2022-10-11","g_kucun1":"873"},
-			// 		],
-			// 	},
-				
-			// ],
 			height: 0, //scroll-view高度
 			top: 0,
 			currentTab: 0, //左侧分类列表预设当前项的值

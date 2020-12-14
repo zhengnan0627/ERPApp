@@ -10,7 +10,7 @@
 					<!-- <view class="peizhi-img">
 						<image class="peizhi-image" src="" mode=""></image>
 					</view> -->
-					<input class="input" type="text" v-model="baseUrl"  :placeholder="placeholder" placeholder-class=""/>
+					<input class="input" type="text" v-model="baseUrl"  placeholder="输入服务器地址" placeholder-class=""/>
 				</view>
 				<view class="confirm" @click="confirm">
 					确定

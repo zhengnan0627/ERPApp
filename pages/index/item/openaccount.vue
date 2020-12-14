@@ -147,7 +147,7 @@ export default {
 		let that = this;
 		return {
 			fileList:[],//(数组，元素为对象),显示预置的图片。其中元素的url属性为图片路径
-			action: 'https://www.tsdjyy.com/wxpay/upload.php',//图片上传配置地址
+			action: 'https://www.tsdjyy.com/wxpay/upload.php?from=APP&type=kaihu',//图片上传配置地址
 			model: {
 				qyType:'',//企业类型
 				name: '',//企业名称

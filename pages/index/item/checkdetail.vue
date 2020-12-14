@@ -57,7 +57,7 @@
 						</view>
 					</view>
 					<view class="list-item">
-						<view class="item-flex" style="flex: 0.8;">
+						<view class="item-flex" style="flex: 0.6;">
 							类型:<text style="font-weight: 550;padding-left: 5px;" :style="{color:+item.jie_amount == 0? '#ff0000':'#0000ff'}">{{+item.jie_amount == 0?'结算':'销售'}}</text>
 						</view>
 						<view class="item-flex">

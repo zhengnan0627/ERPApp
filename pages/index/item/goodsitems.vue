@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<uni-nav-bar  fixed="true" left-icon="back"  @clickLeft="back"  :title="title"/>
-		</uni-nav-bar>
+		
 
 		<!-- <button id="debounce" @click="bun">函数防抖测试</button>
 		<view class="">
@@ -10,20 +10,20 @@
 			<block v-for="(item,index) in goodList">
 				<view class="goodlist" :key="index">
 					<view class="list-content" >
-						<view class="content-img" @click="goodsdetail(item,index)">
+						<view class="content-img">
 							<image :src="item.g_image" mode="aspectFit"></image>
 						</view>
 						<view class="content-text">
-							<view class="text-item text-name" style="font-size: 15px; color: #000000;" @click="goodsdetail(item,index)">
+							<view class="text-item text-name" style="font-size: 15px; color: #000000;">
 								{{item.g_name}}
 							</view>
-							<view class="text-item text-bianhao" @click="goodsdetail(item,index)">
+							<view class="text-item text-bianhao">
 								商品编号:&nbsp{{item.g_bianhao}}
 							</view>
-							<view class="text-item text-factory" @click="goodsdetail(item,index)">
+							<view class="text-item text-factory" >
 								厂家:&nbsp{{item.g_factory}}
 							</view>
-							<view class="text-item text-guige" @click="goodsdetail(item,index)">
+							<view class="text-item text-guige">
 								<view class="">
 									规格:&nbsp{{item.g_property}}
 								</view>
@@ -35,6 +35,9 @@
 								</view> -->
 							</view>
 						</view>
+					</view>
+					<view class="jilubox-right">
+						<uni-icons type="arrowright" size="30" @click="Tomingxi(item,index)"></uni-icons>
 					</view>
 				</view>
 			</block>
@@ -98,9 +101,9 @@
 				})
 			},
 			//跳转到商品详情页面
-			goodsdetail(item,index){
+			Tomingxi(item,index){
 				uni.navigateTo({
-					url:'goodsdetail?item='+JSON.stringify(item)+'&from='+ 'scshangpin'
+					url:'goodszhangye?goodinfo='+JSON.stringify(item)
 				})
 			},
 			//我的收藏页面数据接口,可反复调用,注意
@@ -247,9 +250,17 @@
 	.goodlist {
 		width: 100vw;
 		margin: 4px 0;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
 		background-color: #FFFFFF;
 		border-top: 1px solid #EEEEEE;
 		border-bottom: 1px solid #EEEEEE;
+	}
+	.jilubox-right{
+		height: 100%;
+		width: 35px;
+		text-align: center;
 	}
 	.list-content {
 		width: 97vw;

@@ -76,7 +76,7 @@
 				endtimeShow:false,
 				endyear:'',
 				jilulist:[
-					// {name:'广东药房',address:'广东省',person:'张三',time:"2020-09-02"}
+					
 				],
 			}
 		},

@@ -178,6 +178,7 @@
 					{"id":"5","imgurl":"../../static/image/qiyegonggao.png","text":"企业公告","url":"notice","badge":0},
 					{"id":"7","imgurl":"../../static/image/zhangqichaxun.png","text":"账期查询","url":"check","badge":0},
 					{"id":"8","imgurl":"../../static/image/shangpinchaxun.png","text":"商品查询","url":"goods","badge":0},
+					{"id":"15","imgurl":"../../static/image/danweichaxun.png","text":"单位查询","url":"danwei","badge":0},
 					{"id":"11","imgurl":"../../static/image/openaccount.png","text":"客户开户","url":"openaccount","badge":0},
 					{"id":"12","imgurl":"../../static/image/spdengji.png","text":"商品登记","url":"spdengji","badge":0},
 					{"id":"13","imgurl":"../../static/image/jiagefankui.png","text":"价格反馈","url":"jiagefankui","badge":0},
@@ -206,6 +207,7 @@
 					// {"id":"6","imgurl":"../../static/image/yewuyuan.png","text":"业务员排行","url":"clerk","badge":0},
 					{"id":"7","imgurl":"../../static/image/zhangqichaxun.png","text":"应收管理","url":"check","badge":0},
 					{"id":"8","imgurl":"../../static/image/shangpinchaxun.png","text":"商品查询","url":"goods","badge":0},
+					{"id":"15","imgurl":"../../static/image/danweichaxun.png","text":"单位查询","url":"danwei","badge":0},
 					{"id":"3","imgurl":"../../static/image/fangkejihua.png","text":"拜访记录","url":"baifangjilu","badge":0},
 					{"id":"14","imgurl":"../../static/image/yuangongdingwei.png","text":"员工定位","url":"ygdingwei","badge":0},
 					{"id":"15","imgurl":"../../static/image/xsjilu.png","text":"销售记录","url":"xsjilu","badge":0}

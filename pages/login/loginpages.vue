@@ -28,7 +28,7 @@
 			</view>
 			<view class="input-item">
 				<uni-icons type="locked" size="30" color="#00aa00" style="margin-left: 5px;"></uni-icons>
-				<input type="text" value="" v-model="user.password" placeholder="请输入登陆密码" maxlength="20" class="content" />
+				<input type="text" value="" :password="true" v-model="user.password" placeholder="请输入登陆密码" maxlength="20" class="content" />
 			</view>
 		</view>
 		<view class="footer">

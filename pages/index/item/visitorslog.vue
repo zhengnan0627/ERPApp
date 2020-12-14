@@ -57,7 +57,7 @@
 				content:'',//日志内容
 				time:'',//拜访日期
 				loglist:{},//上级页面传参过来的item客户信息列表
-				action: 'https://www.tsdjyy.com/wxpay/upload.php?from=APP',//图片上传配置地址
+				action: 'https://www.tsdjyy.com/wxpay/upload.php?from=APP&type=baifang',//图片上传配置地址
 			}
 		},
 		onLoad:function(option){

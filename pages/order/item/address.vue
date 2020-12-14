@@ -10,12 +10,7 @@
 						<view class="tui-address-name tui-address-detail">
 							<view class="tui-address-label" v-if="item.is_default == '1'">默认</view>
 							<text>{{item.a_address}}</text>
-						</view>	
-								
-							
-							
-						
-
+						</view>
 					</view>
 				</tui-list-cell>
 			</block>

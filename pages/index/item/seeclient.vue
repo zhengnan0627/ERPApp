@@ -79,14 +79,6 @@
 		data() {
 			return {
 				kehuinfo:{},//客户信息，从上级页面传参过来
-				kh_data:{
-					"kh_type":"其他","kh_name":"东莞市步前方药店","kh_person":"李伟",
-					"kh_phone":"15123041341","kh_sh_address":"广东省东莞市寮步镇向西村",
-					"kh_address":"广东省东莞市寮步镇向西村",
-					"kh_map":{
-						
-					}
-				},
 				//地图组件相应数据
 				title:"map",
 				mapkey:1,
