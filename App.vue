@@ -14,7 +14,7 @@
 						console.log(res.model) //手机型号	
 					}
 				});
-				// 判断缓存时间
+				// 判断缓存时间增加gitpull测试
 				// var deadtime = parseInt(uni.getStorageSync('StorageTime'))
 				// if (deadtime) {
 				// 	if (parseInt(deadtime) < Date.parse(new Date()) / 1000) {
